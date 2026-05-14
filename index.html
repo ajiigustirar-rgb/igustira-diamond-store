@@ -7,94 +7,115 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-        body { background: #0b0e23; color: white; font-family: 'Orbitron', sans-serif; margin: 0; padding: 20px; }
-        .store-container { max-width: 500px; margin: auto; text-align: center; }
-        .menu-item { 
-            background: #161b33; 
-            border: 1px solid #2d3450; 
-            border-radius: 12px; 
-            padding: 15px 20px; 
-            margin-bottom: 12px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .menu-item:active { transform: scale(0.98); }
-        .badge { 
-            width: 35px; 
-            height: 35px; 
-            border-radius: 8px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-weight: 900; 
-            font-size: 10px; 
-        }
-        .price-text { font-family: 'monospace'; font-weight: bold; color: #ffffff; font-size: 14px; }
+        body { background: #0b0e23; color: white; font-family: 'Orbitron', sans-serif; padding: 20px; }
+        .menu-item { background: #161b33; border: 1px solid #2d3450; border-radius: 12px; padding: 15px; margin-bottom: 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .form-input { background: #1f2937; border: 1px solid #374151; border-radius: 8px; padding: 10px; width: 100%; color: white; font-size: 12px; margin-bottom: 10px; outline: none; }
+        .btn-send { background: #2563eb; color: white; font-weight: bold; padding: 12px; border-radius: 8px; width: 100%; margin-top: 10px; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); justify-content: center; align-items: center; padding: 20px; z-index: 50; }
     </style>
 </head>
 <body>
-    <div class="store-container">
-        <h1 class="text-2xl font-black italic text-blue-400 tracking-wider mb-1">IGUSTIRA STORE</h1>
-        <p class="text-[8px] text-gray-400 tracking-[0.2em] mb-6 uppercase">Pusat Jual Beli Terpercaya Se-Asia Tenggara</p>
+    <div class="max-w-md mx-auto">
+        <h1 class="text-2xl font-black italic text-blue-400 text-center mb-1">IGUSTIRA STORE</h1>
+        <p class="text-[8px] text-gray-400 text-center mb-8 uppercase tracking-widest">Pusat Jual Beli Terpercaya Se-Asia Tenggara</p>
 
-        <div class="bg-blue-900/20 p-4 rounded-lg mb-8 border border-blue-500/30">
-            <p class="text-[10px] font-bold">HAI SELAMAT DATANG DI IGUSTIRA STORE JURAGAN</p>
-            <p class="text-[8px] text-blue-300 mt-1 uppercase">Juragan ingin pesan apa biar kami bantu</p>
-        </div>
-
-        <div id="main-menu">
-            <div onclick="window.location.href='https://wa.me/6282185160103?text=Halo+Bos+Igustira,+Order+MLBB'" class="menu-item">
-                <span class="text-xs font-bold uppercase">MLBB</span>
-                <div class="badge bg-blue-600">ML</div>
+        <div class="grid grid-cols-2 gap-3 mb-6">
+            <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 text-center">
+                <p class="text-[8px] text-gray-500">BNB/USDT</p>
+                <p id="bnb-price" class="text-xs font-bold text-yellow-500">...</p>
             </div>
-
-            <div onclick="window.location.href='https://wa.me/6282185160103?text=Halo+Bos+Igustira,+Order+FREE+FIRE'" class="menu-item">
-                <span class="text-xs font-bold uppercase">FREE FIRE</span>
-                <div class="badge bg-orange-600">FF</div>
-            </div>
-
-            <div onclick="window.location.href='https://wa.me/6282185160103?text=Halo+Bos+Igustira,+Tukar+BNB'" class="menu-item">
-                <div>
-                    <span class="text-xs font-bold uppercase block text-left">BNB</span>
-                    <span id="bnb-price" class="price-text">Memuat...</span>
-                </div>
-                <div class="badge bg-yellow-500 text-black">BNB</div>
-            </div>
-
-            <div onclick="window.location.href='https://wa.me/6282185160103?text=Halo+Bos+Igustira,+Tukar+XRP'" class="menu-item">
-                <div>
-                    <span class="text-xs font-bold uppercase block text-left">XRP</span>
-                    <span id="xrp-price" class="price-text">Memuat...</span>
-                </div>
-                <div class="badge bg-white text-black">XRP</div>
-            </div>
-
-            <div onclick="window.location.href='https://wa.me/6282185160103?text=Halo+Bos+Igustira,+Tukar+USDT'" class="menu-item">
-                <div>
-                    <span class="text-xs font-bold uppercase block text-left">CV USDT</span>
-                    <code class="text-[8px] text-emerald-400">TCokCTEWrqgJTEpWcmSqpj5chiMH5be2o4</code>
-                </div>
-                <div class="badge bg-emerald-500">U</div>
+            <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 text-center">
+                <p class="text-[8px] text-gray-500">XRP/USDT</p>
+                <p id="xrp-price" class="text-xs font-bold text-blue-500">...</p>
             </div>
         </div>
 
-        <p class="text-[8px] text-gray-600 mt-10 italic uppercase">Owner: Rangga Aji Igustira</p>
+        <div onclick="openModal('MLBB')" class="menu-item">
+            <span class="text-xs font-bold">MOBILE LEGENDS</span>
+            <div class="bg-blue-600 px-3 py-1 rounded text-[10px]">ML</div>
+        </div>
+        <div onclick="openModal('FREE FIRE')" class="menu-item">
+            <span class="text-xs font-bold">FREE FIRE</span>
+            <div class="bg-orange-600 px-3 py-1 rounded text-[10px]">FF</div>
+        </div>
+        <div onclick="openModal('CRYPTO')" class="menu-item">
+            <span class="text-xs font-bold">CV USDT / XRP</span>
+            <div class="bg-emerald-600 px-3 py-1 rounded text-[10px]">U</div>
+        </div>
+
+        <div class="mt-8 p-4 bg-blue-900/20 rounded-xl border border-blue-500/20">
+            <p class="text-[9px] text-blue-400 font-bold mb-2 uppercase">Official Wallet Address:</p>
+            <p class="text-[8px] text-gray-400 truncate">USDT: TCokCTEWrqgJTEpWcmSqpj5chiMH5be2o4</p>
+            <p class="text-[8px] text-gray-400 truncate">XRP: rwWr7KUZ3ZFwzgaDGjKBysADByzxvohQ3C</p>
+        </div>
+    </div>
+
+    <div id="orderModal" class="modal">
+        <div class="bg-[#161b33] p-6 rounded-2xl w-full max-w-sm border border-blue-500/30">
+            <h2 id="modalTitle" class="text-lg font-bold mb-4 text-blue-400">Order</h2>
+            
+            <div id="mlInputs" class="hidden">
+                <input id="userId" type="text" placeholder="ID Akun" class="form-input">
+                <input id="zoneId" type="text" placeholder="ID Server (Contoh: 1234)" class="form-input">
+            </div>
+            
+            <div id="commonInputs">
+                <input id="gameId" type="text" placeholder="ID Akun / Nickname" class="form-input hidden">
+                <input id="nominal" type="text" placeholder="Jumlah Diamond / Crypto" class="form-input">
+                <input id="harga" type="text" placeholder="Konfirmasi Harga (Rp/$)" class="form-input">
+            </div>
+
+            <button onclick="kirimWA()" class="btn-send">KIRIM PESAN KE WA</button>
+            <button onclick="closeModal()" class="text-gray-500 text-xs w-full mt-4">Batal</button>
+        </div>
     </div>
 
     <script>
-        async function fetchPrices() {
+        let currentProduct = '';
+
+        function openModal(product) {
+            currentProduct = product;
+            document.getElementById('orderModal').style.display = 'flex';
+            document.getElementById('modalTitle').innerText = 'Order ' + product;
+            
+            // Atur input khusus MLBB
+            if(product === 'MLBB') {
+                document.getElementById('mlInputs').classList.remove('hidden');
+                document.getElementById('gameId').classList.add('hidden');
+            } else {
+                document.getElementById('mlInputs').classList.add('hidden');
+                document.getElementById('gameId').classList.remove('hidden');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+
+        function kirimWA() {
+            const id = document.getElementById('userId').value || document.getElementById('gameId').value;
+            const server = document.getElementById('zoneId').value;
+            const jumlah = document.getElementById('nominal').value;
+            const harga = document.getElementById('harga').value;
+            
+            let pesan = `Halo Bos Igustira, Saya mau order ${currentProduct}\n\n`;
+            pesan += `ID: ${id}\n`;
+            if(currentProduct === 'MLBB') pesan += `Server: ${server}\n`;
+            pesan += `Jumlah: ${jumlah}\n`;
+            pesan += `Harga Konfirmasi: ${harga}\n\nTerima kasih.`;
+            
+            window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(pesan)}`;
+        }
+
+        async function getPrices() {
             try {
                 const r = await fetch('https://api.binance.com/api/v3/ticker/price?symbols=["BNBUSDT","XRPUSDT"]');
                 const d = await r.json();
                 document.getElementById('bnb-price').innerText = '$' + parseFloat(d.find(i=>i.symbol==='BNBUSDT').price).toFixed(2);
                 document.getElementById('xrp-price').innerText = '$' + parseFloat(d.find(i=>i.symbol==='XRPUSDT').price).toFixed(4);
-            } catch(e) { console.log("Price update error"); }
+            } catch(e) {}
         }
-        setInterval(fetchPrices, 60000); // Update setiap 1 menit (60000ms)
-        fetchPrices();
+        setInterval(getPrices, 60000); getPrices();
     </script>
 </body>
 </html>
