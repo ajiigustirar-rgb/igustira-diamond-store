@@ -9,10 +9,12 @@
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
         body { background: #0b0e23; color: white; font-family: 'Orbitron', sans-serif; padding: 20px; }
         .glass-card { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 15px; }
-        .menu-btn { background: rgba(51, 65, 85, 0.3); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 12px; padding: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .menu-btn { background: rgba(51, 65, 85, 0.3); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 12px; padding: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; }
+        .menu-btn:hover { border-color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
         .badge { width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; }
         .form-input { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 12px; width: 100%; color: white; font-size: 12px; margin-bottom: 10px; outline: none; font-family: sans-serif; }
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; z-index: 100; }
+        .crypto-row { border-bottom: 1px solid rgba(59, 130, 246, 0.1); padding: 10px 0; display: flex; justify-content: space-between; font-size: 10px; }
     </style>
 </head>
 <body>
@@ -22,121 +24,130 @@
             <p class="text-[8px] text-blue-300 tracking-[0.3em] uppercase opacity-60">Trusted Southeast Asia Business Group</p>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 mb-6">
-            <div class="glass-card p-4 text-center">
-                <p class="text-[8px] text-gray-500 mb-1 uppercase tracking-widest">USDT / IDR</p>
-                <p id="usdt-idr" class="text-xs font-bold text-emerald-400">Memuat...</p>
+        <div class="grid grid-cols-2 gap-4 mb-6 text-center">
+            <div class="glass-card p-4">
+                <p class="text-[8px] text-gray-500 mb-1">USDT/IDR</p>
+                <p id="top-usdt" class="text-xs font-bold text-emerald-400">Loading...</p>
             </div>
-            <div class="glass-card p-4 text-center">
-                <p class="text-[8px] text-gray-500 mb-1 uppercase tracking-widest">XRP / IDR</p>
-                <p id="xrp-idr" class="text-xs font-bold text-blue-400">Memuat...</p>
+            <div class="glass-card p-4">
+                <p class="text-[8px] text-gray-500 mb-1">XRP/IDR</p>
+                <p id="top-xrp" class="text-xs font-bold text-blue-400">Loading...</p>
             </div>
         </div>
 
-        <div onclick="openModal('MLBB', 300, 'ID Akun')" class="menu-btn">
-            <span class="text-xs font-bold tracking-widest uppercase">Mobile Legends (5 DM = Rp 1.500)</span>
-            <div class="badge bg-blue-600">ML</div>
+        <div onclick="openModal('MLBB', 300)" class="menu-btn">
+            <span class="text-[10px] font-bold tracking-widest uppercase">MLBB (5 DM = Rp 1.500)</span>
+            <div class="badge bg-blue-600 shadow-lg">ML</div>
         </div>
-        <div onclick="openModal('FREE FIRE', 200, 'ID Akun')" class="menu-btn">
-            <span class="text-xs font-bold tracking-widest uppercase">Free Fire (5 DM = Rp 1.000)</span>
-            <div class="badge bg-orange-600">FF</div>
+        <div onclick="openModal('FREE FIRE', 200)" class="menu-btn">
+            <span class="text-[10px] font-bold tracking-widest uppercase">FF (5 DM = Rp 1.000)</span>
+            <div class="badge bg-orange-600 shadow-lg">FF</div>
         </div>
         <div onclick="openAssetModal('USDT')" class="menu-btn">
-            <span class="text-xs font-bold tracking-widest uppercase">Beli USDT</span>
-            <div class="badge bg-emerald-600">U</div>
+            <span class="text-[10px] font-bold tracking-widest uppercase">BELI USDT</span>
+            <div class="badge bg-emerald-600 shadow-lg">U</div>
         </div>
         <div onclick="openAssetModal('XRP')" class="menu-btn">
-            <span class="text-xs font-bold tracking-widest uppercase">Beli XRP</span>
-            <div class="badge bg-white text-black">XRP</div>
+            <span class="text-[10px] font-bold tracking-widest uppercase">BELI XRP</span>
+            <div class="badge bg-white text-black font-black">XRP</div>
         </div>
+
+        <div class="mt-8">
+            <h3 class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-4 border-l-4 border-blue-500 pl-2">Pasar Crypto Lengkap (IDR)</h3>
+            <div class="glass-card p-4">
+                <div class="crypto-row font-bold text-gray-400">
+                    <span>ASET</span>
+                    <span>HARGA</span>
+                </div>
+                <div id="market-list">
+                    <p class="text-[8px] text-center py-4">Sinkronisasi data...</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-[8px] text-center text-gray-600 mt-10 italic">Owner: Rangga Aji Igustira</p>
     </div>
 
     <div id="orderModal" class="modal">
         <div class="glass-card p-6 w-full max-w-sm bg-slate-900 border-blue-500/30">
-            <h2 id="modalTitle" class="text-lg font-bold mb-6 text-blue-400 italic uppercase">Order Info</h2>
-            
+            <h2 id="modalTitle" class="text-lg font-bold mb-4 text-blue-400 italic">ORDER</h2>
             <div id="gameInputs">
                 <input id="userId" type="text" placeholder="ID AKUN / NICKNAME" class="form-input">
-                <div id="mlOnly" class="hidden">
-                    <input id="zoneId" type="text" placeholder="ID SERVER" class="form-input">
-                </div>
+                <div id="mlOnly" class="hidden"><input id="zoneId" type="text" placeholder="ID SERVER" class="form-input"></div>
             </div>
-
             <div id="assetInputs" class="hidden">
                 <input id="walletAddr" type="text" placeholder="ALAMAT WALLET ANDA" class="form-input">
-                <input id="network" type="text" placeholder="JARINGAN (BEP20 / RIPPLE)" class="form-input">
+                <input id="network" type="text" placeholder="JARINGAN (Contoh: BEP20)" class="form-input">
             </div>
-
             <input id="qty" type="number" placeholder="JUMLAH ORDER" class="form-input" oninput="hitungHarga()">
-            
             <div class="bg-black/40 p-4 rounded-lg mb-4 border border-blue-500/20">
-                <p class="text-[10px] text-gray-500 uppercase font-bold">Total Pembayaran:</p>
+                <p class="text-[10px] text-gray-500 uppercase font-bold">Estimasi Bayar:</p>
                 <p id="totalHarga" class="text-xl font-black text-emerald-400 mt-1">Rp 0</p>
-                <p id="rateInfo" class="text-[8px] text-gray-400 mt-1 italic"></p>
             </div>
-
-            <button onclick="sendWA()" class="w-full bg-blue-600 font-bold py-3 rounded-lg shadow-lg uppercase text-xs">Kirim Ke WhatsApp</button>
-            <button onclick="closeModal()" class="w-full text-gray-500 text-[10px] mt-4 font-bold uppercase">Batal</button>
+            <button onclick="sendWA()" class="w-full bg-blue-600 font-bold py-3 rounded-lg uppercase text-xs">Kirim WA</button>
+            <button onclick="closeModal()" class="w-full text-gray-400 text-[10px] mt-4 font-bold uppercase">Batal</button>
         </div>
     </div>
 
     <script>
-        let rateUSDT = 17500; // Harga Jual Bos
-        let rateXRP = 26500;  // Harga Jual Bos
-        let currentRate = 0;
-        let activeItem = '';
+        let rateUSDT = 16350, rateXRP = 0, currentRate = 0, activeItem = '';
 
-        async function fetchMarketPrice() {
+        async function updateMarket() {
             try {
-                // Simulasi update harga dari Indodax/Market
-                document.getElementById('usdt-idr').innerText = 'Rp 17.507';
-                document.getElementById('xrp-idr').innerText = 'Rp 26.568';
-                rateUSDT = 17507 + 300; // Harga pasar + untung
-                rateXRP = 26568 + 200;  // Harga pasar + untung
+                const res = await fetch('https://api.binance.com/api/v3/ticker/price');
+                const data = await res.json();
+                const pairs = [
+                    {s: 'BTCUSDT', n: 'BTC'}, {s: 'ETHUSDT', n: 'ETH'},
+                    {s: 'BNBUSDT', n: 'BNB'}, {s: 'XRPUSDT', n: 'XRP'},
+                    {s: 'SOLUSDT', n: 'SOL'}, {s: 'TRXUSDT', n: 'TRX'}
+                ];
+                let listHtml = '';
+                pairs.forEach(p => {
+                    const price = parseFloat(data.find(x => x.symbol === p.s).price) * rateUSDT;
+                    listHtml += `<div class="crypto-row"><span>${p.n}</span><span class="font-bold">Rp ${Math.round(price).toLocaleString('id-ID')}</span></div>`;
+                    if(p.n === 'XRP') rateXRP = Math.round(price) + 200;
+                });
+                document.getElementById('market-list').innerHTML = listHtml;
+                document.getElementById('top-usdt').innerText = 'Rp ' + rateUSDT.toLocaleString('id-ID');
+                document.getElementById('top-xrp').innerText = 'Rp ' + (rateXRP - 200).toLocaleString('id-ID');
             } catch(e) {}
         }
 
-        function openModal(item, rate, placeholder) {
+        function openModal(item, rate) {
             activeItem = item; currentRate = rate;
             document.getElementById('orderModal').style.display = 'flex';
-            document.getElementById('modalTitle').innerText = 'ORDER ' + item;
             document.getElementById('gameInputs').classList.remove('hidden');
             document.getElementById('assetInputs').classList.add('hidden');
             if(item === 'MLBB') document.getElementById('mlOnly').classList.remove('hidden');
             else document.getElementById('mlOnly').classList.add('hidden');
-            document.getElementById('rateInfo').innerText = '*Rate: Rp ' + rate.toLocaleString() + ' / unit';
         }
 
         function openAssetModal(item) {
-            activeItem = item; currentRate = (item === 'USDT') ? rateUSDT : rateXRP;
+            activeItem = item; currentRate = (item === 'USDT') ? (rateUSDT + 150) : rateXRP;
             document.getElementById('orderModal').style.display = 'flex';
-            document.getElementById('modalTitle').innerText = 'ORDER ' + item;
             document.getElementById('gameInputs').classList.add('hidden');
             document.getElementById('assetInputs').classList.remove('hidden');
-            document.getElementById('rateInfo').innerText = '*Rate: Rp ' + currentRate.toLocaleString() + ' / unit';
         }
 
         function closeModal() { document.getElementById('orderModal').style.display = 'none'; }
-
         function hitungHarga() {
             const qty = document.getElementById('qty').value;
-            const total = Math.ceil(qty * currentRate);
-            document.getElementById('totalHarga').innerText = 'Rp ' + total.toLocaleString('id-ID');
+            document.getElementById('totalHarga').innerText = 'Rp ' + Math.ceil(qty * currentRate).toLocaleString('id-ID');
         }
 
         function sendWA() {
             const qty = document.getElementById('qty').value;
             const total = document.getElementById('totalHarga').innerText;
-            let msg = `Halo Bos Igustira, Order ${activeItem}\n\n`;
+            let msg = `Halo Bos Igustira, Order ${activeItem}\n`;
             if(activeItem === 'USDT' || activeItem === 'XRP') {
-                msg += `Wallet: ${document.getElementById('walletAddr').value}\nNetwork: ${document.getElementById('network').value}\n`;
+                msg += `Wallet: ${document.getElementById('walletAddr').value}\nNet: ${document.getElementById('network').value}\n`;
             } else {
-                msg += `ID: ${document.getElementById('userId').value} ${activeItem === 'MLBB' ? '(' + document.getElementById('zoneId').value + ')' : ''}\n`;
+                msg += `ID: ${document.getElementById('userId').value} ${activeItem === 'MLBB' ? '('+document.getElementById('zoneId').value+')' : ''}\n`;
             }
-            msg += `Jumlah: ${qty}\nTotal Bayar: ${total}`;
+            msg += `Jumlah: ${qty}\nTotal: ${total}`;
             window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(msg)}`;
         }
-        fetchMarketPrice();
+        setInterval(updateMarket, 60000); updateMarket();
     </script>
 </body>
 </html>
