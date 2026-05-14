@@ -7,147 +7,104 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-        body { background: #0b0e23; color: white; font-family: 'Orbitron', sans-serif; padding: 20px; }
-        .glass-card { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 15px; }
-        .menu-btn { background: rgba(51, 65, 85, 0.3); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 12px; padding: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; }
-        .menu-btn:hover { border-color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
-        .badge { width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; }
-        .form-input { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 12px; width: 100%; color: white; font-size: 12px; margin-bottom: 10px; outline: none; font-family: sans-serif; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; z-index: 100; }
-        .crypto-row { border-bottom: 1px solid rgba(59, 130, 246, 0.1); padding: 10px 0; display: flex; justify-content: space-between; font-size: 10px; }
+        body { background: #0b0e23; color: white; font-family: 'Orbitron', sans-serif; padding: 15px; }
+        .glass { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(10px); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 12px; }
+        .form-input { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 10px; width: 100%; color: white; font-size: 11px; margin-bottom: 8px; outline: none; }
+        .btn-menu { background: rgba(51, 65, 85, 0.3); border: 1px solid rgba(59, 130, 246, 0.2); padding: 15px; margin-bottom: 10px; border-radius: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+        .btn-menu:hover { background: rgba(59, 130, 246, 0.2); }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; padding: 15px; z-index: 100; }
+        .copy-box { background: rgba(59, 130, 246, 0.15); border: 1px dashed #3b82f6; padding: 8px; border-radius: 6px; cursor: pointer; margin-bottom: 5px; font-size: 10px; }
     </style>
 </head>
 <body>
     <div class="max-w-md mx-auto">
         <div class="text-center mb-6">
             <h1 class="text-3xl font-black italic text-blue-500 tracking-tighter">IGUSTIRA STORE</h1>
-            <p class="text-[8px] text-blue-300 tracking-[0.3em] uppercase opacity-60">Trusted Southeast Asia Business Group</p>
+            <p class="text-[8px] tracking-[0.3em] text-blue-300 opacity-60 uppercase">Pusat Jual Beli Terpercaya Se-Asia Tenggara</p>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 mb-6 text-center">
-            <div class="glass-card p-4">
-                <p class="text-[8px] text-gray-500 mb-1">USDT/IDR</p>
-                <p id="top-usdt" class="text-xs font-bold text-emerald-400">Loading...</p>
-            </div>
-            <div class="glass-card p-4">
-                <p class="text-[8px] text-gray-500 mb-1">XRP/IDR</p>
-                <p id="top-xrp" class="text-xs font-bold text-blue-400">Loading...</p>
-            </div>
+        <div class="glass p-4 mb-6 text-center border-blue-500/30">
+            <p class="text-[10px] font-bold text-blue-400 uppercase">Hai Selamat Datang di Igustira Store Juragan</p>
         </div>
 
-        <div onclick="openModal('MLBB', 300)" class="menu-btn">
-            <span class="text-[10px] font-bold tracking-widest uppercase">MLBB (5 DM = Rp 1.500)</span>
-            <div class="badge bg-blue-600 shadow-lg">ML</div>
-        </div>
-        <div onclick="openModal('FREE FIRE', 200)" class="menu-btn">
-            <span class="text-[10px] font-bold tracking-widest uppercase">FF (5 DM = Rp 1.000)</span>
-            <div class="badge bg-orange-600 shadow-lg">FF</div>
-        </div>
-        <div onclick="openAssetModal('USDT')" class="menu-btn">
-            <span class="text-[10px] font-bold tracking-widest uppercase">BELI USDT</span>
-            <div class="badge bg-emerald-600 shadow-lg">U</div>
-        </div>
-        <div onclick="openAssetModal('XRP')" class="menu-btn">
-            <span class="text-[10px] font-bold tracking-widest uppercase">BELI XRP</span>
-            <div class="badge bg-white text-black font-black">XRP</div>
-        </div>
+        <div onclick="openModal('MLBB', 300)" class="btn-menu"><span>MOBILE LEGENDS</span><b class="text-blue-500">ML</b></div>
+        <div onclick="openModal('FREE FIRE', 200)" class="btn-menu"><span>FREE FIRE</span><b class="text-orange-500">FF</b></div>
+        <div onclick="openAssetModal('CV USDT TO IDR')" class="btn-menu"><span>CV USDT TO IDR</span><b class="text-emerald-500">USDT</b></div>
+        <div onclick="openAssetModal('XRP')" class="btn-menu"><span>XRP</span><b>XRP</b></div>
 
-        <div class="mt-8">
-            <h3 class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-4 border-l-4 border-blue-500 pl-2">Pasar Crypto Lengkap (IDR)</h3>
-            <div class="glass-card p-4">
-                <div class="crypto-row font-bold text-gray-400">
-                    <span>ASET</span>
-                    <span>HARGA</span>
-                </div>
-                <div id="market-list">
-                    <p class="text-[8px] text-center py-4">Sinkronisasi data...</p>
-                </div>
-            </div>
-        </div>
-
-        <p class="text-[8px] text-center text-gray-600 mt-10 italic">Owner: Rangga Aji Igustira</p>
+        <p class="text-[8px] text-center mt-10 opacity-50 italic">Official Admin: Rangga Aji Igustira</p>
     </div>
 
     <div id="orderModal" class="modal">
-        <div class="glass-card p-6 w-full max-w-sm bg-slate-900 border-blue-500/30">
-            <h2 id="modalTitle" class="text-lg font-bold mb-4 text-blue-400 italic">ORDER</h2>
-            <div id="gameInputs">
-                <input id="userId" type="text" placeholder="ID AKUN / NICKNAME" class="form-input">
-                <div id="mlOnly" class="hidden"><input id="zoneId" type="text" placeholder="ID SERVER" class="form-input"></div>
+        <div class="glass p-5 w-full max-w-sm bg-slate-900 overflow-y-auto max-h-[90vh]">
+            <h2 id="mTitle" class="text-blue-500 font-bold italic mb-4 uppercase">Order</h2>
+            
+            <div id="gFields">
+                <input id="uId" type="text" placeholder="ID AKUN / NICKNAME" class="form-input">
+                <div id="mlOnly" class="hidden"><input id="zId" type="text" placeholder="ID SERVER" class="form-input"></div>
+                <input id="qG" type="number" placeholder="JUMLAH ORDER" class="form-input" oninput="calc()">
             </div>
-            <div id="assetInputs" class="hidden">
-                <input id="walletAddr" type="text" placeholder="ALAMAT WALLET ANDA" class="form-input">
-                <input id="network" type="text" placeholder="JARINGAN (Contoh: BEP20)" class="form-input">
+            
+            <div id="cFields" class="hidden">
+                <p class="text-[9px] text-emerald-400 font-bold mb-1 uppercase">Alamat USDT (TRC20) Admin:</p>
+                <div class="copy-box" onclick="copy('TCokCTEWrqqJTEpWcm6iqjSchM4Sbe2b4')">TCokCTEWrqqJTEpWcm6iqjSchM4Sbe2b4 (Salin)</div>
+                <input id="qC" type="number" placeholder="JUMLAH USDT" class="form-input mt-2" oninput="calc()">
+                <p class="text-[9px] text-blue-400 font-bold mt-2 uppercase">Data Pencairan Anda (IDR):</p>
+                <input id="bName" type="text" placeholder="NAMA BANK / DANA / GOPAY" class="form-input">
+                <input id="bNo" type="text" placeholder="NOMOR REKENING" class="form-input">
+                <input id="bOwn" type="text" placeholder="ATAS NAMA" class="form-input">
             </div>
-            <input id="qty" type="number" placeholder="JUMLAH ORDER" class="form-input" oninput="hitungHarga()">
-            <div class="bg-black/40 p-4 rounded-lg mb-4 border border-blue-500/20">
-                <p class="text-[10px] text-gray-500 uppercase font-bold">Estimasi Bayar:</p>
-                <p id="totalHarga" class="text-xl font-black text-emerald-400 mt-1">Rp 0</p>
+
+            <div class="bg-black/50 p-3 rounded-lg mb-4 border border-blue-900/50">
+                <p class="text-[9px] text-gray-500 uppercase font-bold">Estimasi Bayar/Terima:</p>
+                <p id="tPrice" class="text-2xl font-black text-emerald-400">Rp 0</p>
+                <div id="pList">
+                    <hr class="border-gray-800 my-3">
+                    <p class="text-[9px] text-blue-400 font-bold mb-2 uppercase">Rekening Admin (Klik Salin):</p>
+                    <div class="copy-box" onclick="copy('1130018698115')">MANDIRI: 1130018698115</div>
+                    <div class="copy-box" onclick="copy('1813955609')">BNI: 1813955609</div>
+                    <div class="copy-box" onclick="copy('082185160103')">DANA/GOPAY: 082185160103</div>
+                </div>
             </div>
-            <button onclick="sendWA()" class="w-full bg-blue-600 font-bold py-3 rounded-lg uppercase text-xs">Kirim WA</button>
-            <button onclick="closeModal()" class="w-full text-gray-400 text-[10px] mt-4 font-bold uppercase">Batal</button>
+
+            <button onclick="send()" class="w-full bg-blue-600 p-3 rounded-lg font-bold text-xs uppercase shadow-lg">Konfirmasi Via WA</button>
+            <button onclick="closeModal()" class="w-full text-gray-500 text-[10px] mt-4 font-bold uppercase">Batal</button>
         </div>
     </div>
 
     <script>
-        let rateUSDT = 16350, rateXRP = 0, currentRate = 0, activeItem = '';
-
-        async function updateMarket() {
-            try {
-                const res = await fetch('https://api.binance.com/api/v3/ticker/price');
-                const data = await res.json();
-                const pairs = [
-                    {s: 'BTCUSDT', n: 'BTC'}, {s: 'ETHUSDT', n: 'ETH'},
-                    {s: 'BNBUSDT', n: 'BNB'}, {s: 'XRPUSDT', n: 'XRP'},
-                    {s: 'SOLUSDT', n: 'SOL'}, {s: 'TRXUSDT', n: 'TRX'}
-                ];
-                let listHtml = '';
-                pairs.forEach(p => {
-                    const price = parseFloat(data.find(x => x.symbol === p.s).price) * rateUSDT;
-                    listHtml += `<div class="crypto-row"><span>${p.n}</span><span class="font-bold">Rp ${Math.round(price).toLocaleString('id-ID')}</span></div>`;
-                    if(p.n === 'XRP') rateXRP = Math.round(price) + 200;
-                });
-                document.getElementById('market-list').innerHTML = listHtml;
-                document.getElementById('top-usdt').innerText = 'Rp ' + rateUSDT.toLocaleString('id-ID');
-                document.getElementById('top-xrp').innerText = 'Rp ' + (rateXRP - 200).toLocaleString('id-ID');
-            } catch(e) {}
-        }
-
-        function openModal(item, rate) {
-            activeItem = item; currentRate = rate;
+        let rateU = 16400, curR = 0, act = '';
+        function copy(t) { navigator.clipboard.writeText(t); alert('Tersalin!'); }
+        function openModal(i, r) {
+            act = i; curR = r;
             document.getElementById('orderModal').style.display = 'flex';
-            document.getElementById('gameInputs').classList.remove('hidden');
-            document.getElementById('assetInputs').classList.add('hidden');
-            if(item === 'MLBB') document.getElementById('mlOnly').classList.remove('hidden');
-            else document.getElementById('mlOnly').classList.add('hidden');
+            document.getElementById('gFields').classList.remove('hidden');
+            document.getElementById('cFields').classList.add('hidden');
+            document.getElementById('pList').classList.remove('hidden');
+            document.getElementById('mlOnly').style.display = (i === 'MLBB') ? 'block' : 'none';
         }
-
-        function openAssetModal(item) {
-            activeItem = item; currentRate = (item === 'USDT') ? (rateUSDT + 150) : rateXRP;
+        function openAssetModal(i) {
+            act = i; curR = rateU;
             document.getElementById('orderModal').style.display = 'flex';
-            document.getElementById('gameInputs').classList.add('hidden');
-            document.getElementById('assetInputs').classList.remove('hidden');
+            document.getElementById('gFields').classList.add('hidden');
+            document.getElementById('cFields').classList.remove('hidden');
+            document.getElementById('pList').classList.add('hidden');
         }
-
         function closeModal() { document.getElementById('orderModal').style.display = 'none'; }
-        function hitungHarga() {
-            const qty = document.getElementById('qty').value;
-            document.getElementById('totalHarga').innerText = 'Rp ' + Math.ceil(qty * currentRate).toLocaleString('id-ID');
+        function calc() {
+            let q = (act.includes('CV')) ? document.getElementById('qC').value : document.getElementById('qG').value;
+            document.getElementById('tPrice').innerText = 'Rp ' + (q * curR).toLocaleString('id-ID');
         }
-
-        function sendWA() {
-            const qty = document.getElementById('qty').value;
-            const total = document.getElementById('totalHarga').innerText;
-            let msg = `Halo Bos Igustira, Order ${activeItem}\n`;
-            if(activeItem === 'USDT' || activeItem === 'XRP') {
-                msg += `Wallet: ${document.getElementById('walletAddr').value}\nNet: ${document.getElementById('network').value}\n`;
+        function send() {
+            let res = document.getElementById('tPrice').innerText;
+            let m = `Halo Bos Igustira, Saya Mau ${act}\n`;
+            if(act.includes('CV')) {
+                m += `Jumlah: ${document.getElementById('qC').value}\nCair ke: ${document.getElementById('bName').value} (${document.getElementById('bNo').value} a/n ${document.getElementById('bOwn').value})\nTotal: ${res}`;
             } else {
-                msg += `ID: ${document.getElementById('userId').value} ${activeItem === 'MLBB' ? '('+document.getElementById('zoneId').value+')' : ''}\n`;
+                m += `ID: ${document.getElementById('uId').value}\nJumlah: ${document.getElementById('qG').value}\nTotal: ${res}`;
             }
-            msg += `Jumlah: ${qty}\nTotal: ${total}`;
-            window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(msg)}`;
+            window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
         }
-        setInterval(updateMarket, 60000); updateMarket();
     </script>
 </body>
 </html>
