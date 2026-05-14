@@ -3,105 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IGUSTIRA STORE</title>
+    <title>IGUSTIRA STORE - PREMIUM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-        body { background: #0b0e23; color: white; font-family: 'Orbitron', sans-serif; padding: 15px; }
-        .glass { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(10px); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 12px; }
-        .form-input { background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 10px; width: 100%; color: white; font-size: 11px; margin-bottom: 8px; outline: none; }
-        .btn-menu { background: rgba(51, 65, 85, 0.3); border: 1px solid rgba(59, 130, 246, 0.2); padding: 15px; margin-bottom: 10px; border-radius: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
-        .btn-menu:hover { background: rgba(59, 130, 246, 0.2); }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; padding: 15px; z-index: 100; }
-        .copy-box { background: rgba(59, 130, 246, 0.15); border: 1px dashed #3b82f6; padding: 8px; border-radius: 6px; cursor: pointer; margin-bottom: 5px; font-size: 10px; }
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Orbitron:wght@900&display=swap');
+        
+        body { 
+            background: #05070a; 
+            color: #e2e8f0; 
+            font-family: 'Rajdhani', sans-serif; 
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        /* Efek Petir Ringan */
+        .lightning-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: linear-gradient(to bottom, #05070a, #0f172a);
+        }
+
+        @keyframes flash {
+            0%, 90%, 100% { opacity: 0; }
+            92% { opacity: 0.3; }
+            94% { opacity: 0.1; }
+            96% { opacity: 0.4; }
+        }
+        .bolt {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #3b82f6;
+            filter: blur(100px);
+            animation: flash 5s infinite;
+        }
+
+        .cyber-title {
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6;
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn-game {
+            background: linear-gradient(90deg, rgba(30, 41, 59, 0.5), rgba(15, 23, 42, 0.8));
+            border-left: 4px solid #3b82f6;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .btn-game:hover {
+            transform: translateX(5px);
+            background: rgba(59, 130, 246, 0.2);
+            border-left-color: #60a5fa;
+        }
+
+        .form-input {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #1e293b;
+            border-radius: 4px;
+            padding: 12px;
+            width: 100%;
+            color: #fff;
+            outline: none;
+        }
+        .form-input:focus { border-color: #3b82f6; }
+
+        .modal {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center; align-items: center;
+            z-index: 100; padding: 20px;
+        }
     </style>
 </head>
 <body>
-    <div class="max-w-md mx-auto">
-        <div class="text-center mb-6">
-            <h1 class="text-3xl font-black italic text-blue-500 tracking-tighter">IGUSTIRA STORE</h1>
-            <p class="text-[8px] tracking-[0.3em] text-blue-300 opacity-60 uppercase">Pusat Jual Beli Terpercaya Se-Asia Tenggara</p>
+
+    <div class="lightning-bg"><div class="bolt"></div></div>
+
+    <div class="max-w-md mx-auto py-10 px-4">
+        <header class="text-center mb-10">
+            <h1 class="cyber-title text-4xl italic font-black text-blue-500">IGUSTIRA STORE</h1>
+            <p class="text-[10px] tracking-[4px] text-blue-300 mt-2 font-bold uppercase">Trusted Digital Shop South East Asia</p>
+        </header>
+
+        <div class="space-y-4">
+            <div onclick="openModal('Mobile Legends', 300)" class="btn-game p-5 flex justify-between items-center rounded-r-lg">
+                <span class="text-lg font-bold tracking-widest uppercase">Mobile Legends</span>
+                <span class="text-blue-500 font-black">MLBB</span>
+            </div>
+
+            <div onclick="openModal('Free Fire', 200)" class="btn-game p-5 flex justify-between items-center rounded-r-lg">
+                <span class="text-lg font-bold tracking-widest uppercase">Free Fire</span>
+                <span class="text-orange-500 font-black">FF</span>
+            </div>
+
+            <div onclick="openModal('PUBG Mobile', 250)" class="btn-game p-5 flex justify-between items-center rounded-r-lg">
+                <span class="text-lg font-bold tracking-widest uppercase">PUBG Mobile</span>
+                <span class="text-yellow-500 font-black">UC</span>
+            </div>
+
+            <div onclick="openAssetModal('CV USDT TO IDR')" class="btn-game p-5 flex justify-between items-center rounded-r-lg">
+                <span class="text-lg font-bold tracking-widest uppercase">CV USDT TO IDR</span>
+                <span class="text-emerald-500 font-black">USDT</span>
+            </div>
         </div>
 
-        <div class="glass p-4 mb-6 text-center border-blue-500/30">
-            <p class="text-[10px] font-bold text-blue-400 uppercase">Hai Selamat Datang di Igustira Store Juragan</p>
-        </div>
-
-        <div onclick="openModal('MLBB', 300)" class="btn-menu"><span>MOBILE LEGENDS</span><b class="text-blue-500">ML</b></div>
-        <div onclick="openModal('FREE FIRE', 200)" class="btn-menu"><span>FREE FIRE</span><b class="text-orange-500">FF</b></div>
-        <div onclick="openAssetModal('CV USDT TO IDR')" class="btn-menu"><span>CV USDT TO IDR</span><b class="text-emerald-500">USDT</b></div>
-        <div onclick="openAssetModal('XRP')" class="btn-menu"><span>XRP</span><b>XRP</b></div>
-
-        <p class="text-[8px] text-center mt-10 opacity-50 italic">Official Admin: Rangga Aji Igustira</p>
+        <footer class="mt-16 text-center">
+            <p class="text-[10px] text-gray-500 tracking-widest uppercase italic font-bold">Admin: Rangga Aji Igustira</p>
+        </footer>
     </div>
 
     <div id="orderModal" class="modal">
-        <div class="glass p-5 w-full max-w-sm bg-slate-900 overflow-y-auto max-h-[90vh]">
-            <h2 id="mTitle" class="text-blue-500 font-bold italic mb-4 uppercase">Order</h2>
+        <div class="glass-card p-6 w-full max-w-sm rounded-xl overflow-y-auto max-h-[90vh]">
+            <h2 id="mTitle" class="text-2xl font-black text-blue-500 italic mb-6 uppercase border-b border-blue-900 pb-2">Order Box</h2>
             
-            <div id="gFields">
-                <input id="uId" type="text" placeholder="ID AKUN / NICKNAME" class="form-input">
-                <div id="mlOnly" class="hidden"><input id="zId" type="text" placeholder="ID SERVER" class="form-input"></div>
-                <input id="qG" type="number" placeholder="JUMLAH ORDER" class="form-input" oninput="calc()">
-            </div>
-            
-            <div id="cFields" class="hidden">
-                <p class="text-[9px] text-emerald-400 font-bold mb-1 uppercase">Alamat USDT (TRC20) Admin:</p>
-                <div class="copy-box" onclick="copy('TCokCTEWrqqJTEpWcm6iqjSchM4Sbe2b4')">TCokCTEWrqqJTEpWcm6iqjSchM4Sbe2b4 (Salin)</div>
-                <input id="qC" type="number" placeholder="JUMLAH USDT" class="form-input mt-2" oninput="calc()">
-                <p class="text-[9px] text-blue-400 font-bold mt-2 uppercase">Data Pencairan Anda (IDR):</p>
-                <input id="bName" type="text" placeholder="NAMA BANK / DANA / GOPAY" class="form-input">
-                <input id="bNo" type="text" placeholder="NOMOR REKENING" class="form-input">
-                <input id="bOwn" type="text" placeholder="ATAS NAMA" class="form-input">
+            <div id="gameFields">
+                <input id="uId" type="text" placeholder="ID PEMAIN / NICKNAME" class="form-input mb-3">
+                <div id="mlServer" class="hidden"><input id="zId" type="text" placeholder="ID SERVER" class="form-input mb-3"></div>
+                <input id="qty" type="number" placeholder="JUMLAH (DM/UC/USDT)" class="form-input mb-3" oninput="calc()">
             </div>
 
-            <div class="bg-black/50 p-3 rounded-lg mb-4 border border-blue-900/50">
-                <p class="text-[9px] text-gray-500 uppercase font-bold">Estimasi Bayar/Terima:</p>
-                <p id="tPrice" class="text-2xl font-black text-emerald-400">Rp 0</p>
-                <div id="pList">
-                    <hr class="border-gray-800 my-3">
-                    <p class="text-[9px] text-blue-400 font-bold mb-2 uppercase">Rekening Admin (Klik Salin):</p>
-                    <div class="copy-box" onclick="copy('1130018698115')">MANDIRI: 1130018698115</div>
-                    <div class="copy-box" onclick="copy('1813955609')">BNI: 1813955609</div>
-                    <div class="copy-box" onclick="copy('082185160103')">DANA/GOPAY: 082185160103</div>
+            <div id="cvFields" class="hidden">
+                <p class="text-xs text-blue-400 mb-2 font-bold uppercase">Kirim ke Alamat USDT Juragan:</p>
+                <div class="bg-black p-3 text-[10px] rounded mb-4 border border-dashed border-blue-500 cursor-pointer" onclick="copyText('TCokCTEWrqqJTEpWcm6iqjSchM4Sbe2b4')">
+                    TCokCTEWrqqJTEpWcm6iqjSchM4Sbe2b4 <span class="text-blue-500 ml-2">[SALIN]</span>
+                </div>
+                <input id="bName" type="text" placeholder="NAMA BANK/E-WALLET ANDA" class="form-input mb-3">
+                <input id="bNo" type="text" placeholder="NOMOR REKENING ANDA" class="form-input mb-3">
+            </div>
+
+            <div class="bg-blue-950/30 p-4 rounded-lg mb-6 border border-blue-500/20">
+                <p class="text-xs text-gray-400 font-bold uppercase">Estimasi Total:</p>
+                <p id="total" class="text-3xl font-black text-emerald-400">Rp 0</p>
+                
+                <div id="adminPay">
+                    <hr class="border-blue-900 my-4">
+                    <p class="text-[10px] text-blue-400 font-bold uppercase mb-2">Rekening Admin Igustira:</p>
+                    <div class="text-xs space-y-2 font-bold">
+                        <div class="flex justify-between" onclick="copyText('1130018698115')"><span>MANDIRI</span><span>1130018698115</span></div>
+                        <div class="flex justify-between" onclick="copyText('1813955609')"><span>BNI</span><span>1813955609</span></div>
+                        <div class="flex justify-between" onclick="copyText('082185160103')"><span>DANA/GOPAY</span><span>082185160103</span></div>
+                    </div>
                 </div>
             </div>
 
-            <button onclick="send()" class="w-full bg-blue-600 p-3 rounded-lg font-bold text-xs uppercase shadow-lg">Konfirmasi Via WA</button>
-            <button onclick="closeModal()" class="w-full text-gray-500 text-[10px] mt-4 font-bold uppercase">Batal</button>
+            <button onclick="send()" class="w-full bg-blue-600 hover:bg-blue-500 py-4 rounded font-black uppercase text-sm tracking-widest mb-3">Lanjutkan ke WhatsApp</button>
+            <button onclick="closeModal()" class="w-full text-gray-500 font-bold text-xs uppercase tracking-widest">Batal</button>
         </div>
     </div>
 
     <script>
         let rateU = 16400, curR = 0, act = '';
-        function copy(t) { navigator.clipboard.writeText(t); alert('Tersalin!'); }
+        function copyText(t) { navigator.clipboard.writeText(t); alert('Berhasil disalin ke clipboard!'); }
+        
         function openModal(i, r) {
             act = i; curR = r;
             document.getElementById('orderModal').style.display = 'flex';
-            document.getElementById('gFields').classList.remove('hidden');
-            document.getElementById('cFields').classList.add('hidden');
-            document.getElementById('pList').classList.remove('hidden');
-            document.getElementById('mlOnly').style.display = (i === 'MLBB') ? 'block' : 'none';
+            document.getElementById('mTitle').innerText = i;
+            document.getElementById('gameFields').classList.remove('hidden');
+            document.getElementById('cvFields').classList.add('hidden');
+            document.getElementById('adminPay').classList.remove('hidden');
+            document.getElementById('mlServer').style.display = (i === 'Mobile Legends') ? 'block' : 'none';
         }
+
         function openAssetModal(i) {
             act = i; curR = rateU;
             document.getElementById('orderModal').style.display = 'flex';
-            document.getElementById('gFields').classList.add('hidden');
-            document.getElementById('cFields').classList.remove('hidden');
-            document.getElementById('pList').classList.add('hidden');
+            document.getElementById('mTitle').innerText = 'CONVERT USDT';
+            document.getElementById('gameFields').classList.remove('hidden');
+            document.getElementById('cvFields').classList.remove('hidden');
+            document.getElementById('adminPay').classList.add('hidden');
+            document.getElementById('mlServer').style.display = 'none';
         }
+
         function closeModal() { document.getElementById('orderModal').style.display = 'none'; }
+        
         function calc() {
-            let q = (act.includes('CV')) ? document.getElementById('qC').value : document.getElementById('qG').value;
-            document.getElementById('tPrice').innerText = 'Rp ' + (q * curR).toLocaleString('id-ID');
+            let q = document.getElementById('qty').value;
+            document.getElementById('total').innerText = 'Rp ' + (q * curR).toLocaleString('id-ID');
         }
+
         function send() {
-            let res = document.getElementById('tPrice').innerText;
-            let m = `Halo Bos Igustira, Saya Mau ${act}\n`;
+            let res = document.getElementById('total').innerText;
+            let m = `Halo Bos Igustira, Saya Mau Order ${act}\n`;
             if(act.includes('CV')) {
-                m += `Jumlah: ${document.getElementById('qC').value}\nCair ke: ${document.getElementById('bName').value} (${document.getElementById('bNo').value} a/n ${document.getElementById('bOwn').value})\nTotal: ${res}`;
+                m += `Jumlah: ${document.getElementById('qty').value} USDT\nCair ke: ${document.getElementById('bName').value} (${document.getElementById('bNo').value})\nTotal: ${res}`;
             } else {
-                m += `ID: ${document.getElementById('uId').value}\nJumlah: ${document.getElementById('qG').value}\nTotal: ${res}`;
+                m += `ID: ${document.getElementById('uId').value}\nJumlah: ${document.getElementById('qty').value}\nTotal: ${res}`;
             }
             window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
         }
