@@ -7,125 +7,141 @@
     <style>
         :root { --primary: #00ff88; --bg: #0b0f1a; --card: #161d2f; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; padding: 20px; }
-        .header { text-align: center; padding: 30px 0; }
-        .header h1 { margin: 0; background: linear-gradient(45deg, #00ff88, #60efff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px; }
+        .header { text-align: center; padding: 20px 0; }
+        .header h1 { margin: 0; background: linear-gradient(45deg, #00ff88, #60efff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        /* Grid Menu Game */
-        .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 800px; margin: auto; }
-        .game-card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #2d3748; cursor: pointer; transition: 0.3s; position: relative; }
-        .game-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 900px; margin: auto; }
+        .game-card { background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid #2d3748; cursor: pointer; transition: 0.3s; }
+        .game-card:hover { transform: scale(1.03); border-color: var(--primary); }
         .game-card img { width: 100%; height: 180px; object-fit: cover; }
-        .game-card .title { padding: 10px; text-align: center; font-weight: bold; font-size: 14px; }
+        .game-card .title { padding: 10px; text-align: center; font-weight: bold; font-size: 13px; }
+
+        .modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); overflow-y: auto; }
+        .modal-content { background: var(--card); margin: 30px auto; padding: 20px; border-radius: 15px; width: 90%; max-width: 450px; border: 1px solid var(--primary); }
         
-        /* Modal Popup */
-        .modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
-        .modal-content { background: var(--card); margin: 10% auto; padding: 25px; border-radius: 20px; width: 90%; max-width: 400px; border: 1px solid var(--primary); }
+        .rekening-box { background: #0b0f1a; border: 1px solid #2d3748; padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 12px; line-height: 1.6; }
+        .rekening-box b { color: var(--primary); }
+
+        label { display: block; margin: 10px 0 5px; color: #a0aec0; font-size: 12px; }
+        input, select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #2d3748; background: #0b0f1a; color: white; box-sizing: border-box; }
         
-        label { display: block; margin: 15px 0 5px; color: #a0aec0; font-size: 13px; }
-        select, input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #2d3748; background: #0b0f1a; color: white; box-sizing: border-box; }
-        
-        .price-box { background: rgba(0,255,136,0.1); padding: 15px; border-radius: 10px; text-align: center; margin: 20px 0; border: 1px dashed var(--primary); }
-        .price-box span { display: block; font-size: 22px; font-weight: 800; color: var(--primary); }
-        
-        .btn-order { width: 100%; padding: 15px; border-radius: 10px; border: none; background: var(--primary); color: #000; font-weight: bold; cursor: pointer; text-transform: uppercase; }
-        .btn-close { background: none; color: #ef4444; border: none; float: right; cursor: pointer; font-size: 20px; }
+        .btn-order { width: 100%; padding: 14px; border-radius: 8px; border: none; background: var(--primary); color: #000; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-close { float: right; color: #ff4d4d; background: none; border: none; font-size: 20px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="header">
     <h1>IGUSTIRA STORE</h1>
-    <p style="color: #718096;">Pusat Top Up Game & Exchange Terpercaya</p>
+    <p>Top Up & Exchange Terpercaya se-Asia Tenggara</p>
 </div>
 
 <div class="game-grid">
-    <div class="game-card" onclick="openModal('MLBB')">
-        <img src="https://images.unsplash.com/photo-1621259182978-f199b1218674?q=80&w=600&auto=format&fit=crop" alt="Mobile Legends Banner">
+    <div class="game-card" onclick="openModal('Mobile Legends')">
+        <img src="https://wallpapercave.com/wp/wp4506541.jpg">
         <div class="title">Mobile Legends</div>
     </div>
-    <div class="game-card" onclick="openModal('FREE FIRE')">
-        <img src="https://images.unsplash.com/photo-1614031317134-2e9126d400e2?q=80&w=600&auto=format&fit=crop" alt="Free Fire Banner">
+    <div class="game-card" onclick="openModal('Free Fire')">
+        <img src="https://wallpapercave.com/wp/wp4054553.jpg">
         <div class="title">Free Fire</div>
     </div>
-    <div class="game-card" onclick="openModal('USDT')">
-        <img src="https://images.unsplash.com/photo-1621504450181-5d356f63d3ee?q=80&w=600&auto=format&fit=crop" alt="USDT Crypto Banner">
-        <div class="title">USDT Exchange</div>
+    <div class="game-card" onclick="openModal('PUBG Mobile')">
+        <img src="https://wallpapercave.com/wp/wp4102713.jpg">
+        <div class="title">PUBG Mobile</div>
+    </div>
+    <div class="game-card" onclick="openModal('USDT Exchange')">
+        <img src="https://wallpapercave.com/wp/wp9292854.jpg">
+        <div class="title">CV USDT (IDR)</div>
+    </div>
+</div>
+
+<div id="orderModal" class="modal">
+    <div class="modal-content">
+        <button class="btn-close" onclick="closeModal()">&times;</button>
+        <h3 id="modalTitle" style="color: var(--primary); margin-top:0;">Form Order</h3>
+
+        <div class="rekening-box">
+            <b>INFO PEMBAYARAN:</b><br>
+            Semua Rekening a.n <b>RANGGA AJI IGUSTIRA</b><br>
+            • BNI / MANDIRI / DANA / GOPAY
+        </div>
+        
+        <label>Pilih Nominal</label>
+        <select id="nominal"></select>
+
+        <div id="formGame">
+            <label>User ID</label>
+            <input type="text" id="gameID" placeholder="Contoh: 12345678">
+            <label>Server ID</label>
+            <input type="text" id="serverID" placeholder="Contoh: (2024)">
+        </div>
+
+        <div id="formUSDT" style="display:none;">
+            <label>Nama Bank</label>
+            <input type="text" id="namaBank" placeholder="Contoh: BNI / DANA">
+            <label>Nama Pemilik Rekening</label>
+            <input type="text" id="namaPemilik" placeholder="Nama sesuai buku tabungan">
+            <label>Nomor Rekening</label>
+            <input type="text" id="noRek" placeholder="Masukkan nomor rekening">
+        </div>
+
+        <label>Unggah Bukti Pembayaran</label>
+        <input type="file" id="buktiBayar" accept="image/*">
+
+        <button class="btn-order" onclick="kirimOrder()">Konfirmasi Pesanan</button>
     </div>
 </div>
 
 <script>
-const dataProduk = {
-    "MLBB": [
-        {qty: "3 Diamonds", prc: 1000},
-        {qty: "5 Diamonds", prc: 1500},
-        {qty: "12 Diamonds", prc: 3400},
-        {qty: "1140 Diamonds", prc: 290000}
-    ],
-    "FREE FIRE": [
-        {qty: "70 Diamonds", prc: 17500},
-        {qty: "140 Diamonds", prc: 35000},
-        {qty: "355 Diamonds", prc: 88750},
-        {qty: "720 Diamonds", prc: 180000}
-    ],
-    "USDT": [
-        {qty: "Rate Jual (Kirim)", prc: 16200},
-        {qty: "Rate Beli (Terima)", prc: 15900},
-        {qty: "Pencairan USDT", prc: 0}
-    ]
+const dataHarga = {
+    "Mobile Legends": ["86 Diamonds - Rp 25.000", "172 Diamonds - Rp 50.000", "257 Diamonds - Rp 75.000"],
+    "Free Fire": ["70 Diamonds - Rp 10.000", "140 Diamonds - Rp 20.000", "355 Diamonds - Rp 50.000"],
+    "PUBG Mobile": ["60 UC - Rp 15.000", "325 UC - Rp 65.000"],
+    "USDT Exchange": ["Rate Jual - Rp 16.200", "Rate Beli - Rp 15.800"]
 };
 
-let currentLayanan = "";
+let currentService = "";
 
-function openModal(layanan) {
-    currentLayanan = layanan;
-    document.getElementById('modalTitle').innerText = "Order " + layanan;
+function openModal(service) {
+    currentService = service;
+    document.getElementById('modalTitle').innerText = service;
     const nomSelect = document.getElementById('nominal');
-    const labID = document.getElementById('labelID');
     nomSelect.innerHTML = "";
     
-    if(layanan === "USDT") {
-        labID.innerText = "Data Rekening / E-Wallet (Pencairan)";
-    } else {
-        labID.innerText = "User ID & Server Akun";
-    }
-
-    dataProduk[layanan].forEach(item => {
+    dataHarga[service].forEach(item => {
         let opt = document.createElement('option');
-        opt.value = item.prc;
-        opt.text = item.qty;
+        opt.text = item;
         nomSelect.appendChild(opt);
     });
 
+    if(service === "USDT Exchange") {
+        document.getElementById('formGame').style.display = "none";
+        document.getElementById('formUSDT').style.display = "block";
+    } else {
+        document.getElementById('formGame').style.display = "block";
+        document.getElementById('formUSDT').style.display = "none";
+    }
+
     document.getElementById('orderModal').style.display = "block";
-    updateHarga();
 }
 
 function closeModal() { document.getElementById('orderModal').style.display = "none"; }
 
-function updateHarga() {
-    const prc = document.getElementById('nominal').value;
-    document.getElementById('displayHarga').innerText = "Rp " + parseInt(prc).toLocaleString('id-ID');
-}
-
 function kirimOrder() {
-    // GANTI LINK DI BAWAH DENGAN LINK APPS SCRIPT JURAGAN
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxxeJjjKQ7NZkm5Ctw1HGpC0vcRtOz1t2O-CK7dr-8wz_UKOm2IxFH6eG1k3sOgb0UKGw/exec";
-    const nomText = document.getElementById('nominal').options[document.getElementById('nominal').selectedIndex].text;
-    const tot = document.getElementById('displayHarga').innerText;
-    const idVal = document.getElementById('userID').value;
+    const nominal = document.getElementById('nominal').value;
+    const bukti = document.getElementById('buktiBayar').value;
+    
+    if(!bukti) return alert("Wajib unggah bukti pembayaran Bos!");
 
-    if(!idVal) return alert("Isi data dulu Bos!");
+    let detail = "";
+    if(currentService === "USDT Exchange") {
+        detail = `Bank: ${document.getElementById('namaBank').value}\nNama: ${document.getElementById('namaPemilik').value}\nNoRek: ${document.getElementById('noRek').value}`;
+    } else {
+        detail = `ID: ${document.getElementById('gameID').value}\nServer: ${document.getElementById('serverID').value}`;
+    }
 
-    fetch(scriptURL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify({ service: currentLayanan, qty: nomText, account: idVal, total: tot })
-    });
-
-    setTimeout(() => {
-        const wa = `Halo IGUSTIRA STORE,\nOrder Baru!\n\nLayanan: ${currentLayanan}\nNominal: ${nomText}\nData: ${idVal}\nTotal: ${tot}`;
-        window.location.href = "https://wa.me/6282185160103?text=" + encodeURIComponent(wa);
-    }, 800);
+    const waText = `Halo Boss Rangga,\n\nSaya mau order ${currentService}\nNominal: ${nominal}\n\nData Akun/Bank:\n${detail}\n\n*Bukti bayar sudah saya lampirkan.*`;
+    window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(waText)}`;
 }
 </script>
 </body>
