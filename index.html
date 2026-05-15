@@ -3,37 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IGUSTIRA STORE - OFFICIAL</title>
+    <title>IGUSTIRA STORE - PREMIUM OFFICIAL</title>
     <style>
         :root { --primary: #00ff88; --bg: #0b0f1a; --card: #161d2f; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; padding: 20px; }
         .header { text-align: center; padding: 20px 0; }
-        .header h1 { margin: 0; background: linear-gradient(45deg, #00ff88, #60efff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header h1 { margin: 0; background: linear-gradient(45deg, #00ff88, #60efff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px; }
         
+        /* Grid Menu Game Utama */
         .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 900px; margin: auto; }
         .game-card { background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid #2d3748; cursor: pointer; transition: 0.3s; }
-        .game-card:hover { transform: scale(1.03); border-color: var(--primary); }
-        .game-card img { width: 100%; height: 180px; object-fit: cover; }
+        .game-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 5px 15px rgba(0,255,136,0.2); }
+        .game-card img { width: 100%; height: 160px; object-fit: cover; }
         .game-card .title { padding: 10px; text-align: center; font-weight: bold; font-size: 13px; }
 
+        /* Modal Popup */
         .modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); overflow-y: auto; }
-        .modal-content { background: var(--card); margin: 30px auto; padding: 20px; border-radius: 15px; width: 90%; max-width: 450px; border: 1px solid var(--primary); }
+        .modal-content { background: var(--card); margin: 20px auto; padding: 20px; border-radius: 15px; width: 90%; max-width: 450px; border: 1px solid var(--primary); position: relative; }
         
-        .rekening-box { background: #0b0f1a; border: 1px solid #2d3748; padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 12px; line-height: 1.6; }
-        .rekening-box b { color: var(--primary); }
+        /* Area Pembayaran Top Up Game */
+        .pay-methods { display: flex; flex-wrap: wrap; gap: 10px; background: #f8f9fa; padding: 12px; border-radius: 10px; margin-bottom: 15px; align-items: center; justify-content: center; }
+        .pay-methods img { height: 22px; object-fit: contain; }
+        .owner-tag { font-size: 11px; color: var(--primary); text-align: center; margin-top: -10px; margin-bottom: 15px; font-weight: bold; }
 
-        label { display: block; margin: 10px 0 5px; color: #a0aec0; font-size: 12px; }
-        input, select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #2d3748; background: #0b0f1a; color: white; box-sizing: border-box; }
+        /* Area Pembayaran USDT */
+        .qr-box { text-align: center; background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .qr-box img { width: 180px; height: auto; border-radius: 5px; }
+        .wallet-addr { background: #1e293b; padding: 12px; border-radius: 8px; border: 1px dashed var(--primary); color: #00ff88; font-size: 10px; word-break: break-all; margin-top: 10px; font-family: monospace; }
+
+        label { display: block; margin: 10px 0 5px; color: #a0aec0; font-size: 12px; font-weight: bold; }
+        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #2d3748; background: #0b0f1a; color: white; box-sizing: border-box; margin-bottom: 10px; font-size: 14px; }
         
-        .btn-order { width: 100%; padding: 14px; border-radius: 8px; border: none; background: var(--primary); color: #000; font-weight: bold; cursor: pointer; margin-top: 20px; }
-        .btn-close { float: right; color: #ff4d4d; background: none; border: none; font-size: 20px; cursor: pointer; }
+        .btn-order { width: 100%; padding: 15px; border-radius: 8px; border: none; background: var(--primary); color: #000; font-weight: bold; cursor: pointer; margin-top: 10px; text-transform: uppercase; font-size: 14px; }
+        .btn-close { position: absolute; right: 15px; top: 10px; color: #ff4d4d; background: none; border: none; font-size: 26px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="header">
     <h1>IGUSTIRA STORE</h1>
-    <p>Top Up & Exchange Terpercaya se-Asia Tenggara</p>
+    <p style="font-size: 13px; color: #718096;">Top Up & Exchange Terpercaya se-Asia Tenggara</p>
 </div>
 
 <div class="game-grid">
@@ -58,12 +67,26 @@
 <div id="orderModal" class="modal">
     <div class="modal-content">
         <button class="btn-close" onclick="closeModal()">&times;</button>
-        <h3 id="modalTitle" style="color: var(--primary); margin-top:0;">Form Order</h3>
+        <h3 id="modalTitle" style="color: var(--primary); margin-top:0; font-size: 18px;">Form Order</h3>
 
-        <div class="rekening-box">
-            <b>INFO PEMBAYARAN:</b><br>
-            Semua Rekening a.n <b>RANGGA AJI IGUSTIRA</b><br>
-            • BNI / MANDIRI / DANA / GOPAY
+        <div id="payGame" style="display:none;">
+            <label>Metode Pembayaran:</label>
+            <div class="pay-methods">
+                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/e/e0/Logo_BNI.svg/1200px-Logo_BNI.svg.png">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/1200px-Bank_Mandiri_logo_2016.svg.png">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Logo_dana_blue.svg/1200px-Logo_dana_blue.svg.png">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Gojek_logo_2019.svg/1200px-Gojek_logo_2019.svg.png">
+            </div>
+            <div class="owner-tag">A/N RANGGA AJI IGUSTIRA</div>
+        </div>
+
+        <div id="payUSDT" style="display:none;">
+            <label>Alamat Wallet (Tron TRC20):</label>
+            <div class="qr-box">
+                <img src="https://i.ibb.co/LkhKj9d/qr-usdt.png" alt="QR USDT TRC20">
+                <div class="wallet-addr">TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH</div>
+                <small style="color:#0b0f1a; display:block; margin-top:5px; font-weight:bold;">Hanya Jaringan TRC20</small>
+            </div>
         </div>
         
         <label>Pilih Nominal</label>
@@ -71,21 +94,21 @@
 
         <div id="formGame">
             <label>User ID</label>
-            <input type="text" id="gameID" placeholder="Contoh: 12345678">
+            <input type="text" id="gameID" placeholder="Masukkan ID Akun">
             <label>Server ID</label>
-            <input type="text" id="serverID" placeholder="Contoh: (2024)">
+            <input type="text" id="serverID" placeholder="Masukkan Server">
         </div>
 
         <div id="formUSDT" style="display:none;">
-            <label>Nama Bank</label>
+            <label>Bank/E-Wallet Penerima IDR</label>
             <input type="text" id="namaBank" placeholder="Contoh: BNI / DANA">
             <label>Nama Pemilik Rekening</label>
-            <input type="text" id="namaPemilik" placeholder="Nama sesuai buku tabungan">
-            <label>Nomor Rekening</label>
-            <input type="text" id="noRek" placeholder="Masukkan nomor rekening">
+            <input type="text" id="namaPemilik" placeholder="Nama Lengkap Sesuai Rekening">
+            <label>Nomor Rekening/HP</label>
+            <input type="text" id="noRek" placeholder="Nomor Rekening Tujuan">
         </div>
 
-        <label>Unggah Bukti Pembayaran</label>
+        <label>Unggah Bukti Transfer</label>
         <input type="file" id="buktiBayar" accept="image/*">
 
         <button class="btn-order" onclick="kirimOrder()">Konfirmasi Pesanan</button>
@@ -104,7 +127,7 @@ let currentService = "";
 
 function openModal(service) {
     currentService = service;
-    document.getElementById('modalTitle').innerText = service;
+    document.getElementById('modalTitle').innerText = "Order " + service;
     const nomSelect = document.getElementById('nominal');
     nomSelect.innerHTML = "";
     
@@ -117,9 +140,13 @@ function openModal(service) {
     if(service === "USDT Exchange") {
         document.getElementById('formGame').style.display = "none";
         document.getElementById('formUSDT').style.display = "block";
+        document.getElementById('payGame').style.display = "none";
+        document.getElementById('payUSDT').style.display = "block";
     } else {
         document.getElementById('formGame').style.display = "block";
         document.getElementById('formUSDT').style.display = "none";
+        document.getElementById('payGame').style.display = "block";
+        document.getElementById('payUSDT').style.display = "none";
     }
 
     document.getElementById('orderModal').style.display = "block";
@@ -131,17 +158,17 @@ function kirimOrder() {
     const nominal = document.getElementById('nominal').value;
     const bukti = document.getElementById('buktiBayar').value;
     
-    if(!bukti) return alert("Wajib unggah bukti pembayaran Bos!");
+    if(!bukti) return alert("Wajib unggah bukti transfer Bos!");
 
     let detail = "";
     if(currentService === "USDT Exchange") {
-        detail = `Bank: ${document.getElementById('namaBank').value}\nNama: ${document.getElementById('namaPemilik').value}\nNoRek: ${document.getElementById('noRek').value}`;
+        detail = Jaringan: TRC20\nPencairan ke: ${document.getElementById('namaBank').value}\nNama: ${document.getElementById('namaPemilik').value}\nNo: ${document.getElementById('noRek').value};
     } else {
-        detail = `ID: ${document.getElementById('gameID').value}\nServer: ${document.getElementById('serverID').value}`;
+        detail = ID: ${document.getElementById('gameID').value}\nServer: ${document.getElementById('serverID').value};
     }
 
-    const waText = `Halo Boss Rangga,\n\nSaya mau order ${currentService}\nNominal: ${nominal}\n\nData Akun/Bank:\n${detail}\n\n*Bukti bayar sudah saya lampirkan.*`;
-    window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(waText)}`;
+    const waText = Halo Bos Rangga,\n\nOrder: ${currentService}\nNominal: ${nominal}\n\nDetail:\n${detail}\n\n*Bukti transfer sudah saya upload.*;
+    window.location.href = https://wa.me/6282185160103?text=${encodeURIComponent(waText)};
 }
 </script>
 </body>
