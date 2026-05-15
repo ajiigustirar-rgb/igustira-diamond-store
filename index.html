@@ -2,56 +2,65 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IGUSTIRA STORE - PREMIUM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IGUSTIRA STORE - OFFICIAL</title>
     <style>
-        :root { --primary: #00ff88; --bg: #0b0f1a; --card: #161d2f; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; padding: 20px; overflow-x: hidden; }
+        :root { --primary: #00ff88; --bg: #0b0f1a; --card: #161d2f; --text: #ffffff; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; }
+        
         .header { text-align: center; padding: 20px 0; }
-        .header h1 { margin: 0; background: linear-gradient(45deg, #00ff88, #60efff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px; }
+        .header h1 { margin: 0; background: linear-gradient(45deg, #00ff88, #60efff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 26px; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; }
         
         .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 900px; margin: auto; }
-        .game-card { background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid #2d3748; cursor: pointer; transition: 0.3s; position: relative; z-index: 1; }
-        .game-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 5px 15px rgba(0,255,136,0.3); }
-        .game-card img { width: 100%; height: 160px; object-fit: cover; pointer-events: none; }
-        .game-card .title { padding: 10px; text-align: center; font-weight: bold; font-size: 13px; }
+        .game-card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #2d3748; cursor: pointer; transition: 0.3s; }
+        .game-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 5px 20px rgba(0,255,136,0.2); }
+        .game-card img { width: 100%; height: 170px; object-fit: cover; display: block; }
+        .game-card .title { padding: 12px; text-align: center; font-weight: bold; font-size: 13px; background: rgba(22, 29, 47, 0.95); }
 
-        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); overflow-y: auto; }
-        .modal-content { background: var(--card); margin: 20px auto; padding: 20px; border-radius: 15px; width: 90%; max-width: 450px; border: 1px solid var(--primary); position: relative; }
+        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); overflow-y: auto; align-items: center; justify-content: center; }
+        .modal-content { background: var(--card); margin: 20px auto; padding: 25px; border-radius: 20px; width: 90%; max-width: 450px; border: 1px solid var(--primary); position: relative; }
         
-        .pay-methods { display: flex; flex-wrap: wrap; gap: 10px; background: #fff; padding: 12px; border-radius: 10px; margin-bottom: 15px; justify-content: center; }
-        .pay-methods img { height: 22px; object-fit: contain; }
-        .owner-tag { font-size: 12px; color: var(--primary); text-align: center; margin-top: -10px; margin-bottom: 15px; font-weight: bold; }
+        /* Box Rekening & Fitur Copy */
+        .copy-info { font-size: 10px; color: #a0aec0; margin-bottom: 5px; text-align: center; }
+        .rekening-box { background: #ffffff; color: #000; padding: 12px; border-radius: 12px; margin-bottom: 15px; }
+        .rekening-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; cursor: pointer; }
+        .rekening-item:last-child { border: none; }
+        .rekening-item b { color: #0066ff; margin-right: 5px; }
+        .copy-badge { font-size: 9px; background: #00ff88; padding: 2px 6px; border-radius: 4px; font-weight: bold; color: #000; }
 
-        .qr-box { text-align: center; background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
-        .qr-box img { width: 180px; height: auto; border-radius: 5px; }
-        .wallet-addr { background: #1e293b; padding: 12px; border-radius: 8px; border: 1px dashed var(--primary); color: #00ff88; font-size: 10px; word-break: break-all; margin-top: 10px; font-family: monospace; }
+        .qr-box { text-align: center; background: #fff; padding: 15px; border-radius: 15px; margin-bottom: 15px; color: #000; }
+        .qr-box img { width: 180px; border-radius: 10px; }
+        .wallet-text { background: #0b0f1a; color: #00ff88; padding: 12px; border-radius: 10px; font-family: monospace; font-size: 10px; word-break: break-all; margin-top: 10px; border: 1px dashed var(--primary); cursor: pointer; }
 
-        label { display: block; margin: 10px 0 5px; color: #a0aec0; font-size: 12px; font-weight: bold; }
-        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #2d3748; background: #0b0f1a; color: white; box-sizing: border-box; margin-bottom: 10px; font-size: 14px; }
+        /* Kalkulator */
+        .calc-box { background: rgba(0, 255, 136, 0.1); border: 1px solid var(--primary); padding: 10px; border-radius: 10px; margin-top: 10px; text-align: center; }
+        .price-tag { font-size: 22px; font-weight: 800; color: var(--primary); }
+
+        label { display: block; margin: 15px 0 8px; color: #a0aec0; font-size: 12px; font-weight: bold; }
+        input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #2d3748; background: #0b0f1a; color: white; box-sizing: border-box; font-size: 14px; }
         
-        .btn-order { width: 100%; padding: 15px; border-radius: 8px; border: none; background: var(--primary); color: #000; font-weight: bold; cursor: pointer; margin-top: 10px; text-transform: uppercase; }
-        .btn-close { position: absolute; right: 15px; top: 10px; color: #ff4d4d; background: none; border: none; font-size: 30px; cursor: pointer; font-weight: bold; }
+        .btn-send { width: 100%; padding: 16px; border-radius: 12px; border: none; background: var(--primary); color: #000; font-weight: 800; cursor: pointer; margin-top: 20px; text-transform: uppercase; }
+        .btn-close { position: absolute; right: 15px; top: 10px; color: #ff4d4d; background: none; border: none; font-size: 30px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="header">
     <h1>IGUSTIRA STORE</h1>
-    <p style="font-size: 13px; color: #718096;">Pusat Jual Beli Terpercaya Se-Asia Tenggara</p>
+    <p style="font-size: 12px; color: #718096;">Payment Official: Rangga Aji Igustira</p>
 </div>
 
 <div class="game-grid">
-    <div class="game-card" onclick="openModal('Mobile Legends')">
-        <img src="https://gcdn.pbrd.co/images/GZ6fW7R0P6R6.jpg?o=1">
+    <div class="game-card" onclick="openModal('Mobile Legends', 300)">
+        <img src="https://img.okezone.com/content/2023/04/18/326/2800318/cara-main-mobile-legends-di-pc-tanpa-emulator-ternyata-bisa-lho-S8xGg8vM7R.jpg">
         <div class="title">Mobile Legends</div>
     </div>
-    <div class="game-card" onclick="openModal('Free Fire')">
-        <img src="https://gcdn.pbrd.co/images/XvX6kI8p1I5m.jpg?o=1">
+    <div class="game-card" onclick="openModal('Free Fire', 150)">
+        <img src="https://p4.wallpaperbetter.com/wallpaper/32/342/264/garena-free-fire-battlegrounds-wallpaper-preview.jpg">
         <div class="title">Free Fire</div>
     </div>
-    <div class="game-card" onclick="openModal('USDT Exchange')">
-        <img src="https://gcdn.pbrd.co/images/9Q4aW5X3B4F5.jpg?o=1">
+    <div class="game-card" onclick="openModal('USDT Exchange', 16200)">
+        <img src="https://images.bisnis.com/posts/2021/05/11/1392813/tether-usdt.jpg">
         <div class="title">CV USDT (IDR)</div>
     </div>
 </div>
@@ -59,117 +68,107 @@
 <div id="orderModal" class="modal">
     <div class="modal-content">
         <button class="btn-close" onclick="closeModal()">&times;</button>
-        <h3 id="modalTitle" style="color: var(--primary); margin-top:0;">Form Order</h3>
+        <h3 id="modalTitle" style="color: var(--primary); margin-top: 0;">Order</h3>
 
         <div id="payGame" style="display:none;">
-            <label>Metode Pembayaran:</label>
-            <div class="pay-methods">
-                <img src="https://upload.wikimedia.org/wikipedia/id/thumb/e/e0/Logo_BNI.svg/1200px-Logo_BNI.svg.png">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/1200px-Bank_Mandiri_logo_2016.svg.png">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Logo_dana_blue.svg/1200px-Logo_dana_blue.svg.png">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Gojek_logo_2019.svg/1200px-Gojek_logo_2019.svg.png">
+            <p class="copy-info">Klik nomor untuk salin:</p>
+            <div class="rekening-box">
+                <div class="rekening-item" onclick="copyText('1910432735')"><span><b>BNI:</b> 1910432735</span> <span class="copy-badge">COPY</span></div>
+                <div class="rekening-item" onclick="copyText('1140029832741')"><span><b>MANDIRI:</b> 1140029832741</span> <span class="copy-badge">COPY</span></div>
+                <div class="rekening-item" onclick="copyText('082185160103')"><span><b>DANA:</b> 082185160103</span> <span class="copy-badge">COPY</span></div>
             </div>
-            <div class="owner-tag">A/N RANGGA AJI IGUSTIRA</div>
+            <p style="text-align: center; color: var(--primary); font-size: 11px; font-weight: bold; margin-top: -10px;">A/N RANGGA AJI IGUSTIRA</p>
         </div>
 
         <div id="payUSDT" style="display:none;">
-            <label>Scan QR & Transfer (TRC20):</label>
             <div class="qr-box">
-                <img src="https://i.ibb.co/LkhKj9d/qr-usdt.png">
-                <div class="wallet-addr">TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH</div>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH">
+                <div class="wallet-text" onclick="copyText('TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH')">
+                    TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH<br><small>(Klik untuk salin TRC20)</small>
+                </div>
             </div>
         </div>
         
-        <label>Pilih Nominal</label>
-        <select id="nominal"></select>
+        <label id="inputLabel">Jumlah Diamonds</label>
+        <input type="number" id="amtInput" placeholder="Contoh: 100" oninput="hitungHarga()">
+
+        <div class="calc-box">
+            <div style="font-size: 11px; color: #a0aec0;">Total Bayar:</div>
+            <div class="price-tag" id="totalHarga">Rp 0</div>
+        </div>
 
         <div id="formGame">
-            <label>User ID</label>
-            <input type="text" id="gameID" placeholder="Masukkan ID">
-            <label>Server ID</label>
-            <input type="text" id="serverID" placeholder="Masukkan Server">
+            <label>User ID & Server</label>
+            <input type="text" id="gameData" placeholder="Contoh: 12345678 (2024)">
         </div>
 
         <div id="formUSDT" style="display:none;">
-            <label>Bank/E-Wallet Penerima IDR</label>
-            <input type="text" id="namaBank" placeholder="BNI / DANA / MANDIRI">
-            <label>Nama Pemilik Rekening</label>
-            <input type="text" id="namaPemilik" placeholder="Nama Lengkap">
-            <label>Nomor Rekening/HP</label>
-            <input type="text" id="noRek" placeholder="Nomor Rekening">
+            <label>Tujuan Pencairan (Bank, Nama, NoRek)</label>
+            <input type="text" id="usdtData" placeholder="Contoh: BNI, Rangga, 1910...">
         </div>
 
         <label>Unggah Bukti Transfer</label>
-        <input type="file" id="buktiBayar" accept="image/*">
+        <input type="file" id="bukti" accept="image/*">
 
-        <button class="btn-order" onclick="kirimOrder()">Konfirmasi Pesanan</button>
+        <button class="btn-send" onclick="sendOrder()">Kirim Pesanan</button>
     </div>
 </div>
 
 <script>
-const dataHarga = {
-    "Mobile Legends": ["86 Diamonds - Rp 25.000", "172 Diamonds - Rp 50.000", "257 Diamonds - Rp 75.000"],
-    "Free Fire": ["70 Diamonds - Rp 10.000", "140 Diamonds - Rp 20.000", "355 Diamonds - Rp 50.000"],
-    "USDT Exchange": ["Rate Jual - Rp 16.200", "Rate Beli - Rp 15.800"]
-};
+let currentSvc = "";
+let currentRate = 0;
 
-let currentService = "";
-
-function openModal(service) {
-    currentService = service;
-    document.getElementById('modalTitle').innerText = "Order " + service;
-    const nomSelect = document.getElementById('nominal');
-    nomSelect.innerHTML = "";
+function openModal(svc, rate) {
+    currentSvc = svc;
+    currentRate = rate;
+    document.getElementById('modalTitle').innerText = svc;
+    document.getElementById('amtInput').value = "";
+    document.getElementById('totalHarga').innerText = "Rp 0";
     
-    dataHarga[service].forEach(item => {
-        let opt = document.createElement('option');
-        opt.text = item;
-        nomSelect.appendChild(opt);
-    });
-
-    if(service === "USDT Exchange") {
-        document.getElementById('formGame').style.display = "none";
-        document.getElementById('formUSDT').style.display = "block";
+    if(svc === "USDT Exchange") {
+        document.getElementById('inputLabel').innerText = "Jumlah USDT";
         document.getElementById('payGame').style.display = "none";
+        document.getElementById('formGame').style.display = "none";
         document.getElementById('payUSDT').style.display = "block";
+        document.getElementById('formUSDT').style.display = "block";
     } else {
-        document.getElementById('formGame').style.display = "block";
-        document.getElementById('formUSDT').style.display = "none";
+        document.getElementById('inputLabel').innerText = "Jumlah Diamonds";
         document.getElementById('payGame').style.display = "block";
+        document.getElementById('formGame').style.display = "block";
         document.getElementById('payUSDT').style.display = "none";
+        document.getElementById('formUSDT').style.display = "none";
     }
-
-    document.getElementById('orderModal').style.display = "block";
-    document.body.style.overflow = "hidden"; // Prevent scroll when modal open
+    document.getElementById('orderModal').style.display = "flex";
 }
 
-function closeModal() { 
-    document.getElementById('orderModal').style.display = "none"; 
-    document.body.style.overflow = "auto";
+function hitungHarga() {
+    const amt = document.getElementById('amtInput').value;
+    const total = amt * currentRate;
+    document.getElementById('totalHarga').innerText = "Rp " + total.toLocaleString('id-ID');
 }
 
-// Close modal when clicking outside
-window.onclick = function(event) {
-    if (event.target == document.getElementById('orderModal')) {
-        closeModal();
-    }
+function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        alert("Berhasil disalin: " + text);
+    });
 }
 
-function kirimOrder() {
-    const nominal = document.getElementById('nominal').value;
-    const bukti = document.getElementById('buktiBayar').value;
-    if(!bukti) return alert("Wajib upload bukti transfer!");
+function closeModal() { document.getElementById('orderModal').style.display = "none"; }
 
-    let detail = "";
-    if(currentService === "USDT Exchange") {
-        detail = `Pencairan: ${document.getElementById('namaBank').value}\nNama: ${document.getElementById('namaPemilik').value}\nNo: ${document.getElementById('noRek').value}`;
-    } else {
-        detail = `ID: ${document.getElementById('gameID').value}\nServer: ${document.getElementById('serverID').value}`;
-    }
+function sendOrder() {
+    const amt = document.getElementById('amtInput').value;
+    const hrg = document.getElementById('totalHarga').innerText;
+    const bukti = document.getElementById('bukti').value;
+    
+    if(!amt || !bukti) return alert("Mohon lengkapi jumlah dan upload bukti bayar!");
 
-    const waText = `Halo Boss Rangga,\nOrder: ${currentService}\nNominal: ${nominal}\n\nDetail:\n${detail}\n\n*Bukti bayar terlampir.*`;
-    window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(waText)}`;
+    let detail = (currentSvc === "USDT Exchange") ? document.getElementById('usdtData').value : document.getElementById('gameData').value;
+    const msg = Halo Bos Rangga,\n\nOrder: ${currentSvc}\nJumlah: ${amt}\nTotal Bayar: ${hrg}\nDetail: ${detail}\n\n*Bukti transfer sudah saya lampirkan.*;
+    
+    window.location.href = "https://wa.me/6282185160103?text=" + encodeURIComponent(msg);
 }
+
+window.onclick = function(e) { if(e.target == document.getElementById('orderModal')) closeModal(); }
 </script>
 </body>
 </html>
