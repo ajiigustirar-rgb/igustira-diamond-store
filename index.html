@@ -1,115 +1,152 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="id">
 <head>
-    <title>IGUSTIRA STORE - PUSAT TOP UP</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGUSTIRA STORE - OFFICIAL</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #121212; color: white; padding: 20px; }
-        .container { max-width: 500px; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 15px; border: 1px solid #333; }
-        h2 { text-align: center; color: #00ff88; }
-        label { display: block; margin: 10px 0 5px; font-size: 14px; color: #aaa; }
-        input, select { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #444; background: #2a2a2a; color: white; box-sizing: border-box; }
-        .price-tag { background: #00ff88; color: #000; padding: 10px; border-radius: 8px; font-weight: bold; text-align: center; margin-bottom: 20px; font-size: 18px; }
-        button { background: linear-gradient(45deg, #00ff88, #00bd65); color: black; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; }
-        button:hover { opacity: 0.9; }
+        :root { --primary: #00ff88; --bg: #0b0f1a; --card: #161d2f; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; padding: 20px; }
+        .header { text-align: center; padding: 30px 0; }
+        .header h1 { margin: 0; background: linear-gradient(45deg, #00ff88, #60efff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px; }
+        
+        /* Grid Menu Game */
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 800px; margin: auto; }
+        .game-card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #2d3748; cursor: pointer; transition: 0.3s; position: relative; }
+        .game-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .game-card img { width: 100%; height: 180px; object-fit: cover; }
+        .game-card .title { padding: 10px; text-align: center; font-weight: bold; font-size: 14px; }
+        
+        /* Modal Popup */
+        .modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+        .modal-content { background: var(--card); margin: 10% auto; padding: 25px; border-radius: 20px; width: 90%; max-width: 400px; border: 1px solid var(--primary); }
+        
+        label { display: block; margin: 15px 0 5px; color: #a0aec0; font-size: 13px; }
+        select, input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #2d3748; background: #0b0f1a; color: white; box-sizing: border-box; }
+        
+        .price-box { background: rgba(0,255,136,0.1); padding: 15px; border-radius: 10px; text-align: center; margin: 20px 0; border: 1px dashed var(--primary); }
+        .price-box span { display: block; font-size: 22px; font-weight: 800; color: var(--primary); }
+        
+        .btn-order { width: 100%; padding: 15px; border-radius: 10px; border: none; background: var(--primary); color: #000; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        .btn-close { background: none; color: #ef4444; border: none; float: right; cursor: pointer; font-size: 20px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>IGUSTIRA STORE</h2>
-    
-    <label>Pilih Game / Layanan:</label>
-    <select id="layanan" onchange="updateHarga()">
-        <option value="MLBB">MOBILE LEGENDS</option>
-        <option value="FREE FIRE">FREE FIRE</option>
-        <option value="USDT">CV USDT (PER $1)</option>
-    </select>
+<div class="header">
+    <h1>IGUSTIRA STORE</h1>
+    <p style="color: #718096;">Pusat Top Up Game & Exchange Terpercaya</p>
+</div>
 
-    <label>Pilih Nominal:</label>
-    <select id="nominal" onchange="updateHarga()">
-        </select>
+<div class="game-grid">
+    <div class="game-card" onclick="openModal('MLBB')">
+        <img src="https://gcdn.pbrd.co/images/GZ6fW7R0P6R6.jpg?o=1" alt="ML">
+        <div class="title">Mobile Legends</div>
+    </div>
+    <div class="game-card" onclick="openModal('FREE FIRE')">
+        <img src="https://gcdn.pbrd.co/images/XvX6kI8p1I5m.jpg?o=1" alt="FF">
+        <div class="title">Free Fire</div>
+    </div>
+    <div class="game-card" onclick="openModal('USDT')">
+        <img src="https://gcdn.pbrd.co/images/9Q4aW5X3B4F5.jpg?o=1" alt="USDT">
+        <div class="title">USDT Exchange</div>
+    </div>
+</div>
 
-    <div class="price-tag" id="displayHarga">Rp 0</div>
+<div id="orderModal" class="modal">
+    <div class="modal-content">
+        <button class="btn-close" onclick="closeModal()">&times;</button>
+        <h3 id="modalTitle" style="margin-top: 0; color: var(--primary);">Top Up</h3>
+        
+        <label>Pilih Nominal</label>
+        <select id="nominal" onchange="updateHarga()"></select>
 
-    <label>User ID / Data Akun:</label>
-    <input type="text" id="uId" placeholder="Contoh: 12345678 (2024)">
+        <div class="price-box">
+            <small style="color: #cbd5e1;">Total Bayar:</small>
+            <span id="displayHarga">Rp 0</span>
+        </div>
 
-    <button onclick="send()">PESAN SEKARANG</button>
+        <label id="labelID">User ID & Server</label>
+        <input type="text" id="userID" placeholder="Masukkan ID Akun">
+
+        <button class="btn-order" style="margin-top: 20px;" onclick="kirimOrder()">Beli Sekarang</button>
+    </div>
 </div>
 
 <script>
-// DAFTAR HARGA JURAGAN (Bisa diedit sendiri harganya di sini)
-const daftarHarga = {
+const dataProduk = {
     "MLBB": [
-        {label: "86 Diamonds", harga: 20000},
-        {label: "172 Diamonds", harga: 40000},
-        {label: "257 Diamonds", harga: 60000}
+        {qty: "3 Diamonds", prc: 1000},
+        {qty: "5 Diamonds", prc: 1500},
+        {qty: "12 Diamonds", prc: 3400},
+        {qty: "1140 Diamonds", prc: 290000}
     ],
     "FREE FIRE": [
-        {label: "70 Diamonds", harga: 10000},
-        {label: "140 Diamonds", harga: 20000},
-        {label: "355 Diamonds", harga: 50000}
+        {qty: "70 Diamonds", prc: 17500},
+        {qty: "140 Diamonds", prc: 35000},
+        {qty: "355 Diamonds", prc: 88750},
+        {qty: "720 Diamonds", prc: 180000}
     ],
     "USDT": [
-        {label: "Rate Jual", harga: 15800},
-        {label: "Rate Beli", harga: 15500}
+        {qty: "Rate Jual (Kirim)", prc: 16200},
+        {qty: "Rate Beli (Terima)", prc: 15900},
+        {qty: "Pencairan USDT", prc: 0}
     ]
 };
 
-function updateHarga() {
-    const layanan = document.getElementById('layanan').value;
-    const nominalSelect = document.getElementById('nominal');
-    const display = document.getElementById('displayHarga');
+let currentLayanan = "";
+
+function openModal(layanan) {
+    currentLayanan = layanan;
+    document.getElementById('modalTitle').innerText = "Order " + layanan;
+    const nomSelect = document.getElementById('nominal');
+    const labID = document.getElementById('labelID');
+    nomSelect.innerHTML = "";
     
-    // Kosongkan pilihan lama
-    nominalSelect.innerHTML = "";
-    
-    // Isi pilihan baru berdasarkan layanan
-    daftarHarga[layanan].forEach(item => {
+    if(layanan === "USDT") {
+        labID.innerText = "Data Rekening / E-Wallet (Pencairan)";
+    } else {
+        labID.innerText = "User ID & Server Akun";
+    }
+
+    dataProduk[layanan].forEach(item => {
         let opt = document.createElement('option');
-        opt.value = item.harga;
-        opt.innerHTML = item.label;
-        nominalSelect.appendChild(opt);
+        opt.value = item.prc;
+        opt.text = item.qty;
+        nomSelect.appendChild(opt);
     });
-    
-    // Update tulisan harga
-    display.innerHTML = "Rp " + parseInt(nominalSelect.value).toLocaleString('id-ID');
+
+    document.getElementById('orderModal').style.display = "block";
+    updateHarga();
 }
 
-function send() {
-    // MASUKKAN LINK GOOGLE APPS SCRIPT JURAGAN DI SINI
-    const url = "https://script.google.com/macros/s/AKfycbxxeJjjKQ7NZkm5Ctw1HGpC0vcRtOz1t2O-CK7dr-8wz_UKOm2IxFH6eG1k3sOgb0UKGw/exec";
-    
-    const layanan = document.getElementById('layanan').value;
-    const nominal = document.getElementById('nominal').options[document.getElementById('nominal').selectedIndex].text;
-    const harga = document.getElementById('displayHarga').innerText;
-    const idUser = document.getElementById('uId').value;
+function closeModal() { document.getElementById('orderModal').style.display = "none"; }
 
-    if(!idUser) return alert("Isi ID Akun dulu, Bos!");
+function updateHarga() {
+    const prc = document.getElementById('nominal').value;
+    document.getElementById('displayHarga').innerText = "Rp " + parseInt(prc).toLocaleString('id-ID');
+}
 
-    // Kirim ke Google Sheets
-    fetch(url, {
-        method: "POST",
-        mode: "no-cors",
-        body: JSON.stringify({
-            "service": layanan,
-            "qty": nominal,
-            "account": idUser,
-            "total": harga
-        })
+function kirimOrder() {
+    // GANTI LINK DI BAWAH DENGAN LINK APPS SCRIPT JURAGAN
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxxeJjjKQ7NZkm5Ctw1HGpC0vcRtOz1t2O-CK7dr-8wz_UKOm2IxFH6eG1k3sOgb0UKGw/exec";
+    const nomText = document.getElementById('nominal').options[document.getElementById('nominal').selectedIndex].text;
+    const tot = document.getElementById('displayHarga').innerText;
+    const idVal = document.getElementById('userID').value;
+
+    if(!idVal) return alert("Isi data dulu Bos!");
+
+    fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify({ service: currentLayanan, qty: nomText, account: idVal, total: tot })
     });
 
-    // Kirim ke WA
     setTimeout(() => {
-        let text = `Halo Igustira Grup,\nOrder Baru!\n\nLayanan: ${layanan}\nNominal: ${nominal}\nID: ${idUser}\nTotal: ${harga}`;
-        window.location.href = "https://wa.me/6282185160103?text=" + encodeURIComponent(text);
+        const wa = `Halo IGUSTIRA STORE,\nOrder Baru!\n\nLayanan: ${currentLayanan}\nNominal: ${nomText}\nData: ${idVal}\nTotal: ${tot}`;
+        window.location.href = "https://wa.me/6282185160103?text=" + encodeURIComponent(wa);
     }, 800);
 }
-
-// Jalankan fungsi update saat pertama kali buka
-updateHarga();
 </script>
-
 </body>
 </html>
