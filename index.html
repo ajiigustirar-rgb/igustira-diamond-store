@@ -93,23 +93,23 @@
 
 <div class="container">
     <div class="game-grid">
-        <div class="game-card" onclick="openModal('MLBB Manual Gold', 320)">
+        <div class="game-card" onclick="openModal('Mobile Legends', 300)">
             <div class="img-box">
-                <img src="https://images.tokopedia.net/img/cache/700/V_v_v_v/2021/11/24/5b2b2b1b-5b2b-4b1b-8b2b-5b2b2b1b5b2b.jpg">
+                <img src="ml.jpg"> 
             </div>
-            <div class="card-title">MLBB MANUAL</div>
+            <div class="card-title">MOBILE LEGENDS</div>
         </div>
 
         <div class="game-card" onclick="openModal('Free Fire', 150)">
             <div class="img-box">
-                <img src="https://p4.wallpaperbetter.com/wallpaper/32/342/264/garena-free-fire-battlegrounds-wallpaper-preview.jpg">
+                <img src="ff.jpg">
             </div>
             <div class="card-title">FREE FIRE</div>
         </div>
 
         <div class="game-card" onclick="openModal('CV USDT (IDR)', 16200)">
             <div class="img-box">
-                <img src="https://images.bisnis.com/posts/2021/05/11/1392813/tether-usdt.jpg">
+                <img src="usdt.jpg">
             </div>
             <div class="card-title">CV USDT</div>
         </div>
@@ -144,7 +144,7 @@
             <b id="totalHarga">Rp 0</b>
         </div>
 
-        <input type="text" id="tujuan" placeholder="ID (Server) / Rekening">
+        <input type="text" id="tujuan" placeholder="User ID (Server) atau Rekening">
         
         <label style="font-size: 12px;">Bukti Bayar:</label>
         <input type="file" id="bukti">
@@ -195,7 +195,7 @@
         let p = document.getElementById('totalHarga').innerText;
         if(!j || !t || !document.getElementById('bukti').value) return alert("Lengkapi data!");
 
-        let link = https://wa.me/6282185160103?text=Order: ${currentSvc}\nJumlah: ${j}\nTotal: ${p}\nID/Tujuan: ${t};
+        let link = `https://wa.me/6282185160103?text=Halo Bos Rangga, mau order ${currentSvc}.\nJumlah: ${j}\nTotal: ${p}\nTarget: ${t}`;
         window.location.href = link;
     }
 
@@ -203,5 +203,3 @@
 </script>
 </body>
 </html>
-
-5b2b2b1b-5b2b-4b1b-8b2b-5b2b2b1b5b2b.jpg
