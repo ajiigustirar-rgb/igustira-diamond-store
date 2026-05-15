@@ -9,166 +9,215 @@
         
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; padding: 0; }
 
-        /* Banner Header */
+        /* Banner Atas */
         .header-banner { 
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
-            padding: 35px 20px; 
+            padding: 40px 20px; 
             text-align: center; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-        .header-banner h1 { margin: 0; font-size: 26px; text-transform: uppercase; font-weight: 900; letter-spacing: 1px; color: white; }
+        .header-banner h1 { margin: 0; font-size: 28px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .header-banner p { margin: 5px 0 0; font-size: 13px; font-weight: bold; color: white; opacity: 0.9; }
 
-        /* Grid Kartu */
-        .container { padding: 30px 15px; max-width: 1000px; margin: auto; }
-        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        /* Container Menu */
+        .container { padding: 30px 15px 60px; max-width: 1000px; margin: auto; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
 
-        /* Desain Kartu */
+        /* Card Style */
         .card { 
             background: var(--card-bg); 
-            border-radius: 15px; 
+            border-radius: 20px; 
             overflow: hidden; 
             border: 1px solid rgba(255,255,255,0.1);
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
             text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
-        .card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 20px rgba(0,255,136,0.2); }
-        .card img { width: 100%; height: 180px; object-fit: cover; }
-        .card-title { padding: 15px; font-weight: bold; font-size: 18px; background: #242f48; }
+        .card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 10px 25px rgba(0,255,136,0.3); }
+        .card img { width: 100%; height: 190px; object-fit: cover; border-bottom: 2px solid var(--primary); }
+        .card-title { padding: 18px; font-weight: 800; font-size: 18px; background: #242f48; letter-spacing: 1px; }
 
-        /* Modal */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); overflow-y: auto; }
-        .modal-content { background: var(--card-bg); margin: 30px auto; padding: 25px; width: 90%; max-width: 400px; border-radius: 20px; border: 1px solid var(--primary); position: relative; }
-        .close { position: absolute; right: 15px; top: 10px; font-size: 28px; color: #ff4d4d; cursor: pointer; }
+        /* Modal / Pop-up */
+        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); overflow-y: auto; }
+        .modal-content { background: var(--card-bg); margin: 20px auto; padding: 25px; width: 90%; max-width: 420px; border-radius: 25px; border: 1px solid var(--primary); position: relative; animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .close { position: absolute; right: 20px; top: 15px; font-size: 30px; color: #ff4d4d; cursor: pointer; font-weight: bold; }
 
-        /* Fitur Salin Rekening */
-        .rek-box { background: white; color: black; padding: 12px; border-radius: 12px; margin: 15px 0; }
-        .rek-item { padding: 10px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 13px; }
+        /* Rekening & Copy System */
+        .rek-box { background: white; color: black; padding: 12px; border-radius: 15px; margin: 15px 0; }
+        .rek-item { padding: 12px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 13px; }
         .rek-item:last-child { border: none; }
-        .copy-badge { font-size: 9px; background: var(--primary); padding: 3px 7px; border-radius: 5px; font-weight: bold; color: black; }
+        .copy-badge { font-size: 9px; background: var(--primary); padding: 4px 8px; border-radius: 6px; font-weight: 900; color: black; }
 
-        /* Form */
-        label { display: block; margin: 15px 0 5px; font-size: 13px; color: #a0aec0; }
-        input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #323f58; background: #0b0f1a; color: white; box-sizing: border-box; }
-        .price-box { background: rgba(0,255,136,0.1); padding: 15px; border-radius: 12px; text-align: center; margin: 15px 0; border: 1px dashed var(--primary); }
-        .price-box b { font-size: 22px; color: var(--primary); }
+        /* Form Elements */
+        label { display: block; margin: 18px 0 6px; font-size: 13px; color: #a0aec0; font-weight: bold; }
+        input, select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #323f58; background: #0b0f1a; color: white; box-sizing: border-box; font-size: 15px; }
+        input:focus, select:focus { outline: none; border-color: var(--primary); }
+        
+        .price-box { background: rgba(0,255,136,0.1); padding: 20px; border-radius: 15px; text-align: center; margin: 20px 0; border: 1px dashed var(--primary); }
+        .price-box small { color: #a0aec0; }
+        .price-box b { font-size: 26px; color: var(--primary); display: block; margin-top: 5px; }
 
-        .btn-wa { width: 100%; padding: 16px; background: var(--primary); color: #000; font-weight: 900; border: none; border-radius: 12px; cursor: pointer; margin-top: 10px; text-transform: uppercase; }
+        /* Button WA */
+        .btn-wa { width: 100%; padding: 18px; background: var(--primary); color: #000; font-weight: 900; border: none; border-radius: 15px; cursor: pointer; margin-top: 10px; text-transform: uppercase; font-size: 16px; transition: 0.2s; }
+        .btn-wa:active { transform: scale(0.96); }
     </style>
 </head>
 <body>
 
 <div class="header-banner">
     <h1>IGUSTIRA STORE</h1>
-    <p style="margin:5px 0 0; font-size:12px; font-weight:bold; color:white;">Pusat Jual Beli Terpercaya se-Asia Tenggara</p>
+    <p>Pusat Jual Beli Terpercaya se-Asia Tenggara</p>
 </div>
 
 <div class="container">
     <div class="card-grid">
-        <div class="card" onclick="openModal('Mobile Legends', 300, 'game')">
+        <div class="card" onclick="openOrder('Mobile Legends', 300, 'game')">
             <img src="ml.jpg">
             <div class="card-title">MOBILE LEGENDS</div>
         </div>
 
-        <div class="card" onclick="openModal('Free Fire', 150, 'game')">
+        <div class="card" onclick="openOrder('Free Fire', 150, 'game')">
             <img src="ff.jpg">
             <div class="card-title">FREE FIRE</div>
         </div>
 
-        <div class="card" onclick="openModal('CV USDT (IDR)', 16200, 'usdt')">
+        <div class="card" onclick="openOrder('CV USDT (IDR)', 16200, 'usdt')">
             <img src="usdt.jpg">
             <div class="card-title">CV USDT (IDR)</div>
         </div>
     </div>
 </div>
 
-<div id="orderModal" class="modal">
+<div id="modalOrder" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2 id="modalTitle" style="color: var(--primary); margin: 0;">Order</h2>
+        <span class="close" onclick="closeOrder()">&times;</span>
+        <h2 id="modalTitle" style="color: var(--primary); margin: 0 0 10px;">Order</h2>
 
-        <div id="rekGame" style="display:none;">
-            <p style="font-size: 10px; color: #a0aec0; margin: 15px 0 5px;">Klik untuk salin nomor rekening:</p>
+        <div id="sectionRekGame" style="display:none;">
+            <p style="font-size: 11px; color: #a0aec0; margin: 15px 0 5px; text-align: center;">Tap nomor untuk menyalin:</p>
             <div class="rek-box">
-                <div class="rek-item" onclick="salin('1910432735')"><span><b>BNI:</b> 1910432735</span> <span class="copy-badge">SALIN</span></div>
-                <div class="rek-item" onclick="salin('082185160103')"><span><b>DANA:</b> 082185160103</span> <span class="copy-badge">SALIN</span></div>
+                <div class="rek-item" onclick="copyText('1910432735')"><span><b>BNI:</b> 1910432735</span> <span class="copy-badge">SALIN</span></div>
+                <div class="rek-item" onclick="copyText('1140029832741')"><span><b>MANDIRI:</b> 1140029832741</span> <span class="copy-badge">SALIN</span></div>
+                <div class="rek-item" onclick="copyText('082185160103')"><span><b>DANA/GOPAY:</b> 082185160103</span> <span class="copy-badge">SALIN</span></div>
             </div>
+            <p style="text-align: center; color: var(--primary); font-size: 12px; margin-top: -10px;"><b>A/N RANGGA AJI IGUSTIRA</b></p>
         </div>
 
-        <div id="rekUsdt" style="display:none; text-align:center;">
-            <p style="font-size: 10px; color: #a0aec0; margin: 15px 0 5px;">Alamat USDT (TRC20):</p>
-            <div class="rek-box" onclick="salin('TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH')" style="cursor:pointer;">
-                <b style="font-size: 10px; word-break: break-all;">TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH</b><br>
-                <span class="copy-badge" style="display:inline-block; margin-top:5px;">KLIK UNTUK SALIN</span>
+        <div id="sectionRekUsdt" style="display:none;">
+            <p style="font-size: 11px; color: #a0aec0; margin: 15px 0 5px; text-align: center;">Kirim USDT ke Alamat (TRC20):</p>
+            <div class="rek-box" onclick="copyText('TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH')" style="cursor:pointer; text-align:center;">
+                <b style="font-size: 11px; word-break: break-all;">TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH</b><br>
+                <span class="copy-badge" style="display:inline-block; margin-top:8px;">KLIK UNTUK SALIN ALAMAT</span>
             </div>
         </div>
 
         <label>Jumlah Pesanan:</label>
-        <input type="number" id="jumlah" placeholder="Contoh: 100" oninput="hitung()">
+        <input type="number" id="inputJml" placeholder="Masukkan jumlah..." oninput="calculate()">
 
         <div class="price-box">
-            <small>Total Pembayaran:</small><br>
-            <b id="totalText">Rp 0</b>
+            <small id="labelPrice">Total Pembayaran:</small>
+            <b id="displayPrice">Rp 0</b>
         </div>
 
-        <label id="labelTarget">Data Tujuan:</label>
-        <input type="text" id="target" placeholder="">
-        
-        <label>Upload Bukti Bayar:</label>
-        <input type="file" id="bukti">
+        <div id="sectionBank" style="display:none;">
+            <label>Pilih Bank/Wallet Pencairan:</label>
+            <select id="selectBank">
+                <option value="">-- Pilih Bank --</option>
+                <option value="BCA">BCA</option>
+                <option value="BNI">BNI</option>
+                <option value="BRI">BRI</option>
+                <option value="MANDIRI">MANDIRI</option>
+                <option value="CIMB">CIMB NIAGA</option>
+                <option value="PERMATA">PERMATA BANK</option>
+                <option value="DANAMON">DANAMON</option>
+                <option value="BSI">BSI (Syariah)</option>
+                <option value="DANA">DANA</option>
+                <option value="GOPAY">GOPAY</option>
+                <option value="OVO">OVO</option>
+                <option value="SHOPEEPAY">SHOPEEPAY</option>
+            </select>
+        </div>
 
-        <button class="btn-wa" onclick="kirimWA()">KONFIRMASI VIA WHATSAPP</button>
+        <label id="labelTarget">Target Pengiriman:</label>
+        <input type="text" id="inputTarget" placeholder="">
+        
+        <label>Unggah Bukti Transfer:</label>
+        <input type="file" id="inputBukti">
+
+        <button class="btn-wa" onclick="sendWhatsApp()">KONFIRMASI WHATSAPP</button>
     </div>
 </div>
 
 <script>
-    let rate = 0;
-    let prod = "";
+    let currentPrice = 0;
+    let currentProductName = "";
 
-    function openModal(nama, harga, tipe) {
-        prod = nama;
-        rate = harga;
+    function openOrder(nama, harga, kategori) {
+        currentProductName = nama;
+        currentPrice = harga;
         document.getElementById('modalTitle').innerText = nama;
-        document.getElementById('jumlah').value = "";
-        document.getElementById('totalText').innerText = "Rp 0";
-        document.getElementById('orderModal').style.display = "block";
+        document.getElementById('inputJml').value = "";
+        document.getElementById('displayPrice').innerText = "Rp 0";
+        document.getElementById('modalOrder').style.display = "block";
 
-        if(tipe === 'usdt') {
-            document.getElementById('rekGame').style.display = "none";
-            document.getElementById('rekUsdt').style.display = "block";
-            document.getElementById('labelTarget').innerText = "Nomor Rekening/E-Wallet Tujuan:";
-            document.getElementById('target').placeholder = "Contoh: DANA 0821...";
+        const gameRek = document.getElementById('sectionRekGame');
+        const usdtRek = document.getElementById('sectionRekUsdt');
+        const bankSel = document.getElementById('sectionBank');
+        const priceLbl = document.getElementById('labelPrice');
+        const targetLbl = document.getElementById('labelTarget');
+        const targetInp = document.getElementById('inputTarget');
+
+        if(kategori === 'usdt') {
+            gameRek.style.display = "none";
+            usdtRek.style.display = "block";
+            bankSel.style.display = "block";
+            priceLbl.innerText = "Estimasi IDR Diterima:";
+            targetLbl.innerText = "Nomor Rekening / E-Wallet Tujuan:";
+            targetInp.placeholder = "Masukkan No Rekening & Nama";
         } else {
-            document.getElementById('rekGame').style.display = "block";
-            document.getElementById('rekUsdt').style.display = "none";
-            document.getElementById('labelTarget').innerText = "User ID & Server:";
-            document.getElementById('target').placeholder = "Contoh: 12345678 (1234)";
+            gameRek.style.display = "block";
+            usdtRek.style.display = "none";
+            bankSel.style.display = "none";
+            priceLbl.innerText = "Total Pembayaran:";
+            targetLbl.innerText = "User ID & Server:";
+            targetInp.placeholder = "Contoh: 12345678 (1234)";
         }
     }
 
-    function closeModal() { document.getElementById('orderModal').style.display = "none"; }
+    function closeOrder() { document.getElementById('modalOrder').style.display = "none"; }
 
-    function hitung() {
-        let v = document.getElementById('jumlah').value;
-        document.getElementById('totalText').innerText = "Rp " + (v * rate).toLocaleString('id-ID');
+    function calculate() {
+        let val = document.getElementById('inputJml').value;
+        document.getElementById('displayPrice').innerText = "Rp " + (val * currentPrice).toLocaleString('id-ID');
     }
 
-    function salin(t) {
-        navigator.clipboard.writeText(t);
-        alert("Nomor Berhasil Disalin!");
+    function copyText(txt) {
+        navigator.clipboard.writeText(txt);
+        alert("Berhasil disalin: " + txt);
     }
 
-    function kirimWA() {
-        let j = document.getElementById('jumlah').value;
-        let t = document.getElementById('target').value;
-        let p = document.getElementById('totalText').innerText;
-        if(!j || !t) return alert("Lengkapi data!");
+    function sendWhatsApp() {
+        let jml = document.getElementById('inputJml').value;
+        let target = document.getElementById('inputTarget').value;
+        let total = document.getElementById('displayPrice').innerText;
+        let bank = document.getElementById('selectBank').value;
 
-        let waLink = `https://wa.me/6282185160103?text=Halo Bos Rangga,\n\nOrder: ${prod}\nJumlah: ${j}\nTotal Bayar: ${p}\nTarget: ${t}`;
-        window.location.href = waLink;
+        if(!jml || !target) return alert("Harap isi semua data!");
+
+        let pesan = `Halo Bos Rangga,\n\nOrder: ${currentProductName}\nJumlah: ${jml}\nTotal: ${total}\nTarget: ${target}`;
+        
+        if(currentProductName.includes('USDT')) {
+            if(!bank) return alert("Pilih bank pencairan dulu Bos!");
+            pesan = `Halo Bos Rangga,\n\nOrder: CV USDT\nJumlah: ${jml} USDT\nBank Pencairan: ${bank}\nTarget: ${target}\nEstimasi Terima: ${total}`;
+        }
+
+        window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(pesan)}`;
     }
 
-    window.onclick = function(e) { if(e.target.className === 'modal') closeModal(); }
+    window.onclick = function(e) { if(e.target.className === 'modal') closeOrder(); }
 </script>
 </body>
 </html>
