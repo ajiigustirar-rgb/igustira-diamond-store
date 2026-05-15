@@ -38,7 +38,6 @@
         label { display: block; margin-top: 15px; font-size: 12px; color: #a0aec0; font-weight: bold; margin-bottom: 5px; text-transform: uppercase; }
         input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #323f58; background: #0b0f1a; color: white; box-sizing: border-box; font-size: 14px; }
         
-        /* Input ID & Server dipisah */
         .id-input-group { display: flex; gap: 10px; margin-bottom: 5px; }
         .id-field { flex: 2; }
         .srv-field { flex: 1; }
@@ -91,7 +90,6 @@
         <div id="nominalArea">
             <label>Pilih Nominal Paket:</label>
             <div id="nominalList" class="nominal-grid"></div>
-            
             <div class="custom-box">
                 <label style="margin-top:0; color:var(--primary);">Atau Kostum Nominal:</label>
                 <input type="number" id="inpCustom" placeholder="Ketik jumlah sendiri..." oninput="calcCustom()">
@@ -99,9 +97,36 @@
         </div>
 
         <div id="usdtArea" style="display:none;">
-            <label>Pilih Bank Pencairan:</label>
-            <select id="selBank"><option value="BCA">BCA</option><option value="BNI">BNI</option><option value="DANA">DANA</option><option value="GOPAY">GOPAY</option></select>
-            <label>No. Rekening Tujuan & Nama:</label>
+            <label>Pilih Bank / E-Wallet Pencairan:</label>
+            <select id="selBank">
+                <optgroup label="BANK BUMN (HIMBARA)">
+                    <option value="BANK MANDIRI">BANK MANDIRI</option>
+                    <option value="BANK BNI">BANK BNI</option>
+                    <option value="BANK BRI">BANK BRI</option>
+                    <option value="BANK BTN">BANK BTN</option>
+                </optgroup>
+                <optgroup label="BANK SWASTA NASIONAL">
+                    <option value="BANK BCA">BANK BCA</option>
+                    <option value="BANK CIMB NIAGA">BANK CIMB NIAGA</option>
+                    <option value="BANK DANAMON">BANK DANAMON</option>
+                    <option value="BANK PERMATA">BANK PERMATA</option>
+                    <option value="BANK PANIN">BANK PANIN</option>
+                </optgroup>
+                <optgroup label="BANK DIGITAL">
+                    <option value="BANK JAGO">BANK JAGO</option>
+                    <option value="BANK NEO COMMERCE (BNC)">BANK NEO COMMERCE</option>
+                    <option value="SEABANK">SEABANK</option>
+                    <option value="BLU BY BCA">BLU BY BCA</option>
+                    <option value="ALLO BANK">ALLO BANK</option>
+                </optgroup>
+                <optgroup label="E-WALLET">
+                    <option value="DANA">DANA</option>
+                    <option value="GOPAY">GOPAY</option>
+                    <option value="OVO">OVO</option>
+                    <option value="SHOPEEPAY">SHOPEEPAY</option>
+                </optgroup>
+            </select>
+            <label>No. Rekening & Nama Penerima:</label>
             <input type="text" id="inpRekTujuan" placeholder="Contoh: 12345678 a/n Pembeli">
             <label>Jumlah USDT:</label>
             <input type="number" id="inpUsdt" placeholder="0" oninput="calcUsdt()">
@@ -118,14 +143,13 @@
 
 <script>
     let hargaPilihan = 0, itemPilihan = "", gameAktif = "", rateCustom = 0;
-    
     const db = {
-        "Mobile Legends": { rate: 320, items: [{n: "5 Diamonds", p: 1564}, {n: "11 Diamonds", p: 3651}, {n: "17 Diamonds", p: 5737}, {n: "25 Diamonds", p: 8344}, {n: "Weekly Pass", p: 28500}] },
-        "Free Fire": { rate: 150, items: [{n: "70 Diamonds", p: 9500}, {n: "140 Diamonds", p: 19000}, {n: "355 Diamonds", p: 47500}] },
-        "PUBG Mobile": { rate: 210, items: [{n: "60 UC", p: 14000}, {n: "325 UC", p: 65000}] },
-        "Honor of Kings": { rate: 195, items: [{n: "80 Tokens", p: 16000}, {n: "240 Tokens", p: 48000}] },
-        "Genshin Impact": { rate: 245, items: [{n: "60 Crystals", p: 15000}, {n: "Blessing Moon", p: 75000}] },
-        "Valorant": { rate: 115, items: [{n: "625 Points", p: 70000}, {n: "1125 Points", p: 125000}] }
+        "Mobile Legends": { rate: 320, items: [{n: "5 Diamonds", p: 1564}, {n: "Weekly Pass", p: 28500}] },
+        "Free Fire": { rate: 150, items: [{n: "70 Diamonds", p: 9500}] },
+        "PUBG Mobile": { rate: 210, items: [{n: "60 UC", p: 14000}] },
+        "Honor of Kings": { rate: 195, items: [{n: "80 Tokens", p: 16000}] },
+        "Genshin Impact": { rate: 245, items: [{n: "60 Crystals", p: 15000}] },
+        "Valorant": { rate: 115, items: [{n: "625 Points", p: 70000}] }
     };
 
     function openOrder(game) {
@@ -140,7 +164,7 @@
         hargaPilihan = 0;
 
         if(game === 'CV USDT') {
-            document.getElementById('modalTitle').innerText = "CV USDT";
+            document.getElementById('modalTitle').innerText = "CV USDT (IDR)";
             document.getElementById('priceLabel').innerText = "Estimasi IDR Diterima:";
             document.getElementById('nominalArea').style.display = "none";
             document.getElementById('gameDataArea').style.display = "none";
@@ -157,11 +181,8 @@
             document.getElementById('nominalArea').style.display = "block";
             document.getElementById('gameDataArea').style.display = "block";
             document.getElementById('usdtArea').style.display = "none";
-            
-            // Sembunyikan kolom Server untuk game yang tidak pakai server (PUBG, Valorant)
             document.getElementById('srvBox').style.display = (game==='PUBG Mobile'||game==='Valorant') ? "none" : "block";
             rateCustom = db[game].rate;
-            
             document.getElementById('rekArea').innerHTML = `
                 <div class="rek-box">
                     <div class="rek-item" onclick="copy('1910432735')"><span><b>BNI:</b> 1910432735</span> <span class="copy-badge">SALIN</span></div>
@@ -211,24 +232,17 @@
             let bank = document.getElementById('selBank').value;
             let rek = document.getElementById('inpRekTujuan').value;
             if(!jml || !rek) return alert("Lengkapi data transaksi USDT Anda!");
-            
             let m = `Halo Bos Rangga,\n\nOrder: CV USDT\nJumlah: ${jml} USDT\nBank Pencairan: ${bank}\nRekening Tujuan: ${rek}\nEstimasi IDR: ${document.getElementById('txtTotal').innerText}`;
             window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
         } else {
             let id = document.getElementById('inpId').value;
             let srv = document.getElementById('inpSrv').value;
             if(!id || hargaPilihan === 0) return alert("Lengkapi data dan pilih nominal paket!");
-            
-            let targetText = id;
-            if(document.getElementById('srvBox').style.display !== "none" && srv) {
-                targetText += ` (${srv})`;
-            }
-            
+            let targetText = id + (document.getElementById('srvBox').style.display !== "none" && srv ? ` (${srv})` : "");
             let m = `Halo Bos Rangga,\n\nOrder: ${gameAktif}\nItem: ${itemPilihan}\nID Tujuan: ${targetText}\nTotal Bayar: ${document.getElementById('txtTotal').innerText}`;
             window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
         }
     }
-
     window.onclick = function(e) { if (e.target == document.getElementById('modalOrder')) closeOrder(); }
 </script>
 </body>
