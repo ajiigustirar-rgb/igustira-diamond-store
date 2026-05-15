@@ -7,25 +7,25 @@
     <style>
         :root { --primary: #00ff88; --bg: #0b0f1a; --card: #161d2f; --text: #ffffff; }
         
-        /* Reset & Base */
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; -webkit-tap-highlight-color: transparent; }
         
-        .header { text-align: center; padding: 20px 0; position: relative; z-index: 1; }
+        .header { text-align: center; padding: 20px 0; }
         .header h1 { margin: 0; background: linear-gradient(45deg, #00ff88, #60efff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 26px; text-transform: uppercase; font-weight: 800; }
         .header p { color: #718096; font-size: 12px; margin-top: 5px; }
 
-        /* Grid Utama - Z-index Tinggi agar bisa diklik */
-        .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 900px; margin: 20px auto; position: relative; z-index: 10; }
-        .game-card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #2d3748; cursor: pointer; transition: 0.3s; pointer-events: auto; }
+        /* GRID MENU - Dipastikan paling depan */
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 900px; margin: 20px auto; position: relative; z-index: 5; }
+        .game-card { background: var(--card); border-radius: 15px; overflow: hidden; border: 1px solid #2d3748; cursor: pointer; transition: 0.3s; position: relative; z-index: 10; }
         .game-card:active { transform: scale(0.95); }
         .game-card img { width: 100%; height: 170px; object-fit: cover; display: block; pointer-events: none; }
         .game-card .title { padding: 12px; text-align: center; font-weight: bold; font-size: 13px; background: rgba(22, 29, 47, 0.95); }
 
-        /* Modal - Default display none & Hidden */
-        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); overflow-y: auto; align-items: center; justify-content: center; }
+        /* MODAL SYSTEM - Diperbaiki agar tidak menghalangi grid saat tertutup */
+        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); overflow-y: auto; align-items: center; justify-content: center; pointer-events: auto; }
+        .modal.active { display: flex; }
         .modal-content { background: var(--card); margin: auto; padding: 25px; border-radius: 20px; width: 85%; max-width: 400px; border: 1px solid var(--primary); position: relative; }
         
-        /* Copy Rekening Style */
+        /* Copy Rekening */
         .rekening-box { background: #ffffff; color: #000; padding: 12px; border-radius: 12px; margin-bottom: 15px; }
         .rekening-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; cursor: pointer; }
         .rekening-item:last-child { border: none; }
@@ -33,8 +33,8 @@
         .copy-badge { font-size: 10px; background: #00ff88; padding: 3px 7px; border-radius: 5px; font-weight: bold; color: #000; }
 
         .qr-box { text-align: center; background: #fff; padding: 15px; border-radius: 15px; margin-bottom: 15px; color: #000; }
-        .qr-box img { width: 180px; margin-bottom: 10px; }
-        .wallet-click { background: #0b0f1a; color: #00ff88; padding: 10px; border-radius: 8px; font-family: monospace; font-size: 10px; word-break: break-all; border: 1px dashed var(--primary); cursor: pointer; }
+        .qr-box img { width: 160px; margin-bottom: 10px; }
+        .wallet-click { background: #0b0f1a; color: #00ff88; padding: 8px; border-radius: 8px; font-family: monospace; font-size: 10px; word-break: break-all; border: 1px dashed var(--primary); cursor: pointer; }
 
         /* Kalkulator */
         .calc-box { background: rgba(0, 255, 136, 0.1); border: 1px solid var(--primary); padding: 12px; border-radius: 10px; margin: 15px 0; text-align: center; }
@@ -43,8 +43,8 @@
         label { display: block; margin: 15px 0 8px; color: #a0aec0; font-size: 12px; font-weight: bold; }
         input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #2d3748; background: #0b0f1a; color: white; box-sizing: border-box; font-size: 14px; }
         
-        .btn-send { width: 100%; padding: 16px; border-radius: 12px; border: none; background: var(--primary); color: #000; font-weight: 800; cursor: pointer; margin-top: 20px; text-transform: uppercase; box-shadow: 0 4px 15px rgba(0,255,136,0.3); }
-        .btn-close { position: absolute; right: 15px; top: 10px; color: #ff4d4d; background: none; border: none; font-size: 35px; cursor: pointer; z-index: 100; }
+        .btn-send { width: 100%; padding: 16px; border-radius: 12px; border: none; background: var(--primary); color: #000; font-weight: 800; cursor: pointer; margin-top: 20px; text-transform: uppercase; }
+        .btn-close { position: absolute; right: 15px; top: 10px; color: #ff4d4d; background: none; border: none; font-size: 35px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -65,12 +65,12 @@
     </div>
     <div class="game-card" onclick="openModal('USDT Exchange', 16200)">
         <img src="https://images.bisnis.com/posts/2021/05/11/1392813/tether-usdt.jpg">
-        <div class="title">CV USDT (TRC20)</div>
+        <div class="title">CV USDT (IDR)</div>
     </div>
 </div>
 
-<div id="orderModal" class="modal">
-    <div class="modal-content">
+<div id="orderModal" class="modal" onclick="checkClose(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
         <button class="btn-close" onclick="closeModal()">&times;</button>
         <h3 id="modalTitle" style="color: var(--primary); margin-top: 0;">Order</h3>
 
@@ -88,13 +88,13 @@
             <div class="qr-box">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH">
                 <div class="wallet-click" onclick="copyText('TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH')">
-                    TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH<br><small>(Klik untuk salin TRC20)</small>
+                    TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH<br><small>(Klik salin TRC20)</small>
                 </div>
             </div>
         </div>
         
-        <label id="inputLabel">Jumlah Diamonds</label>
-        <input type="number" id="amtInput" placeholder="Contoh: 100" oninput="hitungHarga()">
+        <label id="inputLabel">Jumlah</label>
+        <input type="number" id="amtInput" placeholder="Masukkan jumlah..." oninput="hitungHarga()">
 
         <div class="calc-box">
             <div style="font-size: 11px; color: #a0aec0;">Estimasi Total Bayar:</div>
@@ -103,33 +103,31 @@
 
         <div id="formGame">
             <label>User ID & Server</label>
-            <input type="text" id="gameData" placeholder="Contoh: 12345678 (2024)">
+            <input type="text" id="gameData" placeholder="12345678 (2024)">
         </div>
 
         <div id="formUSDT" style="display:none;">
-            <label>Tujuan Pencairan (Bank, Nama, NoRek)</label>
+            <label>Data Pencairan IDR</label>
             <input type="text" id="usdtData" placeholder="BNI, Rangga, 1910...">
         </div>
 
-        <label>Unggah Bukti Bayar</label>
+        <label>Bukti Bayar</label>
         <input type="file" id="bukti" accept="image/*">
 
-        <button class="btn-send" onclick="sendOrder()">Konfirmasi Order</button>
+        <button class="btn-send" onclick="sendOrder()">Kirim ke WhatsApp</button>
     </div>
 </div>
 
 <script>
-let currentSvc = "";
 let currentRate = 0;
+let currentSvc = "";
 
 function openModal(svc, rate) {
     currentSvc = svc;
     currentRate = rate;
-    
-    // Reset inputs
+    document.getElementById('modalTitle').innerText = svc;
     document.getElementById('amtInput').value = "";
     document.getElementById('totalHarga').innerText = "Rp 0";
-    document.getElementById('modalTitle').innerText = "Order " + svc;
     
     if(svc === "USDT Exchange") {
         document.getElementById('inputLabel').innerText = "Jumlah USDT";
@@ -145,41 +143,35 @@ function openModal(svc, rate) {
         document.getElementById('formUSDT').style.display = "none";
     }
     
-    document.getElementById('orderModal').style.display = "flex";
+    document.getElementById('orderModal').classList.add('active');
 }
 
 function hitungHarga() {
     const amt = document.getElementById('amtInput').value;
-    const total = amt * currentRate;
-    document.getElementById('totalHarga').innerText = "Rp " + total.toLocaleString('id-ID');
+    document.getElementById('totalHarga').innerText = "Rp " + (amt * currentRate).toLocaleString('id-ID');
 }
 
 function copyText(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        alert("Salin Berhasil: " + text);
-    });
+    navigator.clipboard.writeText(text);
+    alert("Berhasil disalin: " + text);
 }
 
 function closeModal() {
-    document.getElementById('orderModal').style.display = "none";
+    document.getElementById('orderModal').classList.remove('active');
+}
+
+function checkClose(e) {
+    if(e.target.id === "orderModal") closeModal();
 }
 
 function sendOrder() {
     const amt = document.getElementById('amtInput').value;
     const hrg = document.getElementById('totalHarga').innerText;
-    const bukti = document.getElementById('bukti').value;
+    if(!amt || !document.getElementById('bukti').value) return alert("Isi jumlah & upload bukti!");
     
-    if(!amt || !bukti) return alert("Lengkapi jumlah dan upload bukti bayar!");
-
     let detail = (currentSvc === "USDT Exchange") ? document.getElementById('usdtData').value : document.getElementById('gameData').value;
-    const msg = Halo Bos Rangga,\n\nOrder: ${currentSvc}\nJumlah: ${amt}\nTotal: ${hrg}\nDetail: ${detail}\n\n*Bukti terlampir.*;
-    
+    const msg = Halo Bos Rangga,\n\nOrder: ${currentSvc}\nJumlah: ${amt}\nTotal: ${hrg}\nDetail: ${detail};
     window.location.href = "https://wa.me/6282185160103?text=" + encodeURIComponent(msg);
-}
-
-// Tutup modal jika klik di luar area konten
-window.onclick = function(e) {
-    if(e.target == document.getElementById('orderModal')) closeModal();
 }
 </script>
 </body>
