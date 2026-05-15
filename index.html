@@ -15,16 +15,17 @@
         }
         .header-banner h1 { margin: 0; font-size: 28px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; }
 
-        .container { padding: 30px 15px 60px; max-width: 1000px; margin: auto; }
-        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .container { padding: 30px 15px 60px; max-width: 1100px; margin: auto; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
 
+        /* Card Style - Ukuran lebih kompak biar muat banyak */
         .card { 
-            background: var(--card-bg); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
+            background: var(--card-bg); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
             cursor: pointer; transition: 0.3s; text-align: center;
         }
-        .card:hover { transform: translateY(-8px); border-color: var(--primary); }
-        .card img { width: 100%; height: 190px; object-fit: cover; }
-        .card-title { padding: 18px; font-weight: 800; font-size: 18px; background: #242f48; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .card img { width: 100%; height: 140px; object-fit: cover; }
+        .card-title { padding: 12px; font-weight: 800; font-size: 14px; background: #242f48; height: 40px; display: flex; align-items: center; justify-content: center; }
 
         /* Modal Custom */
         .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); overflow-y: auto; }
@@ -38,19 +39,18 @@
             text-align: left; cursor: pointer; transition: 0.2s;
         }
         .nominal-item:hover, .nominal-item.active { border-color: var(--primary); background: rgba(0,255,136,0.1); }
-        .nominal-item b { display: block; font-size: 14px; color: white; }
-        .nominal-item span { font-size: 12px; color: var(--primary); }
+        .nominal-item b { display: block; font-size: 13px; color: white; }
+        .nominal-item span { font-size: 11px; color: var(--primary); }
 
-        /* Rekening Style */
         .rek-box { background: white; color: black; padding: 12px; border-radius: 15px; margin: 15px 0; }
-        .rek-item { padding: 10px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 13px; }
-        .copy-badge { font-size: 9px; background: var(--primary); padding: 4px 8px; border-radius: 6px; font-weight: 900; color: black; }
+        .rek-item { padding: 10px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 12px; }
+        .copy-badge { font-size: 8px; background: var(--primary); padding: 3px 6px; border-radius: 4px; font-weight: 900; color: black; }
 
-        label { display: block; margin: 15px 0 5px; font-size: 13px; color: #a0aec0; font-weight: bold; }
-        input, select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #323f58; background: #0b0f1a; color: white; box-sizing: border-box; }
+        label { display: block; margin: 15px 0 5px; font-size: 12px; color: #a0aec0; font-weight: bold; }
+        input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #323f58; background: #0b0f1a; color: white; box-sizing: border-box; }
         
-        .price-box { background: var(--accent); padding: 15px; border-radius: 15px; text-align: center; margin: 20px 0; }
-        .price-box b { font-size: 24px; color: white; }
+        .price-box { background: var(--accent); padding: 15px; border-radius: 15px; text-align: center; margin: 15px 0; }
+        .price-box b { font-size: 22px; color: white; }
 
         .btn-wa { width: 100%; padding: 18px; background: var(--primary); color: #000; font-weight: 900; border: none; border-radius: 15px; cursor: pointer; text-transform: uppercase; }
     </style>
@@ -65,16 +65,25 @@
 <div class="container">
     <div class="card-grid">
         <div class="card" onclick="openOrder('Mobile Legends', 'game')">
-            <img src="ml.jpg">
-            <div class="card-title">MOBILE LEGENDS</div>
+            <img src="ml.jpg"><div class="card-title">MOBILE LEGENDS</div>
         </div>
         <div class="card" onclick="openOrder('Free Fire', 'game')">
-            <img src="ff.jpg">
-            <div class="card-title">FREE FIRE</div>
+            <img src="ff.jpg"><div class="card-title">FREE FIRE</div>
+        </div>
+        <div class="card" onclick="openOrder('PUBG Mobile', 'game')">
+            <img src="pubg.jpg"><div class="card-title">PUBG MOBILE</div>
+        </div>
+        <div class="card" onclick="openOrder('Genshin Impact', 'game')">
+            <img src="genshin.jpg"><div class="card-title">GENSHIN IMPACT</div>
+        </div>
+        <div class="card" onclick="openOrder('Honor of Kings', 'game')">
+            <img src="hok.jpg"><div class="card-title">HONOR OF KINGS</div>
+        </div>
+        <div class="card" onclick="openOrder('Valorant', 'game')">
+            <img src="valorant.jpg"><div class="card-title">VALORANT</div>
         </div>
         <div class="card" onclick="openOrder('CV USDT (IDR)', 'usdt')">
-            <img src="usdt.jpg">
-            <div class="card-title">CV USDT (IDR)</div>
+            <img src="usdt.jpg"><div class="card-title">CV USDT (IDR)</div>
         </div>
     </div>
 </div>
@@ -82,28 +91,20 @@
 <div id="modalOrder" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeOrder()">&times;</span>
-        <h2 id="modalTitle" style="color: var(--primary); margin: 0;">Top Up</h2>
+        <h2 id="modalTitle" style="color: var(--primary); margin: 0; font-size: 20px;">Top Up</h2>
 
         <div id="sectionRekGame" style="display:none;">
             <div class="rek-box">
                 <div class="rek-item" onclick="copyText('1910432735')"><span><b>BNI:</b> 1910432735</span> <span class="copy-badge">SALIN</span></div>
-                <div class="rek-item" onclick="copyText('1140029832741')"><span><b>MANDIRI:</b> 1140029832741</span> <span class="copy-badge">SALIN</span></div>
+                <div class="rek-item" onclick="salin('1140029832741')"><span><b>MANDIRI:</b> 1140029832741</span> <span class="copy-badge">SALIN</span></div>
                 <div class="rek-item" onclick="copyText('082185160103')"><span><b>DANA/GOPAY:</b> 082185160103</span> <span class="copy-badge">SALIN</span></div>
-            </div>
-            <p style="text-align: center; color: var(--primary); font-size: 11px; margin-top: -10px;">A/N RANGGA AJI IGUSTIRA</p>
-        </div>
-
-        <div id="sectionRekUsdt" style="display:none;">
-            <div class="rek-box" onclick="copyText('TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH')" style="cursor:pointer; text-align:center;">
-                <b style="font-size: 11px; word-break: break-all;">TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH</b><br>
-                <span class="copy-badge" style="display:inline-block; margin-top:8px;">SALIN ALAMAT TRC20</span>
             </div>
         </div>
 
         <label id="labelTarget">Data Tujuan:</label>
         <div style="display:flex; gap:5px;">
-            <input type="text" id="targetId" placeholder="User ID">
-            <input type="text" id="targetServer" placeholder="(Server)" style="width:100px;">
+            <input type="text" id="targetId" placeholder="User ID / Player ID">
+            <input type="text" id="targetServer" placeholder="(Server)" style="width:110px;">
         </div>
 
         <label id="labelNominal">Pilih Nominal:</label>
@@ -111,12 +112,9 @@
 
         <div id="sectionBank" style="display:none;">
             <label>Pilih Bank Pencairan:</label>
-            <select id="selectBank">
-                <option value="BCA">BCA</option><option value="BNI">BNI</option><option value="BRI">BRI</option>
-                <option value="MANDIRI">MANDIRI</option><option value="DANA">DANA</option><option value="GOPAY">GOPAY</option>
-            </select>
+            <select id="selectBank"><option value="BCA">BCA</option><option value="BNI">BNI</option><option value="DANA">DANA</option><option value="GOPAY">GOPAY</option></select>
             <label>Jumlah USDT:</label>
-            <input type="number" id="inputUsdt" placeholder="Masukkan angka..." oninput="calculateUsdt()">
+            <input type="number" id="inputUsdt" placeholder="0.00" oninput="calculateUsdt()">
         </div>
 
         <div class="price-box">
@@ -124,7 +122,7 @@
             <b id="displayPrice">Rp 0</b>
         </div>
         
-        <label>Bukti Transfer:</label>
+        <label>Upload Bukti Transfer:</label>
         <input type="file">
 
         <button class="btn-wa" onclick="sendWhatsApp()" style="margin-top:15px;">BELI SEKARANG</button>
@@ -136,21 +134,36 @@
     let selectedItem = "";
     let currentProd = "";
 
-    const listML = [
-        {name: "5 Diamonds", price: 1564}, {name: "11 Diamonds", price: 3651},
-        {name: "17 Diamonds", price: 5737}, {name: "25 Diamonds", price: 8344},
-        {name: "40 Diamonds", price: 12516}, {name: "53 Diamonds", price: 16687},
-        {name: "77 Diamonds", price: 23988}, {name: "Weekly Pass", price: 30246}
-    ];
-
-    const listFF = [
-        {name: "50 Diamonds", price: 8000}, {name: "70 Diamonds", price: 10000},
-        {name: "140 Diamonds", price: 20000}, {name: "355 Diamonds", price: 50000}
-    ];
+    const priceList = {
+        "Mobile Legends": [
+            {name: "86 Diamonds", price: 21500}, {name: "172 Diamonds", price: 43000},
+            {name: "257 Diamonds", price: 64500}, {name: "Weekly Pass", price: 28500}
+        ],
+        "Free Fire": [
+            {name: "70 Diamonds", price: 9500}, {name: "140 Diamonds", price: 19000},
+            {name: "355 Diamonds", price: 47000}, {name: "720 Diamonds", price: 93500}
+        ],
+        "PUBG Mobile": [
+            {name: "60 UC", price: 13500}, {name: "325 UC", price: 65000},
+            {name: "660 UC", price: 130000}, {name: "1800 UC", price: 325000}
+        ],
+        "Genshin Impact": [
+            {name: "60 Crystals", price: 14500}, {name: "300 Crystals", price: 72000},
+            {name: "Blessing Moon", price: 73000}, {name: "980 Crystals", price: 215000}
+        ],
+        "Honor of Kings": [
+            {name: "80 Tokens", price: 15500}, {name: "240 Tokens", price: 46500},
+            {name: "Weekly Card", price: 31000}, {name: "1200 Tokens", price: 232000}
+        ],
+        "Valorant": [
+            {name: "625 Points", price: 68000}, {name: "1125 Points", price: 120000},
+            {name: "2250 Points", price: 235000}, {name: "4000 Points", price: 410000}
+        ]
+    };
 
     function openOrder(nama, tipe) {
         currentProd = nama;
-        document.getElementById('modalTitle').innerText = nama;
+        document.getElementById('modalTitle').innerText = "Top Up " + nama;
         document.getElementById('modalOrder').style.display = "block";
         const container = document.getElementById('nominalContainer');
         container.innerHTML = "";
@@ -161,11 +174,10 @@
             document.getElementById('sectionRekGame').style.display = "block";
             document.getElementById('sectionRekUsdt').style.display = "none";
             document.getElementById('sectionBank').style.display = "none";
-            document.getElementById('targetServer').style.display = "block";
+            document.getElementById('targetServer').style.display = (nama === 'PUBG Mobile' || nama === 'Valorant') ? "none" : "block";
             document.getElementById('labelNominal').style.display = "block";
             
-            let list = (nama === 'Mobile Legends') ? listML : listFF;
-            list.forEach(item => {
+            priceList[nama].forEach(item => {
                 let div = document.createElement('div');
                 div.className = "nominal-item";
                 div.innerHTML = `<b>${item.name}</b><span>Rp ${item.price.toLocaleString()}</span>`;
@@ -195,7 +207,6 @@
     }
 
     function closeOrder() { document.getElementById('modalOrder').style.display = "none"; }
-
     function copyText(t) { navigator.clipboard.writeText(t); alert("Salin: " + t); }
 
     function sendWhatsApp() {
@@ -203,10 +214,9 @@
         let srv = document.getElementById('targetServer').value;
         let bank = document.getElementById('selectBank').value;
         let price = document.getElementById('displayPrice').innerText;
-        
-        if(!id || selectedPrice === 0) return alert("Lengkapi data dan pilih nominal!");
+        if(!id || selectedPrice === 0) return alert("Lengkapi data!");
 
-        let msg = `Halo Bos Rangga,\n\nOrder: ${currentProd}\nItem: ${selectedItem}\nID: ${id} (${srv})\nTotal: ${price}`;
+        let msg = `Halo Bos Rangga,\n\nOrder: ${currentProd}\nItem: ${selectedItem}\nID: ${id} ${srv ? '('+srv+')' : ''}\nTotal: ${price}`;
         if(currentProd.includes('USDT')) {
             msg = `Halo Bos Rangga,\nCV USDT\nJumlah: ${document.getElementById('inputUsdt').value} USDT\nBank: ${bank}\nRekening: ${id}\nEstimasi: ${price}`;
         }
