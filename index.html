@@ -8,7 +8,7 @@
         :root { --primary: #00ff88; --bg: #0b0f1a; --card-bg: #1c2437; --accent: #7d3cf0; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; padding: 0; }
         
-        .header-banner { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 30px 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .header-banner { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 30px 20px; text-align: center; }
         .header-banner h1 { margin: 0; font-size: 26px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; }
         
         .container { padding: 25px 15px; max-width: 1100px; margin: auto; }
@@ -21,12 +21,12 @@
 
         .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); overflow-y: auto; }
         .modal-content { background: var(--card-bg); margin: 10px auto; padding: 20px; width: 92%; max-width: 450px; border-radius: 20px; border: 1px solid var(--primary); position: relative; box-sizing: border-box; }
-        .close { position: absolute; right: 15px; top: 10px; font-size: 28px; color: #ff4d4d; cursor: pointer; font-weight: bold; }
+        .close { position: absolute; right: 15px; top: 10px; font-size: 28px; color: #ff4d4d; cursor: pointer; }
         
-        .nominal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 10px 0; max-height: 240px; overflow-y: auto; padding-right: 5px; }
-        .nominal-item { background: #242f48; padding: 12px; border-radius: 10px; border: 1px solid #323f58; text-align: left; cursor: pointer; transition: 0.2s; }
+        .nominal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 10px 0; max-height: 240px; overflow-y: auto; }
+        .nominal-item { background: #242f48; padding: 12px; border-radius: 10px; border: 1px solid #323f58; cursor: pointer; }
         .nominal-item.active { border-color: var(--primary); background: rgba(0,255,136,0.1); }
-        .nominal-item b { display: block; font-size: 13px; color: white; }
+        .nominal-item b { display: block; font-size: 13px; }
         .nominal-item span { font-size: 11px; color: var(--primary); font-weight: bold; }
 
         .custom-box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; border: 1px dashed var(--primary); margin-top: 10px; }
@@ -35,17 +35,17 @@
         .rek-item { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 12px; }
         .copy-badge { font-size: 8px; background: var(--primary); padding: 3px 6px; border-radius: 4px; font-weight: 900; color: black; }
 
-        label { display: block; margin-top: 15px; font-size: 12px; color: #a0aec0; font-weight: bold; margin-bottom: 5px; text-transform: uppercase; }
-        input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #323f58; background: #0b0f1a; color: white; box-sizing: border-box; font-size: 14px; }
+        label { display: block; margin-top: 15px; font-size: 12px; color: #a0aec0; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #323f58; background: #0b0f1a; color: white; box-sizing: border-box; }
         
-        .id-input-group { display: flex; gap: 10px; margin-bottom: 5px; }
+        .id-input-group { display: flex; gap: 10px; }
         .id-field { flex: 2; }
         .srv-field { flex: 1; }
 
-        .price-box { background: var(--accent); padding: 15px; border-radius: 15px; text-align: center; margin: 15px 0; border: 1px solid rgba(255,255,255,0.1); }
-        .price-box b { font-size: 24px; color: white; display: block; margin-top: 3px; }
+        .price-box { background: var(--accent); padding: 15px; border-radius: 15px; text-align: center; margin: 15px 0; }
+        .price-box b { font-size: 24px; color: white; display: block; }
         
-        .btn-wa { width: 100%; padding: 16px; background: var(--primary); color: #000; font-weight: 900; border: none; border-radius: 15px; cursor: pointer; text-transform: uppercase; font-size: 15px; }
+        .btn-wa { width: 100%; padding: 16px; background: var(--primary); color: #000; font-weight: 900; border: none; border-radius: 15px; cursor: pointer; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -77,63 +77,40 @@
         <div id="gameDataArea">
             <div class="id-input-group">
                 <div class="id-field">
-                    <label>User ID / Player ID:</label>
+                    <label>User ID:</label>
                     <input type="text" id="inpId" placeholder="Masukkan ID">
                 </div>
                 <div class="srv-field" id="srvBox">
-                    <label>Zone ID / Server:</label>
+                    <label>Server:</label>
                     <input type="text" id="inpSrv" placeholder="Server">
                 </div>
             </div>
         </div>
 
         <div id="nominalArea">
-            <label>Pilih Nominal Paket:</label>
+            <label>Pilih Paket:</label>
             <div id="nominalList" class="nominal-grid"></div>
             <div class="custom-box">
-                <label style="margin-top:0; color:var(--primary);">Atau Kostum Nominal:</label>
-                <input type="number" id="inpCustom" placeholder="Ketik jumlah sendiri..." oninput="calcCustom()">
+                <label style="margin-top:0; color:var(--primary);">Atau Ketik Nominal Sendiri:</label>
+                <input type="number" id="inpCustom" placeholder="Contoh: 100" oninput="calcCustom()">
             </div>
         </div>
 
         <div id="usdtArea" style="display:none;">
-            <label>Pilih Bank / E-Wallet Pencairan:</label>
+            <label>Bank Pencairan:</label>
             <select id="selBank">
-                <optgroup label="BANK BUMN (HIMBARA)">
-                    <option value="BANK MANDIRI">BANK MANDIRI</option>
-                    <option value="BANK BNI">BANK BNI</option>
-                    <option value="BANK BRI">BANK BRI</option>
-                    <option value="BANK BTN">BANK BTN</option>
-                </optgroup>
-                <optgroup label="BANK SWASTA NASIONAL">
-                    <option value="BANK BCA">BANK BCA</option>
-                    <option value="BANK CIMB NIAGA">BANK CIMB NIAGA</option>
-                    <option value="BANK DANAMON">BANK DANAMON</option>
-                    <option value="BANK PERMATA">BANK PERMATA</option>
-                    <option value="BANK PANIN">BANK PANIN</option>
-                </optgroup>
-                <optgroup label="BANK DIGITAL">
-                    <option value="BANK JAGO">BANK JAGO</option>
-                    <option value="BANK NEO COMMERCE (BNC)">BANK NEO COMMERCE</option>
-                    <option value="SEABANK">SEABANK</option>
-                    <option value="BLU BY BCA">BLU BY BCA</option>
-                    <option value="ALLO BANK">ALLO BANK</option>
-                </optgroup>
-                <optgroup label="E-WALLET">
-                    <option value="DANA">DANA</option>
-                    <option value="GOPAY">GOPAY</option>
-                    <option value="OVO">OVO</option>
-                    <option value="SHOPEEPAY">SHOPEEPAY</option>
-                </optgroup>
+                <option value="BANK MANDIRI">BANK MANDIRI</option><option value="BANK BNI">BANK BNI</option>
+                <option value="BANK BRI">BANK BRI</option><option value="BANK BCA">BANK BCA</option>
+                <option value="DANA">DANA</option><option value="GOPAY">GOPAY</option><option value="SEABANK">SEABANK</option>
             </select>
-            <label>No. Rekening & Nama Penerima:</label>
-            <input type="text" id="inpRekTujuan" placeholder="Contoh: 12345678 a/n Pembeli">
+            <label>No. Rekening & Nama:</label>
+            <input type="text" id="inpRekTujuan" placeholder="123456... a/n Nama">
             <label>Jumlah USDT:</label>
             <input type="number" id="inpUsdt" placeholder="0" oninput="calcUsdt()">
         </div>
 
         <div class="price-box">
-            <small id="priceLabel">Total Bayar:</small>
+            <small id="priceLabel">Total Harga:</small>
             <b id="txtTotal">Rp 0</b>
         </div>
 
@@ -143,13 +120,15 @@
 
 <script>
     let hargaPilihan = 0, itemPilihan = "", gameAktif = "", rateCustom = 0;
+    
+    // DATABASE RATE & HARGA (SESUAIKAN DI SINI)
     const db = {
-        "Mobile Legends": { rate: 312, items: [{n: "5 Diamonds", p: 1564}, {n: "11 Diamonds", p: 3651}, {n: "17 Diamonds", p: 5737}, {n: "25 Diamonds", p: 8344}, {n: "40 Diamonds", p: 12516}, {n: "53 Diamonds", p: 16687}, {n: "77 Diamonds", p: 23988}, {n: "Weekly Pass", p: 28500}, {n: "154 Diamonds", p: 47975}] },
-        "Free Fire": { rate: 135, items: [{n: "70 Diamonds", p: 9500}, {n: "140 Diamonds", p: 19000}, {n: "355 Diamonds", p: 47500}, {n: "720 Diamonds", p: 95000}] },
-        "PUBG Mobile": { rate: 200, items: [{n: "60 UC", p: 14000}, {n: "325 UC", p: 65000}, {n: "660 UC", p: 130000}] },
-        "Honor of Kings": { rate: 195, items: [{n: "80 Tokens", p: 16000}, {n: "240 Tokens", p: 48000}, {n: "Weekly Card", p: 32000}] },
-        "Genshin Impact": { rate: 245, items: [{n: "60 Crystals", p: 15000}, {n: "Blessing Moon", p: 75000}, {n: "300 Crystals", p: 75000}] },
-        "Valorant": { rate: 110, items: [{n: "625 Points", p: 70000}, {n: "1125 Points", p: 125000}, {n: "2250 Points", p: 245000}] }
+        "Mobile Legends": { rate: 311, items: [{n: "5 Diamonds", p: 1564}, {n: "11 Diamonds", p: 3651}, {n: "Weekly Pass", p: 28500}] },
+        "Free Fire": { rate: 135.8, items: [{n: "70 Diamonds", p: 9500}, {n: "140 Diamonds", p: 19000}] },
+        "PUBG Mobile": { rate: 233, items: [{n: "60 UC", p: 14000}] },
+        "Honor of Kings": { rate: 200, items: [{n: "80 Tokens", p: 16000}] },
+        "Genshin Impact": { rate: 250, items: [{n: "60 Crystals", p: 15000}] },
+        "Valorant": { rate: 112, items: [{n: "625 Points", p: 70000}] }
     };
 
     function openOrder(game) {
@@ -157,39 +136,23 @@
         document.getElementById('modalOrder').style.display = "block";
         document.getElementById('txtTotal').innerText = "Rp 0";
         document.getElementById('inpCustom').value = "";
-        document.getElementById('inpId').value = "";
-        document.getElementById('inpSrv').value = "";
-        document.getElementById('inpRekTujuan').value = "";
-        document.getElementById('inpUsdt').value = "";
         hargaPilihan = 0;
 
         if(game === 'CV USDT') {
-            document.getElementById('modalTitle').innerText = "CV USDT (IDR)";
-            document.getElementById('priceLabel').innerText = "Estimasi IDR Diterima:";
+            document.getElementById('modalTitle').innerText = "CV USDT";
             document.getElementById('nominalArea').style.display = "none";
             document.getElementById('gameDataArea').style.display = "none";
             document.getElementById('usdtArea').style.display = "block";
-            document.getElementById('rekArea').innerHTML = `
-                <div class="rek-box" onclick="copy('TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH')" style="text-align:center;">
-                    <p style="margin:0 0 5px; font-size:11px; color:#555; font-weight:bold;">Kirim ke Alamat TRC20:</p>
-                    <b style="font-size:12px; word-break:break-all;">TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH</b><br>
-                    <span class="copy-badge" style="display:inline-block; margin-top:5px;">SALIN ALAMAT</span>
-                </div>`;
+            document.getElementById('rekArea').innerHTML = `<div class="rek-box" onclick="copy('TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH')" style="text-align:center;"><b>TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH</b><br><small>KLIK UNTUK SALIN ALAMAT TRC20</small></div>`;
         } else {
             document.getElementById('modalTitle').innerText = "Top Up " + game;
-            document.getElementById('priceLabel').innerText = "Total Bayar:";
             document.getElementById('nominalArea').style.display = "block";
             document.getElementById('gameDataArea').style.display = "block";
             document.getElementById('usdtArea').style.display = "none";
             document.getElementById('srvBox').style.display = (game==='PUBG Mobile'||game==='Valorant') ? "none" : "block";
             rateCustom = db[game].rate;
-            document.getElementById('rekArea').innerHTML = `
-                <div class="rek-box">
-                    <div class="rek-item" onclick="copy('1910432735')"><span><b>BNI:</b> 1910432735</span> <span class="copy-badge">SALIN</span></div>
-                    <div class="rek-item" onclick="copy('1140029832741')"><span><b>MANDIRI:</b> 1140029832741</span> <span class="copy-badge">SALIN</span></div>
-                    <div class="rek-item" onclick="copy('082185160103')"><span><b>DANA/GOPAY:</b> 082185160103</span> <span class="copy-badge">SALIN</span></div>
-                    <p style="text-align:center;font-size:11px;margin:5px 0 0;font-weight:bold;">A/N RANGGA AJI IGUSTIRA</p>
-                </div>`;
+            
+            document.getElementById('rekArea').innerHTML = `<div class="rek-box"><div class="rek-item" onclick="copy('1910432735')"><span>BNI: 1910432735</span> <span class="copy-badge">SALIN</span></div><p style="text-align:center;font-size:10px;margin:5px 0 0">A/N RANGGA AJI IGUSTIRA</p></div>`;
             
             const list = document.getElementById('nominalList');
             list.innerHTML = "";
@@ -212,14 +175,13 @@
     function calcCustom() {
         document.querySelectorAll('.nominal-item').forEach(e => e.classList.remove('active'));
         let jml = document.getElementById('inpCustom').value;
-        if(!jml || jml <= 0) {
-            hargaPilihan = 0;
+        if(jml > 0) {
+            hargaPilihan = Math.ceil(jml * rateCustom);
+            itemPilihan = jml + " Qty (Custom)";
+            document.getElementById('txtTotal').innerText = "Rp " + hargaPilihan.toLocaleString('id-ID');
+        } else {
             document.getElementById('txtTotal').innerText = "Rp 0";
-            return;
         }
-        hargaPilihan = Math.round(jml * rateCustom);
-        itemPilihan = jml + " Pcs (Custom Nominal)";
-        document.getElementById('txtTotal').innerText = "Rp " + hargaPilihan.toLocaleString('id-ID');
     }
 
     function calcUsdt() {
@@ -229,26 +191,21 @@
     }
 
     function closeOrder() { document.getElementById('modalOrder').style.display = "none"; }
-    function copy(t) { navigator.clipboard.writeText(t); alert("Berhasil Disalin: " + t); }
+    function copy(t) { navigator.clipboard.writeText(t); alert("Disalin: " + t); }
 
     function gasWA() {
+        let id = document.getElementById('inpId').value;
+        let srv = document.getElementById('inpSrv').value;
         if(gameAktif==='CV USDT') {
-            let jml = document.getElementById('inpUsdt').value;
-            let bank = document.getElementById('selBank').value;
-            let rek = document.getElementById('inpRekTujuan').value;
-            if(!jml || !rek) return alert("Lengkapi data transaksi USDT Anda!");
-            let m = `Halo Bos Rangga,\n\nOrder: CV USDT\nJumlah: ${jml} USDT\nBank Pencairan: ${bank}\nRekening Tujuan: ${rek}\nEstimasi IDR: ${document.getElementById('txtTotal').innerText}`;
+            let m = `Halo Bos Rangga, CV USDT\nJumlah: ${document.getElementById('inpUsdt').value} USDT\nRekening: ${document.getElementById('inpRekTujuan').value}\nTotal: ${document.getElementById('txtTotal').innerText}`;
             window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
         } else {
-            let id = document.getElementById('inpId').value;
-            let srv = document.getElementById('inpSrv').value;
-            if(!id || hargaPilihan === 0) return alert("Lengkapi data dan pilih nominal paket!");
-            let targetText = id + (document.getElementById('srvBox').style.display !== "none" && srv ? ` (${srv})` : "");
-            let m = `Halo Bos Rangga,\n\nOrder: ${gameAktif}\nItem: ${itemPilihan}\nID Tujuan: ${targetText}\nTotal Bayar: ${document.getElementById('txtTotal').innerText}`;
+            if(!id || hargaPilihan === 0) return alert("Lengkapi data!");
+            let target = id + (srv ? " ("+srv+")" : "");
+            let m = `Halo Bos Rangga, Order ${gameAktif}\nItem: ${itemPilihan}\nID: ${target}\nTotal: ${document.getElementById('txtTotal').innerText}`;
             window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
         }
     }
-    window.onclick = function(e) { if (e.target == document.getElementById('modalOrder')) closeOrder(); }
 </script>
 </body>
 </html>
