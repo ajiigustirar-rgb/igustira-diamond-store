@@ -1,32 +1,36 @@
-﻿async function send() {
-    const urlPanel = "https://script.google.com/macros/s/AKfycbzQwUYTo12ighdsjyq9OG1cRaSWoLACfdjyXwx11A-csPnzWAz058zzbyoSFva6ByPKHg/exec";
-    
-    let res = document.getElementById('total').innerText;
-    let qtyVal = document.getElementById('qty').value;
-    let accInfo = "";
-    
-    if(act.includes('CV')) {
-        accInfo = document.getElementById('bName').value + " (" + document.getElementById('bNo').value + ")";
-    } else {
-        accInfo = document.getElementById('uId').value + (document.getElementById('zId').value ? " / " + document.getElementById('zId').value : "");
-    }
+﻿function send() {
+  const url = "https://script.google.com/macros/s/AKfycbzQwUYTo12ighdsjyq9OG1cRaSWoLACfdjyXwx11A-csPnzWAz058zzbyoSFva6ByPKHg/exec";
+  
+  let res = document.getElementById('total').innerText;
+  let qtyVal = document.getElementById('qty').value;
+  let uId = document.getElementById('uId').value || "";
+  let zId = document.getElementById('zId').value || "";
+  let acc = uId + (zId ? " / " + zId : "");
 
-    // Mengirim data
-    const dataKeSheets = {
-        service: act,
-        qty: qtyVal,
-        account: accInfo,
-        total: res
-    };
+  // Jika ini transaksi CV USDT
+  if(act.includes('CV')) {
+      acc = document.getElementById('bName').value + " (" + document.getElementById('bNo').value + ")";
+  }
+  
+  // Data untuk Google Sheets
+  let data = {
+    "service": act,
+    "qty": qtyVal,
+    "account": acc,
+    "total": res
+  };
 
-    // Bagian ini untuk memaksa data masuk ke Sheets
-    await fetch(urlPanel, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify(dataKeSheets)
-    });
+  // Kirim data ke Sheets
+  fetch(url, {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify(data)
+  });
 
-    // Buka WhatsApp setelah data terkirim
-    let m = `Halo Bos Igustira, Saya Mau ${act}\nID/Detail: ${accInfo}\nJumlah: ${qtyVal}\nTotal: ${res}`;
+  // Kirim ke WhatsApp
+  let m = `Halo Bos Igustira, Pesanan Baru!\nLayanan: ${act}\nDetail: ${acc}\nJumlah: ${qtyVal}\nTotal: ${res}`;
+  
+  setTimeout(() => {
     window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
+  }, 300);
 }
