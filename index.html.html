@@ -120,16 +120,52 @@
         function closeModal() { document.getElementById('orderModal').style.display = 'none'; }
         function calc() { let q = document.getElementById('qty').value; document.getElementById('total').innerText = 'Rp ' + (q * curR).toLocaleString('id-ID'); }
 
-        function send() {
-            let res = document.getElementById('total').innerText;
-            let m = `Halo Bos Igustira, Saya Mau ${act}\n`;
-            if(act.includes('CV')) {
-                m += `Jumlah: ${document.getElementById('qty').value} USDT\nCairkan ke: ${document.getElementById('bName').value} (${document.getElementById('bNo').value})\nTotal: ${res}`;
-            } else {
-                m += `ID/Nick: ${document.getElementById('uId').value}\nJumlah: ${document.getElementById('qty').value}\nTotal: ${res}`;
-            }
-            window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
-        }
+        async function send() {
+    let res = document.getElementById('total').innerText;
+    let qtyVal = document.getElementById('qty').value;
+    let accInfo = "";
+    let serviceName = act;
+
+    // Ambil data akun
+    if(act.includes('CV')) {
+        accInfo = document.getElementById('bName').value + " (" + document.getElementById('bNo').value + ")";
+    } else {
+        accInfo = document.getElementById('uId').value + (document.getElementById('zId').value ? " / " + document.getElementById('zId').value : "");
+    }
+
+    // 1. KIRIM DATA KE GOOGLE SHEETS
+    // Pastikan link di bawah ini adalah "URL Aplikasi Web" yang Juragan dapatkan dari Google Apps Script
+    const urlPanel = "https://script.google.com/macros/s/AKfycby9V_SAv4XrhH4J71IR0dPlOBa8-lYqIfukGbdVm2IJW4fYHy8Pt4M4LszzzcVpgDUFEQ/exec";
+
+    const dataPesanan = {
+        service: serviceName,
+        qty: qtyVal,
+        account: accInfo,
+        total: res
+    };
+
+    try {
+        fetch(urlPanel, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify(dataPesanan)
+        });
+    } catch (e) {
+        console.log("Panel sibuk");
+    }
+
+    // 2. LANJUTKAN KE WHATSAPP
+    let m = `Halo Bos Igustira, Saya Mau ${act}\n`;
+    if(act.includes('CV')) {
+        m += `Jumlah: ${qtyVal} USDT\nCairkan ke: ${accInfo}\nTotal: ${res}`;
+    } else {
+        m += `ID/Nick: ${accInfo}\nJumlah: ${qtyVal}\nTotal: ${res}`;
+    }
+    
+    setTimeout(() => {
+        window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
+    }, 500);
+}
     </script>
 </body>
 </html>
