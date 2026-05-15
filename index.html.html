@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>IGUSTIRA STORE - PUSAT TOP UP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #121212; color: white; padding: 20px; }
+        .container { max-width: 500px; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 15px; border: 1px solid #333; }
+        h2 { text-align: center; color: #00ff88; }
+        label { display: block; margin: 10px 0 5px; font-size: 14px; color: #aaa; }
+        input, select { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #444; background: #2a2a2a; color: white; box-sizing: border-box; }
+        .price-tag { background: #00ff88; color: #000; padding: 10px; border-radius: 8px; font-weight: bold; text-align: center; margin-bottom: 20px; font-size: 18px; }
+        button { background: linear-gradient(45deg, #00ff88, #00bd65); color: black; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; }
+        button:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>IGUSTIRA STORE</h2>
+    
+    <label>Pilih Game / Layanan:</label>
+    <select id="layanan" onchange="updateHarga()">
+        <option value="MLBB">MOBILE LEGENDS</option>
+        <option value="FREE FIRE">FREE FIRE</option>
+        <option value="USDT">CV USDT (PER $1)</option>
+    </select>
+
+    <label>Pilih Nominal:</label>
+    <select id="nominal" onchange="updateHarga()">
+        </select>
+
+    <div class="price-tag" id="displayHarga">Rp 0</div>
+
+    <label>User ID / Data Akun:</label>
+    <input type="text" id="uId" placeholder="Contoh: 12345678 (2024)">
+
+    <button onclick="send()">PESAN SEKARANG</button>
+</div>
+
+<script>
+// DAFTAR HARGA JURAGAN (Bisa diedit sendiri harganya di sini)
+const daftarHarga = {
+    "MLBB": [
+        {label: "86 Diamonds", harga: 20000},
+        {label: "172 Diamonds", harga: 40000},
+        {label: "257 Diamonds", harga: 60000}
+    ],
+    "FREE FIRE": [
+        {label: "70 Diamonds", harga: 10000},
+        {label: "140 Diamonds", harga: 20000},
+        {label: "355 Diamonds", harga: 50000}
+    ],
+    "USDT": [
+        {label: "Rate Jual", harga: 15800},
+        {label: "Rate Beli", harga: 15500}
+    ]
+};
+
+function updateHarga() {
+    const layanan = document.getElementById('layanan').value;
+    const nominalSelect = document.getElementById('nominal');
+    const display = document.getElementById('displayHarga');
+    
+    // Kosongkan pilihan lama
+    nominalSelect.innerHTML = "";
+    
+    // Isi pilihan baru berdasarkan layanan
+    daftarHarga[layanan].forEach(item => {
+        let opt = document.createElement('option');
+        opt.value = item.harga;
+        opt.innerHTML = item.label;
+        nominalSelect.appendChild(opt);
+    });
+    
+    // Update tulisan harga
+    display.innerHTML = "Rp " + parseInt(nominalSelect.value).toLocaleString('id-ID');
+}
+
+function send() {
+    // MASUKKAN LINK GOOGLE APPS SCRIPT JURAGAN DI SINI
+    const url = "https://script.google.com/macros/s/AKfycbxxeJjjKQ7NZkm5Ctw1HGpC0vcRtOz1t2O-CK7dr-8wz_UKOm2IxFH6eG1k3sOgb0UKGw/exec";
+    
+    const layanan = document.getElementById('layanan').value;
+    const nominal = document.getElementById('nominal').options[document.getElementById('nominal').selectedIndex].text;
+    const harga = document.getElementById('displayHarga').innerText;
+    const idUser = document.getElementById('uId').value;
+
+    if(!idUser) return alert("Isi ID Akun dulu, Bos!");
+
+    // Kirim ke Google Sheets
+    fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify({
+            "service": layanan,
+            "qty": nominal,
+            "account": idUser,
+            "total": harga
+        })
+    });
+
+    // Kirim ke WA
+    setTimeout(() => {
+        let text = `Halo Igustira Grup,\nOrder Baru!\n\nLayanan: ${layanan}\nNominal: ${nominal}\nID: ${idUser}\nTotal: ${harga}`;
+        window.location.href = "https://wa.me/6282185160103?text=" + encodeURIComponent(text);
+    }, 800);
+}
+
+// Jalankan fungsi update saat pertama kali buka
+updateHarga();
+</script>
+
+</body>
+</html>
