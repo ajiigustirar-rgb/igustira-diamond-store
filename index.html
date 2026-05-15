@@ -144,12 +144,12 @@
 <script>
     let hargaPilihan = 0, itemPilihan = "", gameAktif = "", rateCustom = 0;
     const db = {
-        "Mobile Legends": { rate: 320, items: [{n: "5 Diamonds", p: 1564}, {n: "Weekly Pass", p: 28500}] },
-        "Free Fire": { rate: 150, items: [{n: "70 Diamonds", p: 9500}] },
-        "PUBG Mobile": { rate: 210, items: [{n: "60 UC", p: 14000}] },
-        "Honor of Kings": { rate: 195, items: [{n: "80 Tokens", p: 16000}] },
-        "Genshin Impact": { rate: 245, items: [{n: "60 Crystals", p: 15000}] },
-        "Valorant": { rate: 115, items: [{n: "625 Points", p: 70000}] }
+        "Mobile Legends": { rate: 312, items: [{n: "5 Diamonds", p: 1564}, {n: "11 Diamonds", p: 3651}, {n: "17 Diamonds", p: 5737}, {n: "25 Diamonds", p: 8344}, {n: "40 Diamonds", p: 12516}, {n: "53 Diamonds", p: 16687}, {n: "77 Diamonds", p: 23988}, {n: "Weekly Pass", p: 28500}, {n: "154 Diamonds", p: 47975}] },
+        "Free Fire": { rate: 135, items: [{n: "70 Diamonds", p: 9500}, {n: "140 Diamonds", p: 19000}, {n: "355 Diamonds", p: 47500}, {n: "720 Diamonds", p: 95000}] },
+        "PUBG Mobile": { rate: 200, items: [{n: "60 UC", p: 14000}, {n: "325 UC", p: 65000}, {n: "660 UC", p: 130000}] },
+        "Honor of Kings": { rate: 195, items: [{n: "80 Tokens", p: 16000}, {n: "240 Tokens", p: 48000}, {n: "Weekly Card", p: 32000}] },
+        "Genshin Impact": { rate: 245, items: [{n: "60 Crystals", p: 15000}, {n: "Blessing Moon", p: 75000}, {n: "300 Crystals", p: 75000}] },
+        "Valorant": { rate: 110, items: [{n: "625 Points", p: 70000}, {n: "1125 Points", p: 125000}, {n: "2250 Points", p: 245000}] }
     };
 
     function openOrder(game) {
@@ -212,8 +212,13 @@
     function calcCustom() {
         document.querySelectorAll('.nominal-item').forEach(e => e.classList.remove('active'));
         let jml = document.getElementById('inpCustom').value;
-        hargaPilihan = jml * rateCustom;
-        itemPilihan = jml + " (Custom Nominal)";
+        if(!jml || jml <= 0) {
+            hargaPilihan = 0;
+            document.getElementById('txtTotal').innerText = "Rp 0";
+            return;
+        }
+        hargaPilihan = Math.round(jml * rateCustom);
+        itemPilihan = jml + " Pcs (Custom Nominal)";
         document.getElementById('txtTotal').innerText = "Rp " + hargaPilihan.toLocaleString('id-ID');
     }
 
