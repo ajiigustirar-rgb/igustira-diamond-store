@@ -32,8 +32,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* Dipastikan di paling belakang agar tidak mengganggu tombol */
-            pointer-events: none; /* Klik akan menembus canvas ini */
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* Sidebar Navigation */
@@ -62,6 +62,10 @@
         .card:hover img { filter: brightness(1); }
         .card-title { padding: 15px; font-weight: 800; font-size: 13px; text-align: center; background: rgba(36, 47, 72, 0.9); letter-spacing: 0.5px; }
 
+        /* Khusus Kartu Premium USDT */
+        .card.premium-card { border: 1px solid var(--primary); box-shadow: 0 0 15px rgba(0,255,136,0.1); }
+        .card.premium-card .card-title { background: linear-gradient(135deg, #004d26 0%, #242f48 100%); color: var(--primary); }
+
         /* Responsive Desktop */
         @media (min-width: 1024px) {
             .sidebar { display: block; }
@@ -79,6 +83,9 @@
         input, select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #323f58; background: #0b0f1a; color: white; box-sizing: border-box; font-size: 14px; }
         input:focus, select:focus { outline: none; border-color: var(--primary); }
         
+        select optgroup { background: #1c2437; color: var(--primary); font-weight: bold; }
+        select option { background: #0b0f1a; color: white; }
+
         .nominal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 5px; max-height: 240px; overflow-y: auto; padding-right: 3px; }
         .nominal-item { background: #242f48; padding: 14px; border-radius: 12px; border: 1px solid #323f58; cursor: pointer; transition: 0.2s; }
         .nominal-item.active { border-color: var(--primary); background: rgba(0,255,136,0.12); box-shadow: inset 0 0 8px rgba(0,255,136,0.3); }
@@ -119,15 +126,22 @@
     </div>
 
     <div class="container">
-        <div class="section-title">GAME POPULER</div>
+        <div class="section-title">LAYANAN UTAMA & GAME POPULER</div>
         <div class="card-grid">
+            <div class="card premium-card" onclick="openOrder('CV USDT')"><img src="usdt.jpg"><div class="card-title">✨ CV USDT (IDR)</div></div>
+            
             <div class="card" onclick="openOrder('Mobile Legends')"><img src="ml.jpg"><div class="card-title">MOBILE LEGENDS</div></div>
             <div class="card" onclick="openOrder('Free Fire')"><img src="ff.jpg"><div class="card-title">FREE FIRE</div></div>
             <div class="card" onclick="openOrder('PUBG Mobile')"><img src="pubg.jpg"><div class="card-title">PUBG MOBILE</div></div>
             <div class="card" onclick="openOrder('Honor of Kings')"><img src="hok.jpg"><div class="card-title">HONOR OF KINGS</div></div>
             <div class="card" onclick="openOrder('Genshin Impact')"><img src="genshin.jpg"><div class="card-title">GENSHIN IMPACT</div></div>
             <div class="card" onclick="openOrder('Valorant')"><img src="valorant.jpg"><div class="card-title">VALORANT</div></div>
-            <div class="card" onclick="openOrder('CV USDT')"><img src="usdt.jpg"><div class="card-title">CV USDT (IDR)</div></div>
+            <div class="card" onclick="openOrder('Call of Duty Mobile')"><img src="codm.jpg"><div class="card-title">COD MOBILE</div></div>
+            <div class="card" onclick="openOrder('EA SPORTS FC Mobile')"><img src="fc.jpg"><div class="card-title">EA SPORTS FC</div></div>
+            <div class="card" onclick="openOrder('Roblox')"><img src="roblox.jpg"><div class="card-title">ROBLOX</div></div>
+            <div class="card" onclick="openOrder('Efootball')"><img src="efootball.jpg"><div class="card-title">EFOOTBALL PES</div></div>
+            <div class="card" onclick="openOrder('Metal Slug: Awakening')"><img src="metalslug.jpg"><div class="card-title">METAL SLUG</div></div>
+            <div class="card" onclick="openOrder('Clash of Clans')"><img src="coc.jpg"><div class="card-title">CLASH OF CLANS</div></div>
         </div>
     </div>
 </div>
@@ -165,15 +179,52 @@
             <label>Pilih Bank / E-Wallet Pencairan:</label>
             <select id="selBank">
                 <optgroup label="BANK BUMN (HIMBARA)">
-                    <option value="BANK MANDIRI">BANK MANDIRI</option>
                     <option value="BANK BNI">BANK BNI</option>
+                    <option value="BANK MANDIRI">BANK MANDIRI</option>
                     <option value="BANK BRI">BANK BRI</option>
+                    <option value="BANK BTN">BANK BTN</option>
                 </optgroup>
-                <optgroup label="BANK DIGITAL & E-WALLET">
+                <optgroup label="BANK SWASTA NASIONAL">
                     <option value="BANK BCA">BANK BCA</option>
+                    <option value="BANK CIMB NIAGA">BANK CIMB NIAGA</option>
+                    <option value="BANK DANAMON">BANK DANAMON</option>
+                    <option value="BANK PERMATA">BANK PERMATA</option>
+                    <option value="BANK PANIN">BANK PANIN</option>
+                    <option value="BANK OCBC NISP">BANK OCBC NISP</option>
+                    <option value="BANK MAYBANK">BANK MAYBANK</option>
+                    <option value="BANK MEGA">BANK MEGA</option>
+                    <option value="BANK SINARMAS">BANK SINARMAS</option>
+                    <option value="BANK BTPN / JENIUS">BANK BTPN / JENIUS</option>
+                    <option value="BANK SYARIAH INDONESIA (BSI)">BANK SYARIAH INDONESIA (BSI)</option>
+                    <option value="BANK MUAMALAT">BANK MUAMALAT</option>
+                </optgroup>
+                <optgroup label="BANK DIGITAL">
                     <option value="SEABANK">SEABANK</option>
+                    <option value="BANK JAGO">BANK JAGO</option>
+                    <option value="ALLO BANK">ALLO BANK</option>
+                    <option value="NEO BANK (BNC)">NEO BANK (BNC)</option>
+                    <option value="BLU BY BCA DIGITAL">BLU BY BCA DIGITAL</option>
+                    <option value="RAYA BANK">RAYA BANK</option>
+                </optgroup>
+                <optgroup label="BANK PEMBANGUNAN DAERAH (BPD)">
+                    <option value="BANK BJB">BANK BJB (Jawa Barat)</option>
+                    <option value="BANK DKI">BANK DKI (Jakarta)</option>
+                    <option value="BANK JATENG">BANK JATENG (Jawa Tengah)</option>
+                    <option value="BANK JATIM">BANK JATIM (Jawa Timur)</option>
+                    <option value="BANK BPDB DIY">BANK DIY (Yogyakarta)</option>
+                    <option value="BANK BPD BALI">BANK BPD BALI</option>
+                    <option value="BANK SUMUT">BANK SUMUT</option>
+                    <option value="BANK NAGARI">BANK NAGARI (Sumbar)</option>
+                    <option value="BANK RIAU KEPRI">BANK RIAU KEPRI</option>
+                    <option value="BANK SUMSEL BABEL">BANK SUMSEL BABEL</option>
+                    <option value="BANK JALUR LAIN / BPD LAINNYA">BANK DAERAH LAINNYA</option>
+                </optgroup>
+                <optgroup label="E-WALLET & DIGITAL WALLET">
                     <option value="DANA">DANA</option>
                     <option value="GOPAY">GOPAY</option>
+                    <option value="OVO">OVO</option>
+                    <option value="LINKAJA">LINKAJA</option>
+                    <option value="SHOPEEPAY">SHOPEEPAY</option>
                 </optgroup>
             </select>
             
@@ -201,7 +252,7 @@
 </div>
 
 <script>
-    // --- SCRIPT ANIMASI LATAR BELAKANG GAMING (CANVAS) ---
+    // --- CANVAS BACKGROUND SYSTEM ---
     const canvas = document.getElementById('gaming-bg');
     const ctx = canvas.getContext('2d');
     let particles = [];
@@ -219,7 +270,7 @@
             this.y = Math.random() * canvas.height;
             this.size = Math.random() * 2 + 1;
             this.speedX = Math.random() * 0.6 - 0.3;
-            this.speedY = Math.random() * -0.8 - 0.2; // Bergerak ke atas pelan
+            this.speedY = Math.random() * -0.8 - 0.2;
             this.alpha = Math.random() * 0.5 + 0.2;
         }
         update() {
@@ -246,32 +297,33 @@
     function initParticles() {
         particles = [];
         const count = Math.min(60, Math.floor(canvas.width / 20));
-        for (let i = 0; i < count; i++) {
-            particles.push(new Particle());
-        }
+        for (let i = 0; i < count; i++) { particles.push(new Particle()); }
     }
     initParticles();
 
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => {
-            p.update();
-            p.draw();
-        });
+        particles.forEach(p => { p.update(); p.draw(); });
         requestAnimationFrame(animate);
     }
     animate();
 
-    // --- SCRIPT SISTEM POP-UP & LOGIKA TRANSAKSI ---
+    // --- GAME ENGINE DATABASE & LOGIC SYSTEM ---
     let hargaPilihan = 0, itemPilihan = "", gameAktif = "", rateCustom = 0;
     
     const db = {
-        "Mobile Legends": { rate: 312, items: [{n: "5 Diamonds", p: 1564}, {n: "11 Diamonds", p: 3651}, {n: "17 Diamonds", p: 5737}, {n: "25 Diamonds", p: 8344}, {n: "40 Diamonds", p: 12516}, {n: "53 Diamonds", p: 16687}, {n: "77 Diamonds", p: 23988}, {n: "Weekly Diamonds Pass", p: 30246}, {n: "154 Diamonds", p: 47975}, {n: "217 Diamonds", p: 67793}] },
-        "Free Fire": { rate: 135.71, items: [{n: "70 Diamonds", p: 9500}, {n: "140 Diamonds", p: 19000}, {n: "355 Diamonds", p: 47500}, {n: "720 Diamonds", p: 95000}] },
-        "PUBG Mobile": { rate: 233.33, items: [{n: "60 UC", p: 14000}, {n: "325 UC", p: 65000}, {n: "660 UC", p: 130000}] },
+        "Mobile Legends": { rate: 312, items: [{n: "5 Diamonds", p: 1564}, {n: "11 Diamonds", p: 3651}, {n: "17 Diamonds", p: 5737}, {n: "25 Diamonds", p: 8344}, {n: "77 Diamonds", p: 23988}, {n: "Weekly Pass", p: 30246}] },
+        "Free Fire": { rate: 135.71, items: [{n: "70 Diamonds", p: 9500}, {n: "140 Diamonds", p: 19000}, {n: "355 Diamonds", p: 47500}] },
+        "PUBG Mobile": { rate: 233.33, items: [{n: "60 UC", p: 14000}, {n: "325 UC", p: 65000}] },
         "Honor of Kings": { rate: 200, items: [{n: "80 Tokens", p: 16000}, {n: "240 Tokens", p: 48000}] },
         "Genshin Impact": { rate: 250, items: [{n: "60 Crystals", p: 15000}, {n: "Blessing Moon", p: 75000}] },
-        "Valorant": { rate: 112, items: [{n: "625 Points", p: 70000}, {n: "1125 Points", p: 125000}] }
+        "Valorant": { rate: 112, items: [{n: "625 Points", p: 70000}, {n: "1125 Points", p: 125000}] },
+        "Call of Duty Mobile": { rate: 145, items: [{n: "31 CP", p: 5000}, {n: "63 CP", p: 10000}, {n: "128 CP", p: 20000}] },
+        "EA SPORTS FC Mobile": { rate: 120, items: [{n: "100 Points", p: 14500}, {n: "500 Points", p: 72000}] },
+        "Roblox": { rate: 180, items: [{n: "80 Robux", p: 15000}, {n: "400 Robux", p: 75000}] },
+        "Efootball": { rate: 130, items: [{n: "100 Coins", p: 16000}, {n: "500 Coins", p: 79000}] },
+        "Metal Slug: Awakening": { rate: 150, items: [{n: "60 Ruby", p: 14000}, {n: "310 Ruby", p: 69000}] },
+        "Clash of Clans": { rate: 160, items: [{n: "88 Gems", p: 15000}, {n: "500 Gems", p: 75000}] }
     };
 
     function openOrder(game) {
@@ -306,7 +358,8 @@
             document.getElementById('gameDataArea').style.display = "block";
             document.getElementById('usdtArea').style.display = "none";
             
-            document.getElementById('srvBox').style.display = (game === 'PUBG Mobile' || game === 'Valorant') ? "none" : "block";
+            const sHide = ['PUBG Mobile', 'Valorant', 'Call of Duty Mobile', 'Roblox', 'Efootball', 'Clash of Clans'];
+            document.getElementById('srvBox').style.display = sHide.includes(game) ? "none" : "block";
             rateCustom = db[game].rate;
             
             document.getElementById('rekArea').innerHTML = `
@@ -340,7 +393,7 @@
         let jml = document.getElementById('inpCustom').value;
         if(jml > 0) {
             hargaPilihan = Math.round(jml * rateCustom);
-            itemPilihan = jml + " Pcs (Custom Nominal)";
+            itemPilihan = jml + " Pcs (Custom)";
             document.getElementById('txtTotal').innerText = "Rp " + hargaPilihan.toLocaleString('id-ID');
         } else {
             document.getElementById('txtTotal').innerText = "Rp 0";
