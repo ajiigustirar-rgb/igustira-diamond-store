@@ -5,201 +5,170 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>IGUSTIRA STORE - OFFICIAL</title>
     <style>
-        :root { --primary: #00ff88; --bg: #0b0f1a; --card: #1c2437; }
+        :root { --primary: #00ff88; --bg: #0b0f1a; --card-bg: #1c2437; }
         
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; padding: 0; }
 
-        /* Banner Atas Sesuai Gambar */
-        .banner-header { 
-            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%); 
-            padding: 30px 10px; 
+        /* Banner Header */
+        .header-banner { 
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
+            padding: 35px 20px; 
             text-align: center; 
-            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        .banner-header h1 { margin: 0; font-size: 28px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; }
-        .banner-header p { margin: 5px 0 0; font-size: 13px; font-weight: bold; }
+        .header-banner h1 { margin: 0; font-size: 26px; text-transform: uppercase; font-weight: 900; letter-spacing: 1px; color: white; }
 
-        /* Container Menu */
-        .container { padding: 0 15px 50px; max-width: 1000px; margin: auto; }
-        
-        /* GRID GAME - Z-index Tinggi & Pointer Events Aktif */
-        .game-grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 15px; 
-            position: relative; 
-            z-index: 10; 
-        }
-        
-        .game-card { 
-            background: var(--card); 
+        /* Grid Kartu */
+        .container { padding: 30px 15px; max-width: 1000px; margin: auto; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+
+        /* Desain Kartu */
+        .card { 
+            background: var(--card-bg); 
             border-radius: 15px; 
             overflow: hidden; 
-            border: 2px solid #323f58; 
-            cursor: pointer; 
-            transition: 0.2s;
-            pointer-events: auto; /* Pastikan bisa diklik */
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
         }
-        .game-card:active { transform: scale(0.95); border-color: var(--primary); }
-        
-        .img-box { width: 100%; height: 150px; overflow: hidden; }
-        .game-card img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-        
-        .card-title { padding: 12px; text-align: center; font-weight: bold; font-size: 14px; background: #242f48; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 20px rgba(0,255,136,0.2); }
+        .card img { width: 100%; height: 180px; object-fit: cover; }
+        .card-title { padding: 15px; font-weight: bold; font-size: 18px; background: #242f48; }
 
-        /* MODAL SYSTEM - Teknik Tembus Pandang (Pointer Events None) */
-        .modal { 
-            display: none; 
-            position: fixed; 
-            z-index: 99999; 
-            left: 0; top: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.9); 
-            align-items: center; 
-            justify-content: center;
-            pointer-events: none; /* Tembus saat tertutup */
-        }
-        .modal.active { display: flex; pointer-events: auto; } /* Aktif saat terbuka */
-
-        .modal-content { 
-            background: var(--card); 
-            padding: 25px; 
-            border-radius: 20px; 
-            width: 85%; 
-            max-width: 400px; 
-            border: 1px solid var(--primary); 
-            position: relative;
-        }
+        /* Modal */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); overflow-y: auto; }
+        .modal-content { background: var(--card-bg); margin: 30px auto; padding: 25px; width: 90%; max-width: 400px; border-radius: 20px; border: 1px solid var(--primary); position: relative; }
+        .close { position: absolute; right: 15px; top: 10px; font-size: 28px; color: #ff4d4d; cursor: pointer; }
 
         /* Fitur Salin Rekening */
-        .rek-box { background: white; color: black; padding: 12px; border-radius: 10px; margin: 15px 0; }
-        .rek-item { padding: 10px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; cursor: pointer; font-size: 13px; }
-        .copy-tag { font-size: 9px; background: var(--primary); padding: 2px 5px; border-radius: 4px; font-weight: bold; }
+        .rek-box { background: white; color: black; padding: 12px; border-radius: 12px; margin: 15px 0; }
+        .rek-item { padding: 10px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 13px; }
+        .rek-item:last-child { border: none; }
+        .copy-badge { font-size: 9px; background: var(--primary); padding: 3px 7px; border-radius: 5px; font-weight: bold; color: black; }
 
-        input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #323f58; background: #0b0f1a; color: white; box-sizing: border-box; }
-        
-        .price-info { background: rgba(0,255,136,0.1); padding: 12px; border-radius: 10px; text-align: center; margin: 10px 0; border: 1px dashed var(--primary); }
-        .price-info b { font-size: 20px; color: var(--primary); }
+        /* Form */
+        label { display: block; margin: 15px 0 5px; font-size: 13px; color: #a0aec0; }
+        input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #323f58; background: #0b0f1a; color: white; box-sizing: border-box; }
+        .price-box { background: rgba(0,255,136,0.1); padding: 15px; border-radius: 12px; text-align: center; margin: 15px 0; border: 1px dashed var(--primary); }
+        .price-box b { font-size: 22px; color: var(--primary); }
 
-        .btn-wa { width: 100%; padding: 15px; background: var(--primary); color: #000; font-weight: 800; border: none; border-radius: 10px; cursor: pointer; margin-top: 10px; }
-        .btn-close { position: absolute; right: 15px; top: 10px; color: #ff4d4d; background: none; border: none; font-size: 30px; cursor: pointer; }
+        .btn-wa { width: 100%; padding: 16px; background: var(--primary); color: #000; font-weight: 900; border: none; border-radius: 12px; cursor: pointer; margin-top: 10px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
-<div class="banner-header">
+<div class="header-banner">
     <h1>IGUSTIRA STORE</h1>
-    <p>Pusat Jual Beli Terpercaya se-Asia Tenggara</p>
+    <p style="margin:5px 0 0; font-size:12px; font-weight:bold; color:white;">Pusat Jual Beli Terpercaya se-Asia Tenggara</p>
 </div>
 
 <div class="container">
-    <div class="game-grid">
-        <div class="game-card" onclick="openModal('Mobile Legends', 300)">
-            <div class="img-box">
-                <img src="ml.jpg"> 
-            </div>
+    <div class="card-grid">
+        <div class="card" onclick="openModal('Mobile Legends', 300, 'game')">
+            <img src="ml.jpg">
             <div class="card-title">MOBILE LEGENDS</div>
         </div>
 
-        <div class="game-card" onclick="openModal('Free Fire', 150)">
-            <div class="img-box">
-                <img src="ff.jpg">
-            </div>
+        <div class="card" onclick="openModal('Free Fire', 150, 'game')">
+            <img src="ff.jpg">
             <div class="card-title">FREE FIRE</div>
         </div>
 
-        <div class="game-card" onclick="openModal('CV USDT (IDR)', 16200)">
-            <div class="img-box">
-                <img src="usdt.jpg">
-            </div>
-            <div class="card-title">CV USDT</div>
+        <div class="card" onclick="openModal('CV USDT (IDR)', 16200, 'usdt')">
+            <img src="usdt.jpg">
+            <div class="card-title">CV USDT (IDR)</div>
         </div>
     </div>
 </div>
 
 <div id="orderModal" class="modal">
     <div class="modal-content">
-        <button class="btn-close" onclick="closeModal()">&times;</button>
-        <h3 id="modalTitle" style="color: var(--primary); margin: 0;">Order</h3>
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 id="modalTitle" style="color: var(--primary); margin: 0;">Order</h2>
 
-        <div id="rekArea">
-            <p style="font-size: 10px; color: #a0aec0; margin: 10px 0 5px;">Klik untuk salin nomor:</p>
+        <div id="rekGame" style="display:none;">
+            <p style="font-size: 10px; color: #a0aec0; margin: 15px 0 5px;">Klik untuk salin nomor rekening:</p>
             <div class="rek-box">
-                <div class="rek-item" onclick="copy('1910432735')"><span>BNI: 1910432735</span> <span class="copy-tag">SALIN</span></div>
-                <div class="rek-item" onclick="copy('1140029832741')"><span>MANDIRI: 1140029832741</span> <span class="copy-tag">SALIN</span></div>
-                <div class="rek-item" onclick="copy('082185160103')"><span>DANA/GOPAY: 082185160103</span> <span class="copy-tag">SALIN</span></div>
+                <div class="rek-item" onclick="salin('1910432735')"><span><b>BNI:</b> 1910432735</span> <span class="copy-badge">SALIN</span></div>
+                <div class="rek-item" onclick="salin('082185160103')"><span><b>DANA:</b> 082185160103</span> <span class="copy-badge">SALIN</span></div>
             </div>
         </div>
 
-        <div id="usdtArea" style="display:none; text-align:center;">
-            <div style="background:white; color:black; padding:10px; border-radius:10px; font-size:11px; cursor:pointer;" onclick="copy('TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH')">
-                TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH<br><b>(KLIK UNTUK SALIN TRC20)</b>
+        <div id="rekUsdt" style="display:none; text-align:center;">
+            <p style="font-size: 10px; color: #a0aec0; margin: 15px 0 5px;">Alamat USDT (TRC20):</p>
+            <div class="rek-box" onclick="salin('TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH')" style="cursor:pointer;">
+                <b style="font-size: 10px; word-break: break-all;">TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH</b><br>
+                <span class="copy-badge" style="display:inline-block; margin-top:5px;">KLIK UNTUK SALIN</span>
             </div>
         </div>
 
-        <label style="font-size: 12px; margin-top: 10px; display: block;">Jumlah:</label>
-        <input type="number" id="jml" placeholder="Masukkan angka..." oninput="hitung()">
+        <label>Jumlah Pesanan:</label>
+        <input type="number" id="jumlah" placeholder="Contoh: 100" oninput="hitung()">
 
-        <div class="price-info">
-            <small>Total Bayar:</small><br>
-            <b id="totalHarga">Rp 0</b>
+        <div class="price-box">
+            <small>Total Pembayaran:</small><br>
+            <b id="totalText">Rp 0</b>
         </div>
 
-        <input type="text" id="tujuan" placeholder="User ID (Server) atau Rekening">
+        <label id="labelTarget">Data Tujuan:</label>
+        <input type="text" id="target" placeholder="">
         
-        <label style="font-size: 12px;">Bukti Bayar:</label>
+        <label>Upload Bukti Bayar:</label>
         <input type="file" id="bukti">
 
-        <button class="btn-wa" onclick="kirim()">KONFIRMASI WHATSAPP</button>
+        <button class="btn-wa" onclick="kirimWA()">KONFIRMASI VIA WHATSAPP</button>
     </div>
 </div>
 
 <script>
-    let currentRate = 0;
-    let currentSvc = "";
+    let rate = 0;
+    let prod = "";
 
-    function openModal(nama, rate) {
-        currentSvc = nama;
-        currentRate = rate;
+    function openModal(nama, harga, tipe) {
+        prod = nama;
+        rate = harga;
         document.getElementById('modalTitle').innerText = nama;
-        document.getElementById('jml').value = "";
-        document.getElementById('totalHarga').innerText = "Rp 0";
-        
-        if(nama.includes('USDT')) {
-            document.getElementById('rekArea').style.display = "none";
-            document.getElementById('usdtArea').style.display = "block";
+        document.getElementById('jumlah').value = "";
+        document.getElementById('totalText').innerText = "Rp 0";
+        document.getElementById('orderModal').style.display = "block";
+
+        if(tipe === 'usdt') {
+            document.getElementById('rekGame').style.display = "none";
+            document.getElementById('rekUsdt').style.display = "block";
+            document.getElementById('labelTarget').innerText = "Nomor Rekening/E-Wallet Tujuan:";
+            document.getElementById('target').placeholder = "Contoh: DANA 0821...";
         } else {
-            document.getElementById('rekArea').style.display = "block";
-            document.getElementById('usdtArea').style.display = "none";
+            document.getElementById('rekGame').style.display = "block";
+            document.getElementById('rekUsdt').style.display = "none";
+            document.getElementById('labelTarget').innerText = "User ID & Server:";
+            document.getElementById('target').placeholder = "Contoh: 12345678 (1234)";
         }
-        
-        document.getElementById('orderModal').classList.add('active');
     }
 
-    function closeModal() {
-        document.getElementById('orderModal').classList.remove('active');
-    }
+    function closeModal() { document.getElementById('orderModal').style.display = "none"; }
 
     function hitung() {
-        let val = document.getElementById('jml').value;
-        document.getElementById('totalHarga').innerText = "Rp " + (val * currentRate).toLocaleString('id-ID');
+        let v = document.getElementById('jumlah').value;
+        document.getElementById('totalText').innerText = "Rp " + (v * rate).toLocaleString('id-ID');
     }
 
-    function copy(txt) {
-        navigator.clipboard.writeText(txt);
-        alert("Berhasil disalin!");
+    function salin(t) {
+        navigator.clipboard.writeText(t);
+        alert("Nomor Berhasil Disalin!");
     }
 
-    function kirim() {
-        let j = document.getElementById('jml').value;
-        let t = document.getElementById('tujuan').value;
-        let p = document.getElementById('totalHarga').innerText;
-        if(!j || !t || !document.getElementById('bukti').value) return alert("Lengkapi data!");
+    function kirimWA() {
+        let j = document.getElementById('jumlah').value;
+        let t = document.getElementById('target').value;
+        let p = document.getElementById('totalText').innerText;
+        if(!j || !t) return alert("Lengkapi data!");
 
-        let link = `https://wa.me/6282185160103?text=Halo Bos Rangga, mau order ${currentSvc}.\nJumlah: ${j}\nTotal: ${p}\nTarget: ${t}`;
-        window.location.href = link;
+        let waLink = `https://wa.me/6282185160103?text=Halo Bos Rangga,\n\nOrder: ${prod}\nJumlah: ${j}\nTotal Bayar: ${p}\nTarget: ${t}`;
+        window.location.href = waLink;
     }
 
-    window.onclick = function(e) { if(e.target.id == 'orderModal') closeModal(); }
+    window.onclick = function(e) { if(e.target.className === 'modal') closeModal(); }
 </script>
 </body>
 </html>
