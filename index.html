@@ -5,64 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>IGUSTIRA STORE - OFFICIAL</title>
     <style>
-        :root { --primary: #00ff88; --bg: #0b0f1a; --card-bg: #1c2437; }
+        :root { --primary: #00ff88; --bg: #0b0f1a; --card-bg: #1c2437; --accent: #7d3cf0; }
         
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; padding: 0; }
 
-        /* Banner Atas */
         .header-banner { 
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
-            padding: 40px 20px; 
-            text-align: center; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            padding: 40px 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-        .header-banner h1 { margin: 0; font-size: 28px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-        .header-banner p { margin: 5px 0 0; font-size: 13px; font-weight: bold; color: white; opacity: 0.9; }
+        .header-banner h1 { margin: 0; font-size: 28px; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; }
 
-        /* Container Menu */
         .container { padding: 30px 15px 60px; max-width: 1000px; margin: auto; }
         .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
 
-        /* Card Style */
         .card { 
-            background: var(--card-bg); 
-            border-radius: 20px; 
-            overflow: hidden; 
-            border: 1px solid rgba(255,255,255,0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            background: var(--card-bg); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer; transition: 0.3s; text-align: center;
         }
-        .card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 10px 25px rgba(0,255,136,0.3); }
-        .card img { width: 100%; height: 190px; object-fit: cover; border-bottom: 2px solid var(--primary); }
-        .card-title { padding: 18px; font-weight: 800; font-size: 18px; background: #242f48; letter-spacing: 1px; }
+        .card:hover { transform: translateY(-8px); border-color: var(--primary); }
+        .card img { width: 100%; height: 190px; object-fit: cover; }
+        .card-title { padding: 18px; font-weight: 800; font-size: 18px; background: #242f48; }
 
-        /* Modal / Pop-up */
+        /* Modal Custom */
         .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); overflow-y: auto; }
-        .modal-content { background: var(--card-bg); margin: 20px auto; padding: 25px; width: 90%; max-width: 420px; border-radius: 25px; border: 1px solid var(--primary); position: relative; animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        
-        .close { position: absolute; right: 20px; top: 15px; font-size: 30px; color: #ff4d4d; cursor: pointer; font-weight: bold; }
+        .modal-content { background: var(--card-bg); margin: 10px auto; padding: 20px; width: 92%; max-width: 500px; border-radius: 25px; border: 1px solid var(--primary); position: relative; }
+        .close { position: absolute; right: 20px; top: 15px; font-size: 30px; color: #ff4d4d; cursor: pointer; }
 
-        /* Rekening & Copy System */
+        /* Grid Nominal */
+        .nominal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 15px 0; }
+        .nominal-item { 
+            background: #242f48; padding: 12px; border-radius: 12px; border: 1px solid #323f58; 
+            text-align: left; cursor: pointer; transition: 0.2s;
+        }
+        .nominal-item:hover, .nominal-item.active { border-color: var(--primary); background: rgba(0,255,136,0.1); }
+        .nominal-item b { display: block; font-size: 14px; color: white; }
+        .nominal-item span { font-size: 12px; color: var(--primary); }
+
+        /* Rekening Style */
         .rek-box { background: white; color: black; padding: 12px; border-radius: 15px; margin: 15px 0; }
-        .rek-item { padding: 12px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 13px; }
-        .rek-item:last-child { border: none; }
+        .rek-item { padding: 10px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 13px; }
         .copy-badge { font-size: 9px; background: var(--primary); padding: 4px 8px; border-radius: 6px; font-weight: 900; color: black; }
 
-        /* Form Elements */
-        label { display: block; margin: 18px 0 6px; font-size: 13px; color: #a0aec0; font-weight: bold; }
-        input, select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #323f58; background: #0b0f1a; color: white; box-sizing: border-box; font-size: 15px; }
-        input:focus, select:focus { outline: none; border-color: var(--primary); }
+        label { display: block; margin: 15px 0 5px; font-size: 13px; color: #a0aec0; font-weight: bold; }
+        input, select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #323f58; background: #0b0f1a; color: white; box-sizing: border-box; }
         
-        .price-box { background: rgba(0,255,136,0.1); padding: 20px; border-radius: 15px; text-align: center; margin: 20px 0; border: 1px dashed var(--primary); }
-        .price-box small { color: #a0aec0; }
-        .price-box b { font-size: 26px; color: var(--primary); display: block; margin-top: 5px; }
+        .price-box { background: var(--accent); padding: 15px; border-radius: 15px; text-align: center; margin: 20px 0; }
+        .price-box b { font-size: 24px; color: white; }
 
-        /* Button WA */
-        .btn-wa { width: 100%; padding: 18px; background: var(--primary); color: #000; font-weight: 900; border: none; border-radius: 15px; cursor: pointer; margin-top: 10px; text-transform: uppercase; font-size: 16px; transition: 0.2s; }
-        .btn-wa:active { transform: scale(0.96); }
+        .btn-wa { width: 100%; padding: 18px; background: var(--primary); color: #000; font-weight: 900; border: none; border-radius: 15px; cursor: pointer; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -74,17 +64,15 @@
 
 <div class="container">
     <div class="card-grid">
-        <div class="card" onclick="openOrder('Mobile Legends', 300, 'game')">
+        <div class="card" onclick="openOrder('Mobile Legends', 'game')">
             <img src="ml.jpg">
             <div class="card-title">MOBILE LEGENDS</div>
         </div>
-
-        <div class="card" onclick="openOrder('Free Fire', 150, 'game')">
+        <div class="card" onclick="openOrder('Free Fire', 'game')">
             <img src="ff.jpg">
             <div class="card-title">FREE FIRE</div>
         </div>
-
-        <div class="card" onclick="openOrder('CV USDT (IDR)', 16200, 'usdt')">
+        <div class="card" onclick="openOrder('CV USDT (IDR)', 'usdt')">
             <img src="usdt.jpg">
             <div class="card-title">CV USDT (IDR)</div>
         </div>
@@ -94,130 +82,136 @@
 <div id="modalOrder" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeOrder()">&times;</span>
-        <h2 id="modalTitle" style="color: var(--primary); margin: 0 0 10px;">Order</h2>
+        <h2 id="modalTitle" style="color: var(--primary); margin: 0;">Top Up</h2>
 
         <div id="sectionRekGame" style="display:none;">
-            <p style="font-size: 11px; color: #a0aec0; margin: 15px 0 5px; text-align: center;">Tap nomor untuk menyalin:</p>
             <div class="rek-box">
                 <div class="rek-item" onclick="copyText('1910432735')"><span><b>BNI:</b> 1910432735</span> <span class="copy-badge">SALIN</span></div>
                 <div class="rek-item" onclick="copyText('1140029832741')"><span><b>MANDIRI:</b> 1140029832741</span> <span class="copy-badge">SALIN</span></div>
                 <div class="rek-item" onclick="copyText('082185160103')"><span><b>DANA/GOPAY:</b> 082185160103</span> <span class="copy-badge">SALIN</span></div>
             </div>
-            <p style="text-align: center; color: var(--primary); font-size: 12px; margin-top: -10px;"><b>A/N RANGGA AJI IGUSTIRA</b></p>
+            <p style="text-align: center; color: var(--primary); font-size: 11px; margin-top: -10px;">A/N RANGGA AJI IGUSTIRA</p>
         </div>
 
         <div id="sectionRekUsdt" style="display:none;">
-            <p style="font-size: 11px; color: #a0aec0; margin: 15px 0 5px; text-align: center;">Kirim USDT ke Alamat (TRC20):</p>
             <div class="rek-box" onclick="copyText('TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH')" style="cursor:pointer; text-align:center;">
                 <b style="font-size: 11px; word-break: break-all;">TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH</b><br>
-                <span class="copy-badge" style="display:inline-block; margin-top:8px;">KLIK UNTUK SALIN ALAMAT</span>
+                <span class="copy-badge" style="display:inline-block; margin-top:8px;">SALIN ALAMAT TRC20</span>
             </div>
         </div>
 
-        <label>Jumlah Pesanan:</label>
-        <input type="number" id="inputJml" placeholder="Masukkan jumlah..." oninput="calculate()">
-
-        <div class="price-box">
-            <small id="labelPrice">Total Pembayaran:</small>
-            <b id="displayPrice">Rp 0</b>
+        <label id="labelTarget">Data Tujuan:</label>
+        <div style="display:flex; gap:5px;">
+            <input type="text" id="targetId" placeholder="User ID">
+            <input type="text" id="targetServer" placeholder="(Server)" style="width:100px;">
         </div>
+
+        <label id="labelNominal">Pilih Nominal:</label>
+        <div id="nominalContainer" class="nominal-grid"></div>
 
         <div id="sectionBank" style="display:none;">
-            <label>Pilih Bank/Wallet Pencairan:</label>
+            <label>Pilih Bank Pencairan:</label>
             <select id="selectBank">
-                <option value="">-- Pilih Bank --</option>
-                <option value="BCA">BCA</option>
-                <option value="BNI">BNI</option>
-                <option value="BRI">BRI</option>
-                <option value="MANDIRI">MANDIRI</option>
-                <option value="CIMB">CIMB NIAGA</option>
-                <option value="PERMATA">PERMATA BANK</option>
-                <option value="DANAMON">DANAMON</option>
-                <option value="BSI">BSI (Syariah)</option>
-                <option value="DANA">DANA</option>
-                <option value="GOPAY">GOPAY</option>
-                <option value="OVO">OVO</option>
-                <option value="SHOPEEPAY">SHOPEEPAY</option>
+                <option value="BCA">BCA</option><option value="BNI">BNI</option><option value="BRI">BRI</option>
+                <option value="MANDIRI">MANDIRI</option><option value="DANA">DANA</option><option value="GOPAY">GOPAY</option>
             </select>
+            <label>Jumlah USDT:</label>
+            <input type="number" id="inputUsdt" placeholder="Masukkan angka..." oninput="calculateUsdt()">
         </div>
 
-        <label id="labelTarget">Target Pengiriman:</label>
-        <input type="text" id="inputTarget" placeholder="">
+        <div class="price-box">
+            <small>Total Bayar:</small><br>
+            <b id="displayPrice">Rp 0</b>
+        </div>
         
-        <label>Unggah Bukti Transfer:</label>
-        <input type="file" id="inputBukti">
+        <label>Bukti Transfer:</label>
+        <input type="file">
 
-        <button class="btn-wa" onclick="sendWhatsApp()">KONFIRMASI WHATSAPP</button>
+        <button class="btn-wa" onclick="sendWhatsApp()" style="margin-top:15px;">BELI SEKARANG</button>
     </div>
 </div>
 
 <script>
-    let currentPrice = 0;
-    let currentProductName = "";
+    let selectedPrice = 0;
+    let selectedItem = "";
+    let currentProd = "";
 
-    function openOrder(nama, harga, kategori) {
-        currentProductName = nama;
-        currentPrice = harga;
+    const listML = [
+        {name: "5 Diamonds", price: 1564}, {name: "11 Diamonds", price: 3651},
+        {name: "17 Diamonds", price: 5737}, {name: "25 Diamonds", price: 8344},
+        {name: "40 Diamonds", price: 12516}, {name: "53 Diamonds", price: 16687},
+        {name: "77 Diamonds", price: 23988}, {name: "Weekly Pass", price: 30246}
+    ];
+
+    const listFF = [
+        {name: "50 Diamonds", price: 8000}, {name: "70 Diamonds", price: 10000},
+        {name: "140 Diamonds", price: 20000}, {name: "355 Diamonds", price: 50000}
+    ];
+
+    function openOrder(nama, tipe) {
+        currentProd = nama;
         document.getElementById('modalTitle').innerText = nama;
-        document.getElementById('inputJml').value = "";
-        document.getElementById('displayPrice').innerText = "Rp 0";
         document.getElementById('modalOrder').style.display = "block";
+        const container = document.getElementById('nominalContainer');
+        container.innerHTML = "";
+        selectedPrice = 0;
+        document.getElementById('displayPrice').innerText = "Rp 0";
 
-        const gameRek = document.getElementById('sectionRekGame');
-        const usdtRek = document.getElementById('sectionRekUsdt');
-        const bankSel = document.getElementById('sectionBank');
-        const priceLbl = document.getElementById('labelPrice');
-        const targetLbl = document.getElementById('labelTarget');
-        const targetInp = document.getElementById('inputTarget');
-
-        if(kategori === 'usdt') {
-            gameRek.style.display = "none";
-            usdtRek.style.display = "block";
-            bankSel.style.display = "block";
-            priceLbl.innerText = "Estimasi IDR Diterima:";
-            targetLbl.innerText = "Nomor Rekening / E-Wallet Tujuan:";
-            targetInp.placeholder = "Masukkan No Rekening & Nama";
+        if(tipe === 'game') {
+            document.getElementById('sectionRekGame').style.display = "block";
+            document.getElementById('sectionRekUsdt').style.display = "none";
+            document.getElementById('sectionBank').style.display = "none";
+            document.getElementById('targetServer').style.display = "block";
+            document.getElementById('labelNominal').style.display = "block";
+            
+            let list = (nama === 'Mobile Legends') ? listML : listFF;
+            list.forEach(item => {
+                let div = document.createElement('div');
+                div.className = "nominal-item";
+                div.innerHTML = `<b>${item.name}</b><span>Rp ${item.price.toLocaleString()}</span>`;
+                div.onclick = () => {
+                    document.querySelectorAll('.nominal-item').forEach(el => el.classList.remove('active'));
+                    div.classList.add('active');
+                    selectedPrice = item.price;
+                    selectedItem = item.name;
+                    document.getElementById('displayPrice').innerText = "Rp " + item.price.toLocaleString();
+                };
+                container.appendChild(div);
+            });
         } else {
-            gameRek.style.display = "block";
-            usdtRek.style.display = "none";
-            bankSel.style.display = "none";
-            priceLbl.innerText = "Total Pembayaran:";
-            targetLbl.innerText = "User ID & Server:";
-            targetInp.placeholder = "Contoh: 12345678 (1234)";
+            document.getElementById('sectionRekGame').style.display = "none";
+            document.getElementById('sectionRekUsdt').style.display = "block";
+            document.getElementById('sectionBank').style.display = "block";
+            document.getElementById('targetServer').style.display = "none";
+            document.getElementById('labelNominal').style.display = "none";
+            document.getElementById('labelTarget').innerText = "No. Rekening Tujuan:";
         }
+    }
+
+    function calculateUsdt() {
+        let jml = document.getElementById('inputUsdt').value;
+        selectedPrice = jml * 16200;
+        document.getElementById('displayPrice').innerText = "Rp " + selectedPrice.toLocaleString();
     }
 
     function closeOrder() { document.getElementById('modalOrder').style.display = "none"; }
 
-    function calculate() {
-        let val = document.getElementById('inputJml').value;
-        document.getElementById('displayPrice').innerText = "Rp " + (val * currentPrice).toLocaleString('id-ID');
-    }
-
-    function copyText(txt) {
-        navigator.clipboard.writeText(txt);
-        alert("Berhasil disalin: " + txt);
-    }
+    function copyText(t) { navigator.clipboard.writeText(t); alert("Salin: " + t); }
 
     function sendWhatsApp() {
-        let jml = document.getElementById('inputJml').value;
-        let target = document.getElementById('inputTarget').value;
-        let total = document.getElementById('displayPrice').innerText;
+        let id = document.getElementById('targetId').value;
+        let srv = document.getElementById('targetServer').value;
         let bank = document.getElementById('selectBank').value;
-
-        if(!jml || !target) return alert("Harap isi semua data!");
-
-        let pesan = `Halo Bos Rangga,\n\nOrder: ${currentProductName}\nJumlah: ${jml}\nTotal: ${total}\nTarget: ${target}`;
+        let price = document.getElementById('displayPrice').innerText;
         
-        if(currentProductName.includes('USDT')) {
-            if(!bank) return alert("Pilih bank pencairan dulu Bos!");
-            pesan = `Halo Bos Rangga,\n\nOrder: CV USDT\nJumlah: ${jml} USDT\nBank Pencairan: ${bank}\nTarget: ${target}\nEstimasi Terima: ${total}`;
+        if(!id || selectedPrice === 0) return alert("Lengkapi data dan pilih nominal!");
+
+        let msg = `Halo Bos Rangga,\n\nOrder: ${currentProd}\nItem: ${selectedItem}\nID: ${id} (${srv})\nTotal: ${price}`;
+        if(currentProd.includes('USDT')) {
+            msg = `Halo Bos Rangga,\nCV USDT\nJumlah: ${document.getElementById('inputUsdt').value} USDT\nBank: ${bank}\nRekening: ${id}\nEstimasi: ${price}`;
         }
-
-        window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(pesan)}`;
+        window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(msg)}`;
     }
-
-    window.onclick = function(e) { if(e.target.className === 'modal') closeOrder(); }
 </script>
 </body>
 </html>
