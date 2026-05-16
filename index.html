@@ -32,7 +32,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-1: -1;
+            z-index: -1;
             pointer-events: none;
         }
 
@@ -94,7 +94,7 @@
         .rek-item { padding: 10px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 13px; }
         .copy-badge { font-size: 9px; background: var(--primary); padding: 4px 8px; border-radius: 6px; font-weight: 900; color: black; text-transform: uppercase; }
 
-        /* CSS Fitur Tambahan QRIS */
+        /* CSS Fitur Tampilan QRIS */
         .qris-container { background: #fff; padding: 12px; border-radius: 15px; text-align: center; margin-top: 10px; border: 2px dashed #00ff88; }
         .qris-img { width: 100%; max-width: 180px; height: auto; display: block; margin: 8px auto 0; border-radius: 8px; }
 
@@ -340,6 +340,20 @@
         "Growtopia": { rate: 16500, items: [{n: "1 Gems Pack", p: 16500}, {n: "5 Gems Pack", p: 79500}] }
     };
 
+    // Fungsi Pengatur Nominal QRIS Otomatis Terintegrasi API QR Server (Mengikuti Total Harga Pilihan)
+    function updateQrisOtomatis() {
+        const qrisImg = document.querySelector('.qris-img');
+        if (!qrisImg) return;
+        
+        if (hargaPilihan > 0) {
+            // Mengubah link gambar secara dinamis dengan parameter nominal harga pesanan
+            qrisImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://igustiragrup.com/pay?amount=${hargaPilihan}`;
+        } else {
+            // Jika harga masih 0, kembali ke gambar bawaan awal
+            qrisImg.src = "qris.jpg";
+        }
+    }
+
     function openOrder(game) {
         gameAktif = game;
         document.getElementById('modalOrder').style.display = "block";
@@ -377,7 +391,6 @@
             document.getElementById('srvBox').style.display = sHide.includes(game) ? "none" : "block";
             rateCustom = db[game].rate;
             
-            // Penambahan Area Fitur QRIS di bawah Rekening Utama Tanpa Mengubah Menu Apapun
             document.getElementById('rekArea').innerHTML = `
                 <div class="rek-box">
                     <div class="rek-item" onclick="copy('1910432735')"><span><b>BNI:</b> 1910432735</span> <span class="copy-badge">SALIN</span></div>
@@ -402,6 +415,7 @@
                     document.getElementById('inpCustom').value = "";
                     hargaPilihan = i.p; itemPilihan = i.n; nominalKetik = 0;
                     document.getElementById('txtTotal').innerText = "Rp " + i.p.toLocaleString('id-ID');
+                    updateQrisOtomatis(); // Panggil pengubah nominal otomatis QRIS
                 };
                 list.appendChild(d);
             });
@@ -421,6 +435,7 @@
             hargaPilihan = 0;
             nominalKetik = 0;
         }
+        updateQrisOtomatis(); // Panggil pengubah nominal otomatis QRIS
     }
 
     function calcUsdt() {
