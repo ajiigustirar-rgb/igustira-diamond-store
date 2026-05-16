@@ -32,7 +32,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-1: -1;
             pointer-events: none;
         }
 
@@ -62,7 +62,6 @@
         .card:hover img { filter: brightness(1); }
         .card-title { padding: 15px; font-weight: 800; font-size: 13px; text-align: center; background: rgba(36, 47, 72, 0.9); letter-spacing: 0.5px; }
 
-        /* Khusus Kartu Premium USDT */
         .card.premium-card { border: 1px solid var(--primary); box-shadow: 0 0 15px rgba(0,255,136,0.1); }
         .card.premium-card .card-title { background: linear-gradient(135deg, #004d26 0%, #242f48 100%); color: var(--primary); }
 
@@ -94,6 +93,10 @@
         .rek-box { background: white; color: black; padding: 12px 15px; border-radius: 15px; margin-bottom: 15px; box-sizing: border-box; }
         .rek-item { padding: 10px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 13px; }
         .copy-badge { font-size: 9px; background: var(--primary); padding: 4px 8px; border-radius: 6px; font-weight: 900; color: black; text-transform: uppercase; }
+
+        /* CSS Fitur Tambahan QRIS */
+        .qris-container { background: #fff; padding: 12px; border-radius: 15px; text-align: center; margin-top: 10px; border: 2px dashed #00ff88; }
+        .qris-img { width: 100%; max-width: 180px; height: auto; display: block; margin: 8px auto 0; border-radius: 8px; }
 
         .price-box { background: var(--accent); padding: 18px; border-radius: 18px; text-align: center; margin: 20px 0; border: 1px solid rgba(255,255,255,0.1); }
         .price-box b { font-size: 26px; color: white; display: block; margin-top: 2px; }
@@ -142,6 +145,12 @@
             <div class="card" onclick="openOrder('Efootball')"><img src="efootball.jpg"><div class="card-title">EFOOTBALL PES</div></div>
             <div class="card" onclick="openOrder('Metal Slug: Awakening')"><img src="metalslug.jpg"><div class="card-title">METAL SLUG</div></div>
             <div class="card" onclick="openOrder('Clash of Clans')"><img src="coc.jpg"><div class="card-title">CLASH OF CLANS</div></div>
+            
+            <div class="card" onclick="openOrder('Black Clover M')"><img src="bcm.jpg"><div class="card-title">BLACK CLOVER M</div></div>
+            <div class="card" onclick="openOrder('NIKKE')"><img src="nikke.jpg"><div class="card-title">NIKKE</div></div>
+            <div class="card" onclick="openOrder('Blue Archive')"><img src="ba.jpg"><div class="card-title">BLUE ARCHIVE</div></div>
+            <div class="card" onclick="openOrder('Point Blank')"><img src="pb.jpg"><div class="card-title">POINT BLANK</div></div>
+            <div class="card" onclick="openOrder('Growtopia')"><img src="gt.jpg"><div class="card-title">GROWTOPIA</div></div>
         </div>
     </div>
 </div>
@@ -167,11 +176,11 @@
         </div>
 
         <div id="nominalArea">
-            <label>Pilih Paket:</label>
+            <label>Pilih Paket (Min. 50):</label>
             <div id="nominalList" class="nominal-grid"></div>
             <div class="custom-box">
-                <label style="margin-top:0; color:var(--primary);">Atau Ketik Nominal Sendiri:</label>
-                <input type="number" id="inpCustom" placeholder="Contoh: 100" oninput="calcCustom()">
+                <label style="margin-top:0; color:var(--primary);">Atau Ketik Nominal Sendiri (Min. 50):</label>
+                <input type="number" id="inpCustom" placeholder="Contoh: 75" oninput="calcCustom()">
             </div>
         </div>
 
@@ -309,21 +318,26 @@
     animate();
 
     // --- GAME ENGINE DATABASE & LOGIC SYSTEM ---
-    let hargaPilihan = 0, itemPilihan = "", gameAktif = "", rateCustom = 0;
+    let hargaPilihan = 0, itemPilihan = "", gameAktif = "", rateCustom = 0, nominalKetik = 0;
     
     const db = {
-        "Mobile Legends": { rate: 312, items: [{n: "5 Diamonds", p: 1564}, {n: "11 Diamonds", p: 3651}, {n: "17 Diamonds", p: 5737}, {n: "25 Diamonds", p: 8344}, {n: "77 Diamonds", p: 23988}, {n: "Weekly Pass", p: 30246}] },
-        "Free Fire": { rate: 135.71, items: [{n: "70 Diamonds", p: 9500}, {n: "140 Diamonds", p: 19000}, {n: "355 Diamonds", p: 47500}] },
-        "PUBG Mobile": { rate: 233.33, items: [{n: "60 UC", p: 14000}, {n: "325 UC", p: 65000}] },
-        "Honor of Kings": { rate: 200, items: [{n: "80 Tokens", p: 16000}, {n: "240 Tokens", p: 48000}] },
-        "Genshin Impact": { rate: 250, items: [{n: "60 Crystals", p: 15000}, {n: "Blessing Moon", p: 75000}] },
-        "Valorant": { rate: 112, items: [{n: "625 Points", p: 70000}, {n: "1125 Points", p: 125000}] },
-        "Call of Duty Mobile": { rate: 145, items: [{n: "31 CP", p: 5000}, {n: "63 CP", p: 10000}, {n: "128 CP", p: 20000}] },
-        "EA SPORTS FC Mobile": { rate: 120, items: [{n: "100 Points", p: 14500}, {n: "500 Points", p: 72000}] },
-        "Roblox": { rate: 180, items: [{n: "80 Robux", p: 15000}, {n: "400 Robux", p: 75000}] },
-        "Efootball": { rate: 130, items: [{n: "100 Coins", p: 16000}, {n: "500 Coins", p: 79000}] },
-        "Metal Slug: Awakening": { rate: 150, items: [{n: "60 Ruby", p: 14000}, {n: "310 Ruby", p: 69000}] },
-        "Clash of Clans": { rate: 160, items: [{n: "88 Gems", p: 15000}, {n: "500 Gems", p: 75000}] }
+        "Mobile Legends": { rate: 335, items: [{n: "77 Diamonds", p: 25800}, {n: "154 Diamonds", p: 51600}, {n: "256 Diamonds", p: 89500}] },
+        "Free Fire": { rate: 148, items: [{n: "70 Diamonds", p: 10500}, {n: "140 Diamonds", p: 21000}, {n: "355 Diamonds", p: 52500}] },
+        "PUBG Mobile": { rate: 255, items: [{n: "60 UC", p: 15500}, {n: "325 UC", p: 73000}] },
+        "Honor of Kings": { rate: 215, items: [{n: "80 Tokens", p: 17500}, {n: "240 Tokens", p: 52000}] },
+        "Genshin Impact": { rate: 270, items: [{n: "60 Crystals", p: 16500}, {n: "300 Crystals", p: 82500}] },
+        "Valorant": { rate: 122, items: [{n: "625 Points", p: 76500}, {n: "1125 Points", p: 137500}] },
+        "Call of Duty Mobile": { rate: 158, items: [{n: "63 CP", p: 11000}, {n: "128 CP", p: 22000}] },
+        "EA SPORTS FC Mobile": { rate: 132, items: [{n: "100 Points", p: 16000}, {n: "500 Points", p: 79000}] },
+        "Roblox": { rate: 195, items: [{n: "80 Robux", p: 16500}, {n: "400 Robux", p: 82500}] },
+        "Efootball": { rate: 142, items: [{n: "100 Coins", p: 17500}, {n: "500 Coins", p: 87000}] },
+        "Metal Slug: Awakening": { rate: 165, items: [{n: "60 Ruby", p: 15500}, {n: "310 Ruby", p: 76000}] },
+        "Clash of Clans": { rate: 175, items: [{n: "88 Gems", p: 16500}, {n: "500 Gems", p: 82500}] },
+        "Black Clover M": { rate: 240, items: [{n: "200 Black Crystals", p: 71500}, {n: "500 Black Crystals", p: 164000}] },
+        "NIKKE": { rate: 285, items: [{n: "320 Gems", p: 87000}, {n: "720 Gems", p: 175000}] },
+        "Blue Archive": { rate: 230, items: [{n: "420 Pyroxene", p: 109000}, {n: "840 Pyroxene", p: 208000}] },
+        "Point Blank": { rate: 120, items: [{n: "1.200 PB Cash", p: 12500}, {n: "6.000 PB Cash", p: 58500}] },
+        "Growtopia": { rate: 16500, items: [{n: "1 Gems Pack", p: 16500}, {n: "5 Gems Pack", p: 79500}] }
     };
 
     function openOrder(game) {
@@ -337,6 +351,7 @@
         document.getElementById('inpNamaRek').value = "";
         document.getElementById('inpUsdt').value = "";
         hargaPilihan = 0;
+        nominalKetik = 0;
 
         if(game === 'CV USDT') {
             document.getElementById('modalTitle').innerText = "CV USDT (IDR)";
@@ -358,16 +373,21 @@
             document.getElementById('gameDataArea').style.display = "block";
             document.getElementById('usdtArea').style.display = "none";
             
-            const sHide = ['PUBG Mobile', 'Valorant', 'Call of Duty Mobile', 'Roblox', 'Efootball', 'Clash of Clans'];
+            const sHide = ['PUBG Mobile', 'Valorant', 'Call of Duty Mobile', 'Roblox', 'Efootball', 'Clash of Clans', 'Point Blank', 'Growtopia'];
             document.getElementById('srvBox').style.display = sHide.includes(game) ? "none" : "block";
             rateCustom = db[game].rate;
             
+            // Penambahan Area Fitur QRIS di bawah Rekening Utama Tanpa Mengubah Menu Apapun
             document.getElementById('rekArea').innerHTML = `
                 <div class="rek-box">
                     <div class="rek-item" onclick="copy('1910432735')"><span><b>BNI:</b> 1910432735</span> <span class="copy-badge">SALIN</span></div>
                     <div class="rek-item" onclick="copy('1140029832741')"><span><b>MANDIRI:</b> 1140029832741</span> <span class="copy-badge">SALIN</span></div>
                     <div class="rek-item" onclick="copy('082185160103')"><span><b>DANA/GOPAY:</b> 082185160103</span> <span class="copy-badge">SALIN</span></div>
                     <p style="text-align:center;font-size:11px;margin:8px 0 0;font-weight:bold;color:#1a202c;">A/N RANGGA AJI IGUSTIRA</p>
+                </div>
+                <div class="qris-container">
+                    <span style="font-size:11px; font-weight:900; color:#1a202c; letter-spacing:0.5px;">⚡ BAYAR OTOMATIS VIA QRIS ALL PAYMENT</span>
+                    <img src="qris.jpg" class="qris-img" alt="QRIS Toko">
                 </div>`;
             
             const list = document.getElementById('nominalList');
@@ -380,7 +400,7 @@
                     document.querySelectorAll('.nominal-item').forEach(e => e.classList.remove('active'));
                     d.classList.add('active');
                     document.getElementById('inpCustom').value = "";
-                    hargaPilihan = i.p; itemPilihan = i.n;
+                    hargaPilihan = i.p; itemPilihan = i.n; nominalKetik = 0;
                     document.getElementById('txtTotal').innerText = "Rp " + i.p.toLocaleString('id-ID');
                 };
                 list.appendChild(d);
@@ -392,12 +412,14 @@
         document.querySelectorAll('.nominal-item').forEach(e => e.classList.remove('active'));
         let jml = document.getElementById('inpCustom').value;
         if(jml > 0) {
+            nominalKetik = parseInt(jml);
             hargaPilihan = Math.round(jml * rateCustom);
             itemPilihan = jml + " Pcs (Custom)";
             document.getElementById('txtTotal').innerText = "Rp " + hargaPilihan.toLocaleString('id-ID');
         } else {
             document.getElementById('txtTotal').innerText = "Rp 0";
             hargaPilihan = 0;
+            nominalKetik = 0;
         }
     }
 
@@ -426,6 +448,10 @@
             let m = `Halo Bos Rangga,\n\nOrder: CV USDT\nJumlah: ${jml} USDT\nBank Pencairan: ${bank}\nNo. Rekening: ${norek}\nNama Pemilik: ${namarek}\nEstimasi IDR Diterima: ${document.getElementById('txtTotal').innerText}`;
             window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
         } else {
+            if(nominalKetik > 0 && nominalKetik < 50) {
+                return alert("Transaksi Ditolak! Minimal pembelian ketik sendiri adalah 50.");
+            }
+
             let id = document.getElementById('inpId').value;
             let srv = document.getElementById('inpSrv').value;
             if(!id || hargaPilihan === 0) return alert("Mohon isi ID Akun dan tentukan nominal paket!");
