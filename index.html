@@ -168,6 +168,13 @@
         .qris-container { background: #fff; padding: 15px; border-radius: 15px; text-align: center; margin-top: 25px; border: 2px dashed #00ff88; color: #1a202c; scroll-margin-top: 20px; }
         .qris-img { width: 100%; max-width: 170px; height: auto; display: block; margin: 8px auto 0; border-radius: 8px; border: 1px solid #eee; }
 
+        /* Area Upload Bukti */
+        .upload-container { background: rgba(255, 77, 77, 0.05); border: 1px dashed #ff4d4d; padding: 15px; border-radius: 15px; margin-top: 20px; text-align: center; transition: 0.3s; }
+        .upload-container.valid { background: rgba(0, 255, 136, 0.05); border-color: var(--primary); }
+        .upload-label { color: #ff4d4d; font-size: 11px; font-weight: bold; display: block; margin-bottom: 8px; text-transform: uppercase; }
+        .upload-container.valid .upload-label { color: var(--primary); }
+        input[type="file"] { background: #0b0f1a; border: 1px solid #323f58; padding: 8px; border-radius: 8px; color: #a0aec0; font-size: 11px; width: 100%; box-sizing: border-box; }
+
         .price-box { background: var(--accent); padding: 18px; border-radius: 18px; text-align: center; margin: 20px 0; border: 1px solid rgba(255,255,255,0.1); }
         .price-box b { font-size: 26px; color: white; display: block; margin-top: 2px; }
 
@@ -291,6 +298,11 @@
 
         <div id="rekArea"></div>
 
+        <div id="uploadArea" class="upload-container">
+            <span id="lblUpload" class="upload-label">⚠️ WAJIB UPLOAD BUKTI MUTASI PEMBAYARAN</span>
+            <input type="file" id="inpFileBukti" accept="image/*" onchange="validateUpload()">
+        </div>
+
         <div class="price-box">
             <small id="priceLabel">Total Harga:</small>
             <b id="txtTotal">Rp 0</b>
@@ -305,11 +317,26 @@
 </div>
 
 <script>
-    let pPilihan = "QRIS"; // default payment method
+    let pPilihan = "QRIS"; 
+    
     function setPayment(method) {
         pPilihan = method;
         document.querySelectorAll('.bank-item').forEach(e => e.classList.remove('active'));
         event.currentTarget.classList.add('active');
+    }
+
+    function validateUpload() {
+        const fileInput = document.getElementById('inpFileBukti');
+        const container = document.getElementById('uploadArea');
+        const label = document.getElementById('lblUpload');
+        
+        if(fileInput.files.length > 0) {
+            container.classList.add('valid');
+            label.innerText = "✅ BUKTI MUTASI BERHASIL DIUNGGAH";
+        } else {
+            container.classList.remove('valid');
+            label.innerText = "⚠️ WAJIB UPLOAD BUKTI MUTASI PEMBAYARAN";
+        }
     }
 
     function toggleSidebar() {
@@ -395,6 +422,9 @@
         document.getElementById('inpNoRek').value = "";
         document.getElementById('inpNamaRek').value = "";
         document.getElementById('inpUsdt').value = "";
+        document.getElementById('inpFileBukti').value = "";
+        document.getElementById('uploadArea').classList.remove('valid');
+        document.getElementById('lblUpload').innerText = "⚠️ WAJIB UPLOAD BUKTI MUTASI PEMBAYARAN";
         hargaPilihan = 0; nominalKetik = 0;
 
         if(game === 'CV USDT') {
@@ -492,6 +522,13 @@
     function copy(t) { navigator.clipboard.writeText(t); alert("Berhasil Disalin: " + t); }
 
     function gasWA() {
+        const fileInput = document.getElementById('inpFileBukti');
+        
+        // WAJIB UPLOAD UNTUK SEMUA TRANSAKSI
+        if (fileInput.files.length === 0) {
+            return alert("Transaksi Gagal! Anda WAJIB memilih dan mengunggah foto Bukti Mutasi Pembayaran di dalam sistem web terlebih dahulu sebelum melanjutkan ke WhatsApp.");
+        }
+
         if(gameAktif === 'CV USDT') {
             let jml = document.getElementById('inpUsdt').value;
             let bank = document.getElementById('selBank').value;
@@ -499,7 +536,7 @@
             let namarek = document.getElementById('inpNamaRek').value;
             if(!jml || !norek || !namarek || hargaPilihan === 0) return alert("Mohon lengkapi seluruh data transaksi USDT Anda!");
             
-            let m = `Halo Bos Rangga,\n\nOrder: CV USDT\nJumlah: ${jml} USDT\nBank Pencairan: ${bank}\nNo. Rekening: ${norek}\nNama Pemilik: ${namarek}\nEstimasi IDR Diterima: ${document.getElementById('txtTotal').innerText}`;
+            let m = `Halo Bos Rangga,\n\nOrder: CV USDT\nJumlah: ${jml} USDT\nBank Pencairan: ${bank}\nNo. Rekening: ${norek}\nNama Pemilik: ${namarek}\nEstimasi IDR Diterima: ${document.getElementById('txtTotal').innerText}\n\n*Bukti Mutasi Pembayaran: [TERUNGGAH DI WEB - SILAKAN TEMPEL GAMBAR DI SINI]*`;
             window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
         } else {
             if(nominalKetik > 0 && nominalKetik < 50) {
@@ -510,13 +547,14 @@
             let srv = document.getElementById('inpSrv').value;
             if(!id || hargaPilihan === 0) return alert("Mohon isi ID Akun dan tentukan nominal paket!");
             
-            // VALIDASI MINIMAL 50K KHUSUS BNI DAN MANDIRI
             if((pPilihan === "BNI" || pPilihan === "MANDIRI") && hargaPilihan < 50000) {
                 return alert(`Transaksi Ditolak! Pembayaran via ${pPilihan} minimal harus Rp 50.000. Total belanjaan Anda saat ini baru Rp ${hargaPilihan.toLocaleString('id-ID')}. Silakan pilih paket yang lebih besar atau gunakan DANA/QRIS.`);
             }
 
             let srvText = (document.getElementById('srvBox').style.display !== "none" && srv) ? ` (${srv})` : "";
-            let m = `Halo Bos Rangga,\n\nOrder: ${gameAktif}\nItem: ${itemPilihan}\nID Tujuan: ${id}${srvText}\nMetode Bayar: ${pPilihan}\nTotal Bayar: ${document.getElementById('txtTotal').innerText}\n\n*Sudah melakukan transaksi aman via Rekening / QRIS Toko*`;
+            
+            // Format lampiran teks bukti terunggah otomatis nempel ke chat
+            let m = `Halo Bos Rangga,\n\nOrder: ${gameAktif}\nItem: ${itemPilihan}\nID Tujuan: ${id}${srvText}\nMetode Bayar: ${pPilihan}\nTotal Bayar: ${document.getElementById('txtTotal').innerText}\n\n*Status Bukti Mutasi: [SUDAH DIUNGGAH DI WEB TOKO]*\n*(Silakan lampirkan/kirimkan kembali file gambarnya di bawah chat ini untuk konfirmasi ulang)*`;
             window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
         }
     }
