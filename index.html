@@ -114,7 +114,6 @@
         .card { background: var(--card-bg); border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.4s; position: relative; backdrop-filter: blur(5px); }
         .card:hover { transform: scale(1.05); border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,255,136,0.3); }
         
-        /* Fallback CSS Gambar Pecah */
         .card .img-container { width: 100%; height: 120px; background: linear-gradient(135deg, #131a2b 0%, #242f48 100%); position: relative; overflow: hidden; }
         .card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7); transition: 0.3s; display: block; }
         .card:hover img { filter: brightness(1); }
@@ -156,6 +155,7 @@
         .bank-list-container { background: rgba(255, 255, 255, 0.03); border: 1px solid #323f58; border-radius: 15px; padding: 15px; margin-top: 15px; }
         .bank-item { background: #242f48; padding: 10px 12px; border-radius: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s; }
         .bank-item:last-child { margin-bottom: 0; }
+        .bank-item.active { border-color: var(--primary); background: rgba(0,255,136,0.08); }
         .bank-item:hover { border-color: var(--primary); background: rgba(0,255,136,0.05); }
         .bank-info { font-size: 12px; line-height: 1.4; }
         .bank-info b { color: white; display: block; font-size: 13px; }
@@ -305,6 +305,13 @@
 </div>
 
 <script>
+    let pPilihan = "QRIS"; // default payment method
+    function setPayment(method) {
+        pPilihan = method;
+        document.querySelectorAll('.bank-item').forEach(e => e.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+    }
+
     function toggleSidebar() {
         document.getElementById('sidebarMenu').classList.toggle('active');
         document.getElementById('sidebarOverlay').classList.toggle('active');
@@ -379,7 +386,7 @@
     }
 
     function openOrder(game) {
-        gameAktif = game;
+        gameAktif = game; pPilihan = "QRIS";
         document.getElementById('modalOrder').style.display = "block";
         document.getElementById('txtTotal').innerText = "Rp 0";
         document.getElementById('inpCustom').value = "";
@@ -416,24 +423,24 @@
             
             document.getElementById('rekArea').innerHTML = `
                 <div id="targetQris" class="bank-list-container" style="scroll-margin-top:20px;">
-                    <label style="margin-top:0; margin-bottom:10px; color:var(--primary);">Pilihan Rekening Pembayaran:</label>
+                    <label style="margin-top:0; margin-bottom:10px; color:var(--primary);">Pilih Metode / Salin Rekening (Klik Item):</label>
                     
-                    <div class="bank-item" onclick="copy('082185160103')">
+                    <div class="bank-item" onclick="setPayment('DANA'); copy('082185160103')">
                         <div class="bank-info"><b>DANA</b><span>082185160103<br>A/N Rangga Aji Igustira</span></div>
                         <button class="bank-copy-btn">Salin</button>
                     </div>
                     
-                    <div class="bank-item" onclick="copy('1910432735')">
-                        <div class="bank-info"><b>BANK BNI</b><span>1910432735<br>A/N Rangga Aji Igustira</span></div>
+                    <div class="bank-item" onclick="setPayment('BNI'); copy('1910432735')">
+                        <div class="bank-info"><b>BANK BNI (Min. 50k)</b><span>1910432735<br>A/N Rangga Aji Igustira</span></div>
                         <button class="bank-copy-btn">Salin</button>
                     </div>
                     
-                    <div class="bank-item" onclick="copy('1140029832741')">
-                        <div class="bank-info"><b>BANK MANDIRI</b><span>1140029832741<br>A/N Rangga Aji Igustira</span></div>
+                    <div class="bank-item" onclick="setPayment('MANDIRI'); copy('1140029832741')">
+                        <div class="bank-info"><b>BANK MANDIRI (Min. 50k)</b><span>1140029832741<br>A/N Rangga Aji Igustira</span></div>
                         <button class="bank-copy-btn">Salin</button>
                     </div>
 
-                    <div class="qris-container" style="margin-top:15px; padding:10px;">
+                    <div class="qris-container" style="margin-top:15px; padding:10px;" onclick="setPayment('QRIS')">
                         <span style="font-size:11px; font-weight:900; color:#00ff88; letter-spacing:0.5px; display:block; background:#1c2437; padding:5px; border-radius:5px;">⚡ ATAU SCAN QRIS DI BAWAH INI</span>
                         <img src="qris.jpg" class="qris-img" alt="QRIS Toko">
                     </div>
@@ -503,8 +510,13 @@
             let srv = document.getElementById('inpSrv').value;
             if(!id || hargaPilihan === 0) return alert("Mohon isi ID Akun dan tentukan nominal paket!");
             
+            // VALIDASI MINIMAL 50K KHUSUS BNI DAN MANDIRI
+            if((pPilihan === "BNI" || pPilihan === "MANDIRI") && hargaPilihan < 50000) {
+                return alert(`Transaksi Ditolak! Pembayaran via ${pPilihan} minimal harus Rp 50.000. Total belanjaan Anda saat ini baru Rp ${hargaPilihan.toLocaleString('id-ID')}. Silakan pilih paket yang lebih besar atau gunakan DANA/QRIS.`);
+            }
+
             let srvText = (document.getElementById('srvBox').style.display !== "none" && srv) ? ` (${srv})` : "";
-            let m = `Halo Bos Rangga,\n\nOrder: ${gameAktif}\nItem: ${itemPilihan}\nID Tujuan: ${id}${srvText}\nTotal Bayar: ${document.getElementById('txtTotal').innerText}\n\n*Sudah melakukan transaksi aman via Rekening / QRIS Toko*`;
+            let m = `Halo Bos Rangga,\n\nOrder: ${gameAktif}\nItem: ${itemPilihan}\nID Tujuan: ${id}${srvText}\nMetode Bayar: ${pPilihan}\nTotal Bayar: ${document.getElementById('txtTotal').innerText}\n\n*Sudah melakukan transaksi aman via Rekening / QRIS Toko*`;
             window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
         }
     }
