@@ -149,7 +149,6 @@
         .nominal-item.active { border-color: var(--primary); background: rgba(0,255,136,0.12); box-shadow: inset 0 0 8px rgba(0,255,136,0.3); }
         
         .custom-box { background: rgba(255,255,255,0.04); padding: 15px; border-radius: 15px; border: 1px dashed var(--primary); margin-top: 15px; }
-        .rek-box { background: white; color: black; padding: 12px 15px; border-radius: 15px; margin-bottom: 15px; box-sizing: border-box; }
         
         /* List Bank Pembayaran */
         .bank-list-container { background: rgba(255, 255, 255, 0.03); border: 1px solid #323f58; border-radius: 15px; padding: 15px; margin-top: 15px; }
@@ -529,6 +528,8 @@
             return alert("Transaksi Gagal! Anda WAJIB memilih dan mengunggah foto Bukti Mutasi Pembayaran di dalam sistem web terlebih dahulu sebelum melanjutkan ke WhatsApp.");
         }
 
+        let totalHargaTeks = document.getElementById('txtTotal').innerText;
+
         if(gameAktif === 'CV USDT') {
             let jml = document.getElementById('inpUsdt').value;
             let bank = document.getElementById('selBank').value;
@@ -536,8 +537,22 @@
             let namarek = document.getElementById('inpNamaRek').value;
             if(!jml || !norek || !namarek || hargaPilihan === 0) return alert("Mohon lengkapi seluruh data transaksi USDT Anda!");
             
-            let m = `Halo Bos Rangga,\n\nOrder: CV USDT\nJumlah: ${jml} USDT\nBank Pencairan: ${bank}\nNo. Rekening: ${norek}\nNama Pemilik: ${namarek}\nEstimasi IDR Diterima: ${document.getElementById('txtTotal').innerText}\n\n*Bukti Mutasi Pembayaran: [TERUNGGAH DI WEB - SILAKAN TEMPEL GAMBAR DI SINI]*`;
-            window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
+            // AUTOMATIC ACTION: Kirim Data Transaksi CV USDT ke Web Pantau Admin
+            fetch('http://localhost:3000/api/pesanan-baru', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    layanan: 'CV USDT (' + jml + ' USDT)',
+                    tujuan: bank + ' - ' + norek + ' (' + namarek + ')',
+                    metode: 'TRC20',
+                    total: totalHargaTeks
+                })
+            })
+            .then(() => {
+                let m = `Halo Bos Rangga,\n\nOrder: CV USDT\nJumlah: ${jml} USDT\nBank Pencairan: ${bank}\nNo. Rekening: ${norek}\nNama Pemilik: ${namarek}\nEstimasi IDR Diterima: ${totalHargaTeks}\n\n*Bukti Mutasi Pembayaran: [TERUNGGAH DI WEB - SILAKAN TEMPEL GAMBAR DI SINI]*`;
+                window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
+            });
+
         } else {
             if(nominalKetik > 0 && nominalKetik < 50) {
                 return alert("Transaksi Ditolak! Minimal pembelian nominal khusus adalah 50.");
@@ -553,9 +568,26 @@
 
             let srvText = (document.getElementById('srvBox').style.display !== "none" && srv) ? ` (${srv})` : "";
             
-            // Format lampiran teks bukti terunggah otomatis nempel ke chat
-            let m = `Halo Bos Rangga,\n\nOrder: ${gameAktif}\nItem: ${itemPilihan}\nID Tujuan: ${id}${srvText}\nMetode Bayar: ${pPilihan}\nTotal Bayar: ${document.getElementById('txtTotal').innerText}\n\n*Status Bukti Mutasi: [SUDAH DIUNGGAH DI WEB TOKO]*\n*(Silakan lampirkan/kirimkan kembali file gambarnya di bawah chat ini untuk konfirmasi ulang)*`;
-            window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
+            // AUTOMATIC ACTION: Kirim Data Transaksi Top Up Game ke Web Pantau Admin
+            fetch('http://localhost:3000/api/pesanan-baru', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    layanan: gameAktif + ' (' + itemPilihan + ')',
+                    tujuan: id + srvText,
+                    metode: pPilihan,
+                    total: totalHargaTeks
+                })
+            })
+            .then(() => {
+                let m = `Halo Bos Rangga,\n\nOrder: ${gameAktif}\nItem: ${itemPilihan}\nID Tujuan: ${id}${srvText}\nMetode Bayar: ${pPilihan}\nTotal Bayar: ${totalHargaTeks}\n\n*Status Bukti Mutasi: [SUDAH DIUNGGAH DI WEB TOKO]*\n*(Silakan lampirkan/kirimkan kembali file gambarnya di bawah chat ini untuk konfirmasi ulang)*`;
+                window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
+            })
+            .catch(() => {
+                // Cadangan aman jika server panel pantau sedang mati, pembeli tetap bisa diarahkan ke WA
+                let m = `Halo Bos Rangga,\n\nOrder: ${gameAktif}\nItem: ${itemPilihan}\nID Tujuan: ${id}${srvText}\nMetode Bayar: ${pPilihan}\nTotal Bayar: ${totalHargaTeks}`;
+                window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
+            });
         }
     }
 
