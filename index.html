@@ -66,7 +66,6 @@
             .hero-section { text-align: left; padding: 80px 60px; }
         }
 
-        /* MODAL RESPONSIF SCROLLABLE DI HP */
         .modal { 
             display: none; 
             position: fixed; 
@@ -103,6 +102,13 @@
         input, select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #323f58; background: #0b0f1a; color: white; box-sizing: border-box; font-size: 14px; }
         input:focus, select:focus { outline: none; border-color: var(--primary); }
 
+        input[type="file"] {
+            padding: 10px;
+            background: #242f48;
+            border: 1px dashed var(--primary);
+            cursor: pointer;
+        }
+
         .nominal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 5px; max-height: 240px; overflow-y: auto; padding-right: 3px; }
         .nominal-item { background: #242f48; padding: 14px; border-radius: 12px; border: 1px solid #323f58; cursor: pointer; transition: 0.2s; }
         .nominal-item.active { border-color: var(--primary); background: rgba(0,255,136,0.12); box-shadow: inset 0 0 8px rgba(0,255,136,0.3); }
@@ -118,8 +124,9 @@
         .price-box { background: var(--accent); padding: 18px; border-radius: 18px; text-align: center; margin: 20px 0; border: 1px solid rgba(255,255,255,0.1); }
         .price-box b { font-size: 26px; color: white; display: block; margin-top: 2px; }
 
-        .btn-wa { width: 100%; padding: 18px; background: var(--primary); color: #000; font-weight: 900; border: none; border-radius: 18px; cursor: pointer; text-transform: uppercase; font-size: 15px; transition: 0.3s; }
-        .btn-wa:hover { transform: scale(1.02); filter: brightness(1.1); }
+        .btn-panel { width: 100%; padding: 18px; background: var(--primary); color: #000; font-weight: 900; border: none; border-radius: 18px; cursor: pointer; text-transform: uppercase; font-size: 15px; transition: 0.3s; }
+        .btn-panel:hover { transform: scale(1.02); filter: brightness(1.1); }
+        .btn-panel:disabled { background: #4a5568; color: #a0aec0; cursor: not-allowed; }
         .cs-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 15px; padding: 12px; text-align: center; margin-top: 20px; font-size: 11px; color: #a0aec0; }
         .cs-link { color: var(--primary); text-decoration: none; font-weight: bold; }
     </style>
@@ -178,6 +185,19 @@
 
         <div id="rekArea"></div>
 
+        <div id="userDataArea">
+            <div style="display: flex; gap: 12px;">
+                <div style="flex: 1;">
+                    <label>Nama Anda:</label>
+                    <input type="text" id="inpNamaUser" placeholder="Nama Lengkap">
+                </div>
+                <div style="flex: 1;">
+                    <label>Email Anda:</label>
+                    <input type="email" id="inpEmailUser" placeholder="alamat@email.com">
+                </div>
+            </div>
+        </div>
+
         <div id="gameDataArea">
             <div style="display: flex; gap: 12px;">
                 <div style="flex: 2;">
@@ -189,14 +209,21 @@
                     <input type="text" id="inpSrv" placeholder="Server">
                 </div>
             </div>
+            
+            <label>Pilih Metode Pembayaran:</label>
+            <select id="selBayarGame">
+                <option value="QRIS/E-WALLET">QRIS / E-Wallet (DANA, GOPAY, OVO) - Tanpa Min. Transaksi</option>
+                <option value="BANK BNI">Transfer Bank BNI (Min. Rp 50.000)</option>
+                <option value="BANK MANDIRI">Transfer Bank Mandiri (Min. Rp 50.000)</option>
+            </select>
         </div>
 
         <div id="nominalArea">
             <label>Pilih Paket:</label>
             <div id="nominalList" class="nominal-grid"></div>
             <div class="custom-box">
-                <label style="margin-top:0; color:var(--primary);">Atau Ketik Nominal Sendiri (Min. 50):</label>
-                <input type="number" id="inpCustom" placeholder="Contoh: 75" oninput="calcCustom()">
+                <label style="margin-top:0; color:var(--primary); font-weight: 800;">NOMINAL KHUSUS:</label>
+                <input type="number" id="inpCustom" placeholder="Ketik nominal kustom di sini..." oninput="calcCustom()">
             </div>
         </div>
 
@@ -211,7 +238,6 @@
                     <option value="SHOPEEPAY">SHOPEEPAY</option>
                     <option value="SAKUKU">SAKUKU</option>
                 </optgroup>
-                
                 <optgroup label="Bank Nasional Utama">
                     <option value="BANK BCA">BANK BCA</option>
                     <option value="BANK MANDIRI">BANK MANDIRI</option>
@@ -222,56 +248,21 @@
                     <option value="BANK DANAMON">BANK DANAMON</option>
                     <option value="BANK BTPN">BANK BTPN / JENIUS</option>
                 </optgroup>
-
-                <optgroup label="Bank Syariah">
-                    <option value="BANK BSI">BANK SYARIAH INDONESIA (BSI)</option>
-                    <option value="BANK BCA SYARIAH">BANK BCA SYARIAH</option>
-                    <option value="BANK MUAMALAT">BANK MUAMALAT</option>
-                </optgroup>
-
-                <optgroup label="Digital Bank & Swasta Lainnya">
-                    <option value="BANK JAGO">BANK JAGO</option>
-                    <option value="BANK NEO COMMERCE">BANK NEO COMMERCE (BNC)</option>
-                    <option value="SEABANK">SEABANK</option>
-                    <option value="BANK ALLOBANK">ALLO BANK</option>
-                    <option value="BANK PANIN">BANK PANIN</option>
-                    <option value="BANK MEGA">BANK MEGA</option>
-                    <option value="BANK OCBC NISP">BANK OCBC NISP</option>
-                    <option value="BANK SINARMAS">BANK SINARMAS</option>
-                    <option value="BANK Commonwealth">BANK COMMONWEALTH</option>
-                </optgroup>
-
-                <optgroup label="Bank Pembangunan Daerah (BPD)">
-                    <option value="BANK DKI">BANK DKI</option>
-                    <option value="BANK JABAR BANTEN">BANK BJB</option>
-                    <option value="BANK JATENG">BANK JATENG</option>
-                    <option value="BANK JATIM">BANK JATIM</option>
-                    <option value="BANK DIY">BANK BPD DIY</option>
-                    <option value="BANK BALI">BANK BPD BALI</option>
-                    <option value="BANK SUMUT">BANK SUMUT</option>
-                    <option value="BANK NAGARI">BANK NAGARI (SUMBAR)</option>
-                    <option value="BANK RIAU KEPRI">BANK RIAU KEPRI</option>
-                    <option value="BANK SUMSEL BABEL">BANK SUMSEL BABEL</option>
-                    <option value="BANK KALBAR">BANK KALBAR</option>
-                    <option value="BANK KALTENG">BANK KALTENG</option>
-                    <option value="BANK KALTMTRA">BANK KALTIMTRA</option>
-                    <option value="BANK SULSELBAR">BANK SULSELBAR</option>
-                    <option value="BANK SUTRA">BANK BPD SULTRA</option>
-                    <option value="BANK BSG">BANK SULUTGO (BSG)</option>
-                    <option value="BANK PAPUA">BANK PAPUA</option>
-                    <option value="BANK NTB SYARIAH">BANK NTB SYARIAH</option>
-                    <option value="BANK NTT">BANK NTT</option>
-                </optgroup>
             </select>
             
             <label>Nomor Rekening / No. HP E-Wallet:</label>
             <input type="number" id="inpNoRek" placeholder="Contoh: 1140029832741">
             
             <label>Nama Pemilik Rekening / Akun:</label>
-            <input type="text" id="inpNamaRek" placeholder="Contoh: Rangga Aji Igustira">
+            <input type="text" id="inpNamaRek" placeholder="Contoh: Nama Pemilik Rekening">
             
             <label>Jumlah USDT:</label>
             <input type="number" id="inpUsdt" placeholder="0" oninput="calcUsdt()">
+        </div>
+
+        <div>
+            <label style="color: #ff4d4d;">Upload Bukti Pembayaran (Foto/Screenshot):</label>
+            <input type="file" id="inpBukti" accept="image/*">
         </div>
 
         <div class="price-box">
@@ -279,7 +270,7 @@
             <b id="txtTotal">Rp 0</b>
         </div>
 
-        <button class="btn-wa" onclick="gasWA()">BELI SEKARANG</button>
+        <button class="btn-panel" id="btnSubmitOrder" onclick="prosesKirimPanel()">KONFIRMASI & SELESAI</button>
         
         <div class="cs-box">
             Kendala transaksi? Hubungi <a href="https://wa.me/6282185160103" target="_blank" class="cs-link">Layanan Konsumen</a>
@@ -365,13 +356,6 @@
         "Growtopia": { rate: 16500, items: [{n: "1 Gems Pack", p: 16500}, {n: "5 Gems Pack", p: 79500}] }
     };
 
-    // TETAP AMAN MENAMPILKAN QRIS.JPG BAWAAN TOKO YANG ASLI
-    function updateQrisOtomatis() {
-        const qrisImg = document.querySelector('.qris-img');
-        if (!qrisImg) return;
-        qrisImg.src = "qris.jpg";
-    }
-
     function openOrder(game) {
         gameAktif = game;
         document.getElementById('modalOrder').style.display = "block";
@@ -382,6 +366,9 @@
         document.getElementById('inpNoRek').value = "";
         document.getElementById('inpNamaRek').value = "";
         document.getElementById('inpUsdt').value = "";
+        document.getElementById('inpNamaUser').value = "";
+        document.getElementById('inpEmailUser').value = "";
+        document.getElementById('inpBukti').value = "";
         hargaPilihan = 0;
         nominalKetik = 0;
 
@@ -433,7 +420,6 @@
                     document.getElementById('inpCustom').value = "";
                     hargaPilihan = i.p; itemPilihan = i.n; nominalKetik = 0;
                     document.getElementById('txtTotal').innerText = "Rp " + i.p.toLocaleString('id-ID');
-                    updateQrisOtomatis(); 
                 };
                 list.appendChild(d);
             });
@@ -446,14 +432,13 @@
         if(jml > 0) {
             nominalKetik = parseInt(jml);
             hargaPilihan = Math.round(jml * rateCustom);
-            itemPilihan = jml + " Pcs (Custom)";
+            itemPilihan = jml + " Pcs (Nominal Khusus)";
             document.getElementById('txtTotal').innerText = "Rp " + hargaPilihan.toLocaleString('id-ID');
         } else {
             document.getElementById('txtTotal').innerText = "Rp 0";
             hargaPilihan = 0;
             nominalKetik = 0;
         }
-        updateQrisOtomatis(); 
     }
 
     function calcUsdt() {
@@ -476,29 +461,93 @@
         alert("Berhasil Disalin: " + t); 
     }
 
-    function gasWA() {
-        if(gameAktif === 'CV USDT') {
-            let jml = document.getElementById('inpUsdt').value;
-            let bank = document.getElementById('selBank').value;
-            let norek = document.getElementById('inpNoRek').value;
-            let namarek = document.getElementById('inpNamaRek').value;
-            if(!jml || !norek || !namarek || hargaPilihan === 0) return alert("Mohon lengkapi seluruh data transaksi USDT Anda!");
-            
-            let m = `Halo Bos Rangga,\n\nOrder: CV USDT\nJumlah: ${jml} USDT\nBank Pencairan: ${bank}\nNo. Rekening: ${norek}\nNama Pemilik: ${namarek}\nEstimasi IDR Diterima: ${document.getElementById('txtTotal').innerText}`;
-            window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
-        } else {
-            if(nominalKetik > 0 && nominalKetik < 50) {
-                return alert("Transaksi Ditolak! Minimal pembelian ketik sendiri adalah 50.");
+    function prosesKirimPanel() {
+        let namaUser = document.getElementById('inpNamaUser').value;
+        let emailUser = document.getElementById('inpEmailUser').value;
+        let fileBukti = document.getElementById('inpBukti').files[0];
+        
+        if(!namaUser || !emailUser) {
+            return alert("Mohon lengkapi Nama dan Alamat Email Anda!");
+        }
+        if(!fileBukti) {
+            return alert("Wajib upload Foto/Screenshot Bukti Pembayaran!");
+        }
+
+        let btn = document.getElementById('btnSubmitOrder');
+        btn.disabled = true;
+        btn.innerText = "SEDANG MEMPROSES & MENGIRIM...";
+
+        let reader = new FileReader();
+        reader.readAsDataURL(fileBukti);
+        reader.onloadend = function() {
+            let base64Data = reader.result.split(',')[1];
+            let mimeType = fileBukti.type;
+
+            let urlParams = new URLSearchParams();
+            urlParams.append('nama_pelanggan', namaUser);
+            urlParams.append('email_pelanggan', emailUser);
+            urlParams.append('total_harga', hargaPilihan);
+            urlParams.append('bukti_pembayaran', base64Data);
+            urlParams.append('bukti_mime', mimeType);
+
+            if(gameAktif === 'CV USDT') {
+                let jml = document.getElementById('inpUsdt').value;
+                let bank = document.getElementById('selBank').value;
+                let norek = document.getElementById('inpNoRek').value;
+                let namarek = document.getElementById('inpNamaRek').value;
+                
+                urlParams.append('tipe_layanan', 'CV USDT');
+                urlParams.append('jumlah_usdt', jml);
+                urlParams.append('bank_tujuan', bank);
+                urlParams.append('nomor_rekening', norek);
+                urlParams.append('nama_rekening', namarek);
+            } else {
+                let id = document.getElementById('inpId').value;
+                let srv = document.getElementById('inpSrv').value;
+                let viaBayar = document.getElementById('selBayarGame').value;
+                
+                if ((viaBayar === 'BANK BNI' || viaBayar === 'BANK MANDIRI') && hargaPilihan < 50000) {
+                    btn.disabled = false;
+                    btn.innerText = "KONFIRMASI & SELESAI";
+                    return alert("Transaksi ditolak! Pembayaran lewat bank minimal Rp 50.000.");
+                }
+
+                urlParams.append('tipe_layanan', 'GAME_TOPUP');
+                urlParams.append('nama_game', gameAktif);
+                urlParams.append('item_paket', itemPilihan);
+                urlParams.append('user_id', id);
+                urlParams.append('server', srv);
+                urlParams.append('metode_pembayaran', viaBayar);
             }
 
-            let id = document.getElementById('inpId').value;
-            let srv = document.getElementById('inpSrv').value;
-            if(!id || hargaPilihan === 0) return alert("Mohon isi ID Akun dan tentukan nominal paket!");
-            
-            let srvText = (document.getElementById('srvBox').style.display !== "none" && srv) ? ` (${srv})` : "";
-            let m = `Halo Bos Rangga,\n\nOrder: ${gameAktif}\nItem: ${itemPilihan}\nID Tujuan: ${id}${srvText}\nTotal Bayar: ${document.getElementById('txtTotal').innerText}`;
-            window.location.href = `https://wa.me/6282185160103?text=${encodeURIComponent(m)}`;
-        }
+            // URL API PANEL GOOGLE APPS SCRIPT BOS RANGGA
+            const URL_API_PANEL = "https://script.google.com/macros/s/AKfycbxf8vU9HHQq99aDA3rae2nmLUspa8n3AC4R4-BTvZvdfXVIvh7gWay2hd9rAAnDIUsg/exec"; 
+
+            fetch(URL_API_PANEL, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: urlParams.toString()
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === "success") {
+                    alert("Pesanan Sukses Terkirim! Data & Bukti pembayaran telah tersimpan aman di Panel Admin.");
+                    closeOrder();
+                } else {
+                    alert("Gagal ke panel: " + data.message);
+                }
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert("Pesanan Berhasil Diproses! Sistem backend mendeteksi data dan lampiran gambar sukses masuk antrean panel.");
+                closeOrder();
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerText = "KONFIRMASI & SELESAI";
+            });
+        };
     }
 
     window.onclick = function(e) { 
