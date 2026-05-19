@@ -34,9 +34,14 @@
 </head>
 <body>
 
+<div class="sidebar">...</div> 
 <div class="main-content">
     <div class="hero-section"><h1>IGUSTIRA STORE</h1></div>
-    <div class="container">...</div>
+    <div class="container">
+        <div class="card-grid">
+            <div class="card" onclick="openOrder('Mobile Legends')"><div class="card-title">MOBILE LEGENDS</div></div>
+            </div>
+    </div>
 </div>
 
 <div id="modalOrder" class="modal">...</div>
@@ -48,44 +53,36 @@
     const firebaseConfig = {
         apiKey: "AIzaSyDFZVOrLwcCjdKVWFSeNz8LVBIVxidtMkA",
         authDomain: "igustira-store.firebaseapp.com",
-        databaseURL: "https://igustira-store-default-rtdb.asia-southeast1.firebasedatabase.app",
         projectId: "igustira-store",
         storageBucket: "igustira-store.firebasestorage.app",
         messagingSenderId: "100273952262",
-        appId: "1:100273952262:web:72d319bd66172e11149587",
-        measurementId: "G-VWEYCNNB4F"
+        appId: "1:100273952262:web:72d319bd66172e11149587"
     };
-
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Fungsi kirim ke Firestore
-    window.saveToFirestore = async (dataPesanan) => {
+    window.saveToFirestore = async (data) => {
         try {
-            await addDoc(collection(db, "pelanggan"), { ...dataPesanan, timestamp: new Date() });
-            console.log("Data masuk ke Firestore");
-        } catch (e) { console.error("Error Firestore:", e); }
+            await addDoc(collection(db, "pelanggan"), { ...data, timestamp: new Date() });
+        } catch(e) { console.error(e); }
     };
 </script>
 
 <script>
-    // ... (Sisa fungsi asli Anda) ...
+    // FUNGSI ANDA
     function prosesKirimPanel() {
-        // ... (Kode validasi Anda) ...
+        // ... (kode Anda) ...
         reader.onloadend = function() {
-            // ... (Kode upload Anda) ...
-
-            // Panggil Fungsi Firebase
+            // Panggil Firebase
             saveToFirestore({
                 nama: document.getElementById('inpNamaUser').value,
                 email: document.getElementById('inpEmailUser').value,
                 game: gameAktif,
                 harga: hargaPilihan
             });
-
-            // Fetch Backend Lama
-            fetch(URL_API_PANEL, { ... }).then(...);
-        };
+            // Fetch Lama
+            fetch(URL_API_PANEL, { ... });
+        }
     }
 </script>
 </body>
