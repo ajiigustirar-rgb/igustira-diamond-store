@@ -1,65 +1,64 @@
-<h2 id="modalTitle">Order</h2>
-<input type="text" id="inpNamaUser" placeholder="Nama Lengkap">
-<input type="text" id="inpId" placeholder="User ID">
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGUSTIRA STORE - OFFICIAL</title>
+    <style>
+        :root { --primary: #00ff88; --bg: #0b0f1a; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; }
+        .hero { padding: 40px; text-align: center; border-bottom: 3px solid var(--primary); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; padding: 20px; max-width: 1000px; margin: auto; }
+        .card { background: #1c2437; padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; border: 1px solid #323f58; transition: 0.3s; }
+        .card:hover { border-color: var(--primary); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); padding: 20px; box-sizing: border-box; }
+        .content { background: #1c2437; max-width: 400px; margin: 50px auto; padding: 20px; border-radius: 20px; }
+        input, select, button { width: 100%; padding: 12px; margin-top: 10px; border-radius: 10px; border: 1px solid #323f58; background: #0b0f1a; color: white; }
+        .btn-submit { background: var(--primary); color: #000; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
 
-<select id="inpNominal">
-    <option value="">Pilih Nominal / Jumlah</option>
-    <option value="100">100 Diamond / USDT</option>
-    <option value="500">500 Diamond / USDT</option>
-</select>
+<div class="hero"><h1>IGUSTIRA STORE</h1></div>
+<div class="grid" id="daftarGame"></div>
 
-<select id="inpMetode">
-    <option value="">Pilih Metode Pembayaran</option>
-    <option value="DANA">DANA</option>
-    <option value="GOPAY">GOPAY</option>
-    <option value="BANK">TRANSFER BANK</option>
-</select>
-
-<button class="btn-panel" id="btnSubmitOrder" onclick="prosesKirimPanel()">KONFIRMASI & SELESAI</button>
+<div id="modal" class="modal">
+    <div class="content">
+        <h2 id="titleModal">Order</h2>
+        <input type="text" id="nama" placeholder="Nama Lengkap">
+        <input type="text" id="userId" placeholder="User ID">
+        <select id="nominal"><option value="">Pilih Nominal</option><option value="100">100 Diamond</option><option value="500">500 Diamond</option></select>
+        <select id="metode"><option value="">Pilih Metode Pembayaran</option><option value="DANA">DANA</option><option value="GOPAY">GOPAY</option></select>
+        <button class="btn-submit" onclick="prosesOrder()">KONFIRMASI & SELESAI</button>
+        <button onclick="document.getElementById('modal').style.display='none'">Batal</button>
+    </div>
+</div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyDFZVOrLwcCjdKVWFSeNz8LVBIVxidtMkA",
-        projectId: "igustira-store"
-    };
-    const db = getFirestore(initializeApp(firebaseConfig));
-
-    window.simpanKeFirebase = async (data) => {
-        try {
-            await addDoc(collection(db, "pelanggan"), { ...data, timestamp: new Date() });
-        } catch(e) { console.error("Firebase Error:", e); }
-    };
+    const firebaseConfig = { apiKey: "AIzaSyDFZVOrLwcCjdKVWFSeNz8LVBIVxidtMkA", projectId: "igustira-store" };
+    window.db = getFirestore(initializeApp(firebaseConfig));
+    window.addDoc = addDoc; window.collection = collection;
 </script>
 
 <script>
-    function prosesKirimPanel() {
-        const data = {
-            nama: document.getElementById('inpNamaUser').value,
-            id: document.getElementById('inpId').value,
-            game: gameAktif,
-            nominal: document.getElementById('inpNominal').value,
-            metode: document.getElementById('inpMetode').value
-        };
+    const games = ["CV USDT", "MOBILE LEGENDS", "FREE FIRE", "PUBG MOBILE", "HONOR OF KINGS", "GENSHIN IMPACT", "VALORANT", "CALL OF DUTY MOBILE", "EA SPORTS FC MOBILE", "ROBLOX", "EFOOTBALL PES", "METAL SLUG: AWAKENING", "CLASH OF CLANS", "BLACK CLOVER M", "NIKKE", "BLUE ARCHIVE", "POINT BLANK", "GROWTOPIA"];
+    let gPilih = "";
+    games.forEach(g => document.getElementById('daftarGame').innerHTML += `<div class="card" onclick="openModal('${g}')"><h3>${g}</h3></div>`);
+    
+    function openModal(g) { gPilih = g; document.getElementById('titleModal').innerText = g; document.getElementById('modal').style.display = "block"; }
 
-        // 1. Simpan ke Firebase dulu
-        window.simpanKeFirebase(data);
-
-        // 2. Lanjutkan proses ke Panel Admin asli Anda
-        // Pastikan variabel URL_API_PANEL sudah terdefinisi di kode Anda
-        fetch(URL_API_PANEL, {
-            method: 'POST',
-            body: JSON.stringify(data)
-        }).then(res => res.json()).then(data => {
-            if(data.status === "success") {
-                alert("Pesanan Sukses Terkirim!");
-                closeOrder();
-            }
-        }).catch(err => {
-            alert("Sistem backend terdeteksi."); // Sesuai kode Anda
-            closeOrder();
-        });
+    async function prosesOrder() {
+        const data = { nama: document.getElementById('nama').value, id: document.getElementById('userId').value, game: gPilih, nominal: document.getElementById('nominal').value, metode: document.getElementById('metode').value };
+        if(!data.nama || !data.id) return alert("Isi semua data!");
+        
+        try {
+            await addDoc(collection(window.db, "pesanan"), { ...data, tgl: new Date() });
+            alert("Data tersimpan ke Firebase!");
+            document.getElementById('modal').style.display = "none";
+        } catch(e) { alert("Error: " + e.message); }
     }
 </script>
+</body>
+</html>
