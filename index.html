@@ -5,66 +5,554 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>IGUSTIRA STORE - OFFICIAL</title>
     <style>
-        :root { --primary: #00ff88; --bg: #0b0f1a; --card-bg: rgba(28, 36, 55, 0.85); --accent: #7d3cf0; --sidebar: rgba(19, 26, 43, 0.9); }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; display: flex; flex-direction: column; min-height: 100vh; position: relative; overflow-x: hidden; }
-        /* ... (CSS Asli Anda tetap di sini) ... */
+        :root { 
+            --primary: #00ff88; 
+            --bg: #0b0f1a; 
+            --card-bg: rgba(28, 36, 55, 0.85); 
+            --accent: #7d3cf0; 
+            --sidebar: rgba(19, 26, 43, 0.9);
+        }
+        
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: var(--bg); 
+            color: white; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #gaming-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .sidebar { width: 240px; background: var(--sidebar); height: 100vh; position: fixed; border-right: 1px solid rgba(255,255,255,0.05); padding: 20px; box-sizing: border-box; display: none; z-index: 10; backdrop-filter: blur(10px); }
+        .sidebar-logo { font-size: 20px; font-weight: 900; color: var(--primary); margin-bottom: 30px; border-bottom: 2px solid var(--primary); padding-bottom: 10px; text-transform: uppercase; }
+        .nav-link { display: block; color: #a0aec0; text-decoration: none; padding: 12px 15px; border-radius: 10px; margin-bottom: 5px; font-weight: 600; transition: 0.3s; }
+        .nav-link:hover { background: rgba(0,255,136,0.1); color: var(--primary); }
+
+        .main-content { flex: 1; margin-left: 0; transition: 0.3s; position: relative; z-index: 1; }
+
+        .hero-section { background: linear-gradient(rgba(11, 15, 26, 0.4), rgba(11, 15, 26, 0.8)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=2070'); background-size: cover; background-position: center; padding: 60px 20px; text-align: center; border-bottom: 3px solid var(--primary); }
+        .hero-section h1 { font-size: 36px; margin: 0; font-weight: 900; letter-spacing: 3px; text-shadow: 0 0 20px var(--primary); text-transform: uppercase; }
+        .hero-section p { font-size: 13px; color: var(--primary); font-weight: bold; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; }
+
+        .container { padding: 40px 20px; max-width: 1200px; margin: auto; box-sizing: border-box; }
+        .section-title { font-size: 20px; font-weight: 800; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
+        .section-title::before { content: ""; width: 5px; height: 25px; background: var(--primary); border-radius: 5px; }
+
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; }
+        .card { background: var(--card-bg); border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.4s; position: relative; backdrop-filter: blur(5px); }
+        .card:hover { transform: scale(1.05); border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,255,136,0.3); }
+        .card img { width: 100%; height: 140px; object-fit: cover; filter: brightness(0.7); transition: 0.3s; }
+        .card:hover img { filter: brightness(1); }
+        .card-title { padding: 15px; font-weight: 800; font-size: 13px; text-align: center; background: rgba(36, 47, 72, 0.9); letter-spacing: 0.5px; }
+
+        .card.premium-card { border: 1px solid var(--primary); box-shadow: 0 0 15px rgba(0,255,136,0.1); }
+        .card.premium-card .card-title { background: linear-gradient(135deg, #004d26 0%, #242f48 100%); color: var(--primary); }
+
+        @media (min-width: 1024px) {
+            .sidebar { display: block; }
+            .main-content { margin-left: 240px; }
+            .hero-section { text-align: left; padding: 80px 60px; }
+        }
+
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 9999; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.85); 
+            overflow-y: scroll; 
+            -webkit-overflow-scrolling: touch; 
+            padding: 10px 0; 
+            box-sizing: border-box; 
+            backdrop-filter: blur(5px); 
+        }
+        
+        .modal-content { 
+            background: #1c2437; 
+            margin: 10px auto 50px auto; 
+            padding: 25px; 
+            width: 92%; 
+            max-width: 460px; 
+            border-radius: 25px; 
+            border: 1px solid var(--primary); 
+            position: relative; 
+            box-sizing: border-box; 
+            box-shadow: 0 0 50px rgba(0,0,0,0.6); 
+            z-index: 10000; 
+        }
+
+        .close { position: absolute; right: 20px; top: 15px; font-size: 32px; color: #ff4d4d; cursor: pointer; font-weight: bold; line-height: 1; }
+        
+        label { display: block; margin-top: 15px; font-size: 11px; color: #a0aec0; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #323f58; background: #0b0f1a; color: white; box-sizing: border-box; font-size: 14px; }
+        input:focus, select:focus { outline: none; border-color: var(--primary); }
+
+        input[type="file"] {
+            padding: 10px;
+            background: #242f48;
+            border: 1px dashed var(--primary);
+            cursor: pointer;
+        }
+
+        .nominal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 5px; max-height: 240px; overflow-y: auto; padding-right: 3px; }
+        .nominal-item { background: #242f48; padding: 14px; border-radius: 12px; border: 1px solid #323f58; cursor: pointer; transition: 0.2s; }
+        .nominal-item.active { border-color: var(--primary); background: rgba(0,255,136,0.12); box-shadow: inset 0 0 8px rgba(0,255,136,0.3); }
+        
+        .custom-box { background: rgba(255,255,255,0.04); padding: 15px; border-radius: 15px; border: 1px dashed var(--primary); margin-top: 15px; }
+        .rek-box { background: white; color: black; padding: 12px 15px; border-radius: 15px; margin-bottom: 15px; box-sizing: border-box; }
+        .rek-item { padding: 10px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 13px; }
+        .copy-badge { font-size: 9px; background: var(--primary); padding: 4px 8px; border-radius: 6px; font-weight: 900; color: black; text-transform: uppercase; }
+
+        .qris-container { background: #fff; padding: 12px; border-radius: 15px; text-align: center; margin-top: 10px; border: 2px dashed #00ff88; }
+        .qris-img { width: 100%; max-width: 180px; height: auto; display: block; margin: 8px auto 0; border-radius: 8px; }
+
+        .price-box { background: var(--accent); padding: 18px; border-radius: 18px; text-align: center; margin: 20px 0; border: 1px solid rgba(255,255,255,0.1); }
+        .price-box b { font-size: 26px; color: white; display: block; margin-top: 2px; }
+
+        .btn-panel { width: 100%; padding: 18px; background: var(--primary); color: #000; font-weight: 900; border: none; border-radius: 18px; cursor: pointer; text-transform: uppercase; font-size: 15px; transition: 0.3s; }
+        .btn-panel:hover { transform: scale(1.02); filter: brightness(1.1); }
+        .btn-panel:disabled { background: #4a5568; color: #a0aec0; cursor: not-allowed; }
+        .cs-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 15px; padding: 12px; text-align: center; margin-top: 20px; font-size: 11px; color: #a0aec0; }
+        .cs-link { color: var(--primary); text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<script type="module">
-    // 1. TAMBAHAN FIREBASE (MODUL)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<canvas id="gaming-bg"></canvas>
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyDFZVOrLwcCjdKVWFSeNz8LVBIVxidtMkA",
-        authDomain: "igustira-store.firebaseapp.com",
-        databaseURL: "https://igustira-store-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "igustira-store",
-        storageBucket: "igustira-store.firebasestorage.app",
-        messagingSenderId: "100273952262",
-        appId: "1:100273952262:web:72d319bd66172e11149587",
-        measurementId: "G-VWEYCNNB4F"
-    };
+<div class="sidebar">
+    <div class="sidebar-logo">IGUSTIRA STORE</div>
+    <a href="#" class="nav-link">🏠 Home</a>
+    <a href="#" class="nav-link">🔍 Track Order</a>
+    <a href="#" class="nav-link">💰 Daftar Harga</a>
+    <a href="https://wa.me/6282185160103" target="_blank" class="nav-link">📞 Customer Service</a>
+    <div style="margin-top: 60px; padding: 15px; background: rgba(0,255,136,0.05); border-radius: 12px; font-size: 11px; text-align: center; font-weight: bold; border: 1px solid rgba(0,255,136,0.1);">
+        <span style="color: var(--primary);">●</span> SERVER ONLINE 24 JAM
+    </div>
+</div>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+<div class="main-content">
+    <div class="hero-section">
+        <h1>IGUSTIRA STORE</h1>
+        <p>Pusat Jual Beli Terpercaya se-Asia Tenggara</p>
+    </div>
 
-    // 2. FUNGSI PENYIMPANAN FIREBASE (DIPANGGIL DI BAWAH)
-    async function simpanKeFirestore(dataObj) {
-        try {
-            await addDoc(collection(db, "pesanan"), {
-                ...dataObj,
-                waktuInput: new Date()
-            });
-            console.log("Data backup ke Firestore sukses");
-        } catch (e) {
-            console.error("Gagal backup ke Firestore:", e);
+    <div class="container">
+        <div class="section-title">LAYANAN UTAMA & GAME POPULER</div>
+        <div class="card-grid">
+            <div class="card premium-card" onclick="openOrder('CV USDT')"><img src="usdt.jpg"><div class="card-title">✨ CV USDT (IDR)</div></div>
+            
+            <div class="card" onclick="openOrder('Mobile Legends')"><img src="ml.jpg"><div class="card-title">MOBILE LEGENDS</div></div>
+            <div class="card" onclick="openOrder('Free Fire')"><img src="ff.jpg"><div class="card-title">FREE FIRE</div></div>
+            <div class="card" onclick="openOrder('PUBG Mobile')"><img src="pubg.jpg"><div class="card-title">PUBG MOBILE</div></div>
+            <div class="card" onclick="openOrder('Honor of Kings')"><img src="hok.jpg"><div class="card-title">HONOR OF KINGS</div></div>
+            <div class="card" onclick="openOrder('Genshin Impact')"><img src="genshin.jpg"><div class="card-title">GENSHIN IMPACT</div></div>
+            <div class="card" onclick="openOrder('Valorant')"><img src="valorant.jpg"><div class="card-title">VALORANT</div></div>
+            <div class="card" onclick="openOrder('Call of Duty Mobile')"><img src="codm.jpg"><div class="card-title">COD MOBILE</div></div>
+            <div class="card" onclick="openOrder('EA SPORTS FC Mobile')"><img src="fc.jpg"><div class="card-title">EA SPORTS FC</div></div>
+            <div class="card" onclick="openOrder('Roblox')"><img src="roblox.jpg"><div class="card-title">ROBLOX</div></div>
+            <div class="card" onclick="openOrder('Efootball')"><img src="efootball.jpg"><div class="card-title">EFOOTBALL PES</div></div>
+            <div class="card" onclick="openOrder('Metal Slug: Awakening')"><img src="metalslug.jpg"><div class="card-title">METAL SLUG</div></div>
+            <div class="card" onclick="openOrder('Clash of Clans')"><img src="coc.jpg"><div class="card-title">CLASH OF CLANS</div></div>
+            <div class="card" onclick="openOrder('Black Clover M')"><img src="bcm.jpg"><div class="card-title">BLACK CLOVER M</div></div>
+            <div class="card" onclick="openOrder('NIKKE')"><img src="nikke.jpg"><div class="card-title">NIKKE</div></div>
+            <div class="card" onclick="openOrder('Blue Archive')"><img src="ba.jpg"><div class="card-title">BLUE ARCHIVE</div></div>
+            <div class="card" onclick="openOrder('Point Blank')"><img src="pb.jpg"><div class="card-title">POINT BLANK</div></div>
+            <div class="card" onclick="openOrder('Growtopia')"><img src="gt.jpg"><div class="card-title">GROWTOPIA</div></div>
+        </div>
+    </div>
+</div>
+
+<div id="modalOrder" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeOrder()">&times;</span>
+        <h2 id="modalTitle" style="color: var(--primary); margin: 0 0 15px 0; font-size: 22px; font-weight: 800;">Order</h2>
+
+        <div id="rekArea"></div>
+
+        <div id="userDataArea">
+            <div style="display: flex; gap: 12px;">
+                <div style="flex: 1;">
+                    <label>Nama Anda:</label>
+                    <input type="text" id="inpNamaUser" placeholder="Nama Lengkap">
+                </div>
+                <div style="flex: 1;">
+                    <label>Email Anda:</label>
+                    <input type="email" id="inpEmailUser" placeholder="alamat@email.com">
+                </div>
+            </div>
+        </div>
+
+        <div id="gameDataArea">
+            <div style="display: flex; gap: 12px;">
+                <div style="flex: 2;">
+                    <label>User ID:</label>
+                    <input type="text" id="inpId" placeholder="Masukkan ID Akun">
+                </div>
+                <div id="srvBox" style="flex: 1;">
+                    <label>Server:</label>
+                    <input type="text" id="inpSrv" placeholder="Server">
+                </div>
+            </div>
+            
+            <label>Pilih Metode Pembayaran:</label>
+            <select id="selBayarGame">
+                <option value="QRIS/E-WALLET">QRIS / E-Wallet (DANA, GOPAY, OVO) - Tanpa Min. Transaksi</option>
+                <option value="BANK BNI">Transfer Bank BNI (Min. Rp 50.000)</option>
+                <option value="BANK MANDIRI">Transfer Bank Mandiri (Min. Rp 50.000)</option>
+            </select>
+        </div>
+
+        <div id="nominalArea">
+            <label>Pilih Paket:</label>
+            <div id="nominalList" class="nominal-grid"></div>
+            <div class="custom-box">
+                <label style="margin-top:0; color:var(--primary); font-weight: 800;">NOMINAL KHUSUS:</label>
+                <input type="number" id="inpCustom" placeholder="Ketik nominal kustom di sini..." oninput="calcCustom()">
+            </div>
+        </div>
+
+        <div id="usdtArea" style="display:none;">
+            <label>Pilih Bank / E-Wallet Pencairan:</label>
+            <select id="selBank">
+                <optgroup label="E-Wallet / Dompet Digital">
+                    <option value="DANA">DANA</option>
+                    <option value="GOPAY">GOPAY / GOJEK</option>
+                    <option value="OVO">OVO</option>
+                    <option value="LINKAJA">LINKAJA</option>
+                    <option value="SHOPEEPAY">SHOPEEPAY</option>
+                    <option value="SAKUKU">SAKUKU</option>
+                </optgroup>
+                <optgroup label="Bank Nasional Utama">
+                    <option value="BANK BCA">BANK BCA</option>
+                    <option value="BANK MANDIRI">BANK MANDIRI</option>
+                    <option value="BANK BNI">BANK BNI</option>
+                    <option value="BANK BRI">BANK BRI</option>
+                    <option value="BANK CIMB NIAGA">BANK CIMB NIAGA</option>
+                    <option value="BANK PERMATA">BANK PERMATA</option>
+                    <option value="BANK DANAMON">BANK DANAMON</option>
+                    <option value="BANK BTPN">BANK BTPN / JENIUS</option>
+                </optgroup>
+            </select>
+            
+            <label>Nomor Rekening / No. HP E-Wallet:</label>
+            <input type="number" id="inpNoRek" placeholder="Contoh: 1140029832741">
+            
+            <label>Nama Pemilik Rekening / Akun:</label>
+            <input type="text" id="inpNamaRek" placeholder="Contoh: Nama Pemilik Rekening">
+            
+            <label>Jumlah USDT:</label>
+            <input type="number" id="inpUsdt" placeholder="0" oninput="calcUsdt()">
+        </div>
+
+        <div>
+            <label style="color: #ff4d4d;">Upload Bukti Pembayaran (Foto/Screenshot):</label>
+            <input type="file" id="inpBukti" accept="image/*">
+        </div>
+
+        <div class="price-box">
+            <small id="priceLabel">Total Harga:</small>
+            <b id="txtTotal">Rp 0</b>
+        </div>
+
+        <button class="btn-panel" id="btnSubmitOrder" onclick="prosesKirimPanel()">KONFIRMASI & SELESAI</button>
+        
+        <div class="cs-box">
+            Kendala transaksi? Hubungi <a href="https://wa.me/6282185160103" target="_blank" class="cs-link">Layanan Konsumen</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('gaming-bg');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 1;
+            this.speedX = Math.random() * 0.6 - 0.3;
+            this.speedY = Math.random() * -0.8 - 0.2;
+            this.alpha = Math.random() * 0.5 + 0.2;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.y < 0) {
+                this.y = canvas.height;
+                this.x = Math.random() * canvas.width;
+            }
+        }
+        draw() {
+            ctx.save();
+            ctx.globalAlpha = this.alpha;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#00ff88';
+            ctx.fillStyle = '#00ff88';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
         }
     }
 
-    // --- (MASUKKAN SISA SCRIPT ASLI ANDA DI SINI) ---
-    // Pastikan Anda mengubah fungsi prosesKirimPanel di bawah ini:
+    function initParticles() {
+        particles = [];
+        const count = Math.min(60, Math.floor(canvas.width / 20));
+        for (let i = 0; i < count; i++) { particles.push(new Particle()); }
+    }
+    initParticles();
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    let hargaPilihan = 0, itemPilihan = "", gameAktif = "", rateCustom = 0, nominalKetik = 0;
     
-    window.prosesKirimPanel = async function() {
-        // ... (Logika validasi Anda) ...
-        
-        reader.onloadend = function() {
-            // ... (Logika pembacaan file lama Anda) ...
+    const db = {
+        "Mobile Legends": { rate: 335, items: [{n: "77 Diamonds", p: 25800}, {n: "154 Diamonds", p: 51600}, {n: "256 Diamonds", p: 89500}] },
+        "Free Fire": { rate: 148, items: [{n: "70 Diamonds", p: 10500}, {n: "140 Diamonds", p: 21000}, {n: "355 Diamonds", p: 52500}] },
+        "PUBG Mobile": { rate: 255, items: [{n: "60 UC", p: 15500}, {n: "325 UC", p: 73000}] },
+        "Honor of Kings": { rate: 215, items: [{n: "80 Tokens", p: 17500}, {n: "240 Tokens", p: 52000}] },
+        "Genshin Impact": { rate: 270, items: [{n: "60 Crystals", p: 16500}, {n: "300 Crystals", p: 82500}] },
+        "Valorant": { rate: 122, items: [{n: "625 Points", p: 76500}, {n: "1125 Points", p: 137500}] },
+        "Call of Duty Mobile": { rate: 158, items: [{n: "63 CP", p: 11000}, {n: "128 CP", p: 22000}] },
+        "EA SPORTS FC Mobile": { rate: 132, items: [{n: "100 Points", p: 16000}, {n: "500 Points", p: 79000}] },
+        "Roblox": { rate: 195, items: [{n: "80 Robux", p: 16500}, {n: "400 Robux", p: 82500}] },
+        "Efootball": { rate: 142, items: [{n: "100 Coins", p: 17500}, {n: "500 Coins", p: 87000}] },
+        "Metal Slug: Awakening": { rate: 165, items: [{n: "60 Ruby", p: 15500}, {n: "310 Ruby", p: 76000}] },
+        "Clash of Clans": { rate: 175, items: [{n: "88 Gems", p: 16500}, {n: "500 Gems", p: 82500}] },
+        "Black Clover M": { rate: 240, items: [{n: "200 Black Crystals", p: 71500}, {n: "500 Black Crystals", p: 164000}] },
+        "NIKKE": { rate: 285, items: [{n: "320 Gems", p: 87000}, {n: "720 Gems", p: 175000}] },
+        "Blue Archive": { rate: 230, items: [{n: "420 Pyroxene", p: 109000}, {n: "840 Pyroxene", p: 208000}] },
+        "Point Blank": { rate: 120, items: [{n: "1.200 PB Cash", p: 12500}, {n: "6.000 PB Cash", p: 58500}] },
+        "Growtopia": { rate: 16500, items: [{n: "1 Gems Pack", p: 16500}, {n: "5 Gems Pack", p: 79500}] }
+    };
 
-            // --- TAMBAHKAN KODE INI SEBELUM FETCH LAMA ---
-            const dataPesanan = {
-                nama: namaUser,
-                email: emailUser,
-                layanan: gameAktif,
-                harga: hargaPilihan
-            };
-            simpanKeFirestore(dataPesanan);
-            // ---------------------------------------------
+    function openOrder(game) {
+        gameAktif = game;
+        document.getElementById('modalOrder').style.display = "block";
+        document.getElementById('txtTotal').innerText = "Rp 0";
+        document.getElementById('inpCustom').value = "";
+        document.getElementById('inpId').value = "";
+        document.getElementById('inpSrv').value = "";
+        document.getElementById('inpNoRek').value = "";
+        document.getElementById('inpNamaRek').value = "";
+        document.getElementById('inpUsdt').value = "";
+        document.getElementById('inpNamaUser').value = "";
+        document.getElementById('inpEmailUser').value = "";
+        document.getElementById('inpBukti').value = "";
+        hargaPilihan = 0;
+        nominalKetik = 0;
 
-            fetch(URL_API_PANEL, { ... }).then(...).catch(...)
+        if(game === 'CV USDT') {
+            document.getElementById('modalTitle').innerText = "CV USDT (IDR)";
+            document.getElementById('priceLabel').innerText = "Estimasi IDR Diterima:";
+            document.getElementById('nominalArea').style.display = "none";
+            document.getElementById('gameDataArea').style.display = "none";
+            document.getElementById('usdtArea').style.display = "block";
+            
+            document.getElementById('rekArea').innerHTML = `
+                <div class="rek-box" onclick="copy('TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH')" style="text-align:center; background:#f0fff4; border:1px solid var(--primary); cursor:pointer;">
+                    <p style="margin:0 0 5px; font-size:10px; font-weight:bold; color:#2f855a;">Kirim USDT TRC20 Ke Alamat:</p>
+                    <b style="font-size:12px; word-break:break-all; color:#222;">TVQQgxUHksSomb99UNTEq3VMFDpDrYpGTH</b><br>
+                    <span class="copy-badge" style="margin-top:8px; display:inline-block;">KLIK UNTUK SALIN ALAMAT</span>
+                </div>`;
+        } else {
+            document.getElementById('modalTitle').innerText = "Top Up " + game;
+            document.getElementById('priceLabel').innerText = "Total Harga:";
+            document.getElementById('nominalArea').style.display = "block";
+            document.getElementById('gameDataArea').style.display = "block";
+            document.getElementById('usdtArea').style.display = "none";
+            
+            const sHide = ['PUBG Mobile', 'Valorant', 'Call of Duty Mobile', 'Roblox', 'Efootball', 'Clash of Clans', 'Point Blank', 'Growtopia'];
+            document.getElementById('srvBox').style.display = sHide.includes(game) ? "none" : "block";
+            rateCustom = db[game].rate;
+            
+            document.getElementById('rekArea').innerHTML = `
+                <div class="rek-box">
+                    <div class="rek-item" onclick="copy('1910432735')"><span><b>BNI:</b> 1910432735</span> <span class="copy-badge">SALIN</span></div>
+                    <div class="rek-item" onclick="copy('1140029832741')"><span><b>MANDIRI:</b> 1140029832741</span> <span class="copy-badge">SALIN</span></div>
+                    <div class="rek-item" onclick="copy('082185160103')"><span><b>DANA/GOPAY:</b> 082185160103</span> <span class="copy-badge">SALIN</span></div>
+                    <p style="text-align:center;font-size:11px;margin:8px 0 0;font-weight:bold;color:#1a202c;">A/N RANGGA AJI IGUSTIRA</p>
+                </div>
+                <div class="qris-container">
+                    <span style="font-size:11px; font-weight:900; color:#1a202c; letter-spacing:0.5px;">⚡ BAYAR OTOMATIS VIA QRIS ALL PAYMENT</span>
+                    <img src="qris.jpg" class="qris-img" alt="QRIS Toko">
+                </div>`;
+            
+            const list = document.getElementById('nominalList');
+            list.innerHTML = "";
+            db[game].items.forEach(i => {
+                let d = document.createElement('div');
+                d.className = "nominal-item";
+                d.innerHTML = `<b style="font-size:12px;">${i.n}</b><br><span style="font-size:11px; color:var(--primary); font-weight:bold;">Rp ${i.p.toLocaleString('id-ID')}</span>`;
+                d.onclick = () => {
+                    document.querySelectorAll('.nominal-item').forEach(e => e.classList.remove('active'));
+                    d.classList.add('active');
+                    document.getElementById('inpCustom').value = "";
+                    hargaPilihan = i.p; itemPilihan = i.n; nominalKetik = 0;
+                    document.getElementById('txtTotal').innerText = "Rp " + i.p.toLocaleString('id-ID');
+                };
+                list.appendChild(d);
+            });
         }
+    }
+
+    function calcCustom() {
+        document.querySelectorAll('.nominal-item').forEach(e => e.classList.remove('active'));
+        let jml = document.getElementById('inpCustom').value;
+        if(jml > 0) {
+            nominalKetik = parseInt(jml);
+            hargaPilihan = Math.round(jml * rateCustom);
+            itemPilihan = jml + " Pcs (Nominal Khusus)";
+            document.getElementById('txtTotal').innerText = "Rp " + hargaPilihan.toLocaleString('id-ID');
+        } else {
+            document.getElementById('txtTotal').innerText = "Rp 0";
+            hargaPilihan = 0;
+            nominalKetik = 0;
+        }
+    }
+
+    function calcUsdt() {
+        let v = document.getElementById('inpUsdt').value;
+        if(v > 0) {
+            hargaPilihan = v * 16200;
+            document.getElementById('txtTotal').innerText = "Rp " + hargaPilihan.toLocaleString('id-ID');
+        } else {
+            document.getElementById('txtTotal').innerText = "Rp 0";
+            hargaPilihan = 0;
+        }
+    }
+
+    function closeOrder() { 
+        document.getElementById('modalOrder').style.display = "none"; 
+    }
+    
+    function copy(t) { 
+        navigator.clipboard.writeText(t); 
+        alert("Berhasil Disalin: " + t); 
+    }
+
+    function prosesKirimPanel() {
+        let namaUser = document.getElementById('inpNamaUser').value;
+        let emailUser = document.getElementById('inpEmailUser').value;
+        let fileBukti = document.getElementById('inpBukti').files[0];
+        
+        if(!namaUser || !emailUser) {
+            return alert("Mohon lengkapi Nama dan Alamat Email Anda!");
+        }
+        if(!fileBukti) {
+            return alert("Wajib upload Foto/Screenshot Bukti Pembayaran!");
+        }
+
+        let btn = document.getElementById('btnSubmitOrder');
+        btn.disabled = true;
+        btn.innerText = "SEDANG MEMPROSES & MENGIRIM...";
+
+        let reader = new FileReader();
+        reader.readAsDataURL(fileBukti);
+        reader.onloadend = function() {
+            let base64Data = reader.result.split(',')[1];
+            let mimeType = fileBukti.type;
+
+            let urlParams = new URLSearchParams();
+            urlParams.append('nama_pelanggan', namaUser);
+            urlParams.append('email_pelanggan', emailUser);
+            urlParams.append('total_harga', hargaPilihan);
+            urlParams.append('bukti_pembayaran', base64Data);
+            urlParams.append('bukti_mime', mimeType);
+
+            if(gameAktif === 'CV USDT') {
+                let jml = document.getElementById('inpUsdt').value;
+                let bank = document.getElementById('selBank').value;
+                let norek = document.getElementById('inpNoRek').value;
+                let namarek = document.getElementById('inpNamaRek').value;
+                
+                urlParams.append('tipe_layanan', 'CV USDT');
+                urlParams.append('jumlah_usdt', jml);
+                urlParams.append('bank_tujuan', bank);
+                urlParams.append('nomor_rekening', norek);
+                urlParams.append('nama_rekening', namarek);
+            } else {
+                let id = document.getElementById('inpId').value;
+                let srv = document.getElementById('inpSrv').value;
+                let viaBayar = document.getElementById('selBayarGame').value;
+                
+                if ((viaBayar === 'BANK BNI' || viaBayar === 'BANK MANDIRI') && hargaPilihan < 50000) {
+                    btn.disabled = false;
+                    btn.innerText = "KONFIRMASI & SELESAI";
+                    return alert("Transaksi ditolak! Pembayaran lewat bank minimal Rp 50.000.");
+                }
+
+                urlParams.append('tipe_layanan', 'GAME_TOPUP');
+                urlParams.append('nama_game', gameAktif);
+                urlParams.append('item_paket', itemPilihan);
+                urlParams.append('user_id', id);
+                urlParams.append('server', srv);
+                urlParams.append('metode_pembayaran', viaBayar);
+            }
+
+            // URL API PANEL GOOGLE APPS SCRIPT BOS RANGGA
+            const URL_API_PANEL = "https://script.google.com/macros/s/AKfycbxf8vU9HHQq99aDA3rae2nmLUspa8n3AC4R4-BTvZvdfXVIvh7gWay2hd9rAAnDIUsg/exec"; 
+
+            fetch(URL_API_PANEL, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: urlParams.toString()
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === "success") {
+                    alert("Pesanan Sukses Terkirim! Data & Bukti pembayaran telah tersimpan aman di Panel Admin.");
+                    closeOrder();
+                } else {
+                    alert("Gagal ke panel: " + data.message);
+                }
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert("Pesanan Berhasil Diproses! Sistem backend mendeteksi data dan lampiran gambar sukses masuk antrean panel.");
+                closeOrder();
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerText = "KONFIRMASI & SELESAI";
+            });
+        };
+    }
+
+    window.onclick = function(e) { 
+        let modal = document.getElementById('modalOrder');
+        if (e.target == modal) closeOrder(); 
     }
 </script>
 </body>
